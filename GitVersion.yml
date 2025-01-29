@@ -1,0 +1,10 @@
+mode: Mainline
+branches:
+  main:
+    tag: ''
+    increment: Minor
+    regex: ^main$
+    is-mainline: true
+ignore:
+  sha: []
+merge-message-formats: {}

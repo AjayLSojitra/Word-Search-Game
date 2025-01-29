@@ -1,0 +1,90 @@
+{
+  "expo": {
+    "scheme": "verbalfluencygame",
+    "extra": {
+      "eas": {
+        "projectId": "e227101b-7e13-464e-947d-4c416fe0b083"
+      },
+      "oneSignalAppId": "31a5378a-2a8a-4827-b483-1f82dd480f88"
+    },
+    "name": "verbal-fluency-game",
+    "slug": "verbal-fluency-game",
+    "owner": "as2infotech",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "jsEngine": "hermes",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#30AF82"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/e227101b-7e13-464e-947d-4c416fe0b083"
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.spelling.checker.verbal.fluency.game",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "VerbalFluencyGame does not access your location. This permission is included to meet App Store requirements, but the app does not utilize location services for any functionality.",
+        "NSMicrophoneUsageDescription": "VerbalFluencyGame does not access your microphone or any sensitive user data. This permission is included by default and is not used by the app. Your privacy and security are important to us."
+      }
+    },
+    "android": {
+      "package": "com.spelling.checker.verbal.fluency.game",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro"
+    },
+    "plugins": [
+      "@react-native-firebase/app",
+      "./plugins/withAndroidVerifiedLinksWorkaround",
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "useFrameworks": "static"
+          }
+        }
+      ],
+
+      "expo-tracking-transparency",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "compileSdkVersion": 34,
+            "kotlinVersion": "1.6.21"
+          },
+          "ios": {
+            "deploymentTarget": "14.0"
+          }
+        }
+      ],
+      [
+        "onesignal-expo-plugin",
+        {
+          "mode": "development"
+        }
+      ]
+    ],
+    "experiments": {
+      "tsconfigPaths": true
+    }
+  },
+  "react-native-google-mobile-ads": {
+    "android_app_id": "ca-app-pub-5944540568418609~3212426971",
+    "ios_app_id": "ca-app-pub-5944540568418609~9551239070"
+  }
+}

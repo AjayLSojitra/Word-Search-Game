@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "605935087397",
+    "firebase_url": "https://verbal-fluency-game-default-rtdb.firebaseio.com",
+    "project_id": "verbal-fluency-game",
+    "storage_bucket": "verbal-fluency-game.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:605935087397:android:81bcbc3681257c6a6bf4cc",
+        "android_client_info": {
+          "package_name": "com.spelling.checker.verbal.fluency.game"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBPTIyjekG-vxzHx8pye_OIbYUtG-hKNbI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

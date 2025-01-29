@@ -1,0 +1,101 @@
+{
+  "cli": {
+    "version": ">= 3.1.0",
+    "appVersionSource": "local"
+  },
+  "build": {
+    "development-simulator": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "ios": {
+        "simulator": true
+      },
+      "channel": "development-simulator"
+    },
+    "storybook-simulator": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "env": {
+        "APP_VARIANT": "storybook"
+      },
+      "ios": {
+        "simulator": true
+      },
+      "android": {
+        "gradleCommand": ":app:assembleDebug"
+      },
+      "channel": "storybook-simulator"
+    },
+    "storybook": {
+      "distribution": "internal",
+      "env": {
+        "APP_VARIANT": "storybook"
+      },
+      "ios": {
+        "resourceClass": "m-medium"
+      },
+      "channel": "storybook"
+    },
+    "development": {
+      "distribution": "internal",
+      "android": {
+        "gradleCommand": ":app:assembleDebug"
+      },
+      "ios": {
+        "buildConfiguration": "Debug",
+        "resourceClass": "m1-medium"
+      },
+      "channel": "development",
+      "developmentClient": true
+    },
+    "test": {
+      "distribution": "internal",
+      "env": {
+        "APP_VARIANT": "test"
+      },
+      "ios": {
+        "resourceClass": "m-medium"
+      },
+      "channel": "test"
+    },
+    "beta": {
+      "distribution": "internal",
+      "env": {
+        "APP_VARIANT": "beta"
+      },
+      "ios": {
+        "resourceClass": "m-medium"
+      },
+      "channel": "beta"
+    },
+    "production": {
+      "env": {
+        "APP_VARIANT": "production",
+        "ANDROID_SDK_ROOT": "/Users/drunkenducks/Library/Android/sdk"
+      },
+      "ios": {
+        "resourceClass": "m-medium"
+      },
+      "channel": "production"
+    },
+    "e2e": {
+      "env": {
+        "APP_VARIANT": "test"
+      },
+      "android": {
+        "gradleCommand": ":app:assembleRelease :app:assembleAndroidTest -DtestBuildType=release",
+        "withoutCredentials": true
+      },
+      "ios": {
+        "simulator": true
+      }
+    }
+  },
+  "submit": {
+    "production": {
+      "ios": {
+        "ascAppId": "6480371490"
+      }
+    }
+  }
+}

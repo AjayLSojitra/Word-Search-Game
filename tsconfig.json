@@ -1,0 +1,29 @@
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strictPropertyInitialization": false,
+    "experimentalDecorators": true,
+    "moduleResolution": "node",
+    "paths": {
+      "@design-system/*": [
+        "./design-system/*"
+      ],
+      "@assets/*": [
+        "./assets/*"
+      ],
+      "@modules/*": [
+        "./modules/*"
+      ],
+      "@utils/*": [
+        "./utils/*"
+      ],
+      "@events/*": [
+        "./events/*"
+      ]
+    }
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx"
+  ]
+}
