@@ -17,7 +17,7 @@ module.exports = {
   },
   android: {
     googleServicesFile: "./firebase-configs/google-services.dev.json",
-    package: "com.spelling.checker.verbal.fluency.game",
+    package: "com.shreeramkrishna.wordsearch.spelling.checker",
     adaptiveIcon: {
       foregroundImage: "./assets/adaptive-icon.test.png",
       backgroundColor: "#FFFFFF",
@@ -25,6 +25,6 @@ module.exports = {
   },
   ios: {
     googleServicesFile: "./firebase-configs/GoogleService-Info.dev.plist",
-    bundleIdentifier: "com.spelling.checker.verbal.fluency.game",
+    bundleIdentifier: "com.shreeramkrishna.wordsearch.spelling.checker",
   },
 };

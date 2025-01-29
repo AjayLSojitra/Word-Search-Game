@@ -30,14 +30,14 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.spelling.checker.verbal.fluency.game",
+      "bundleIdentifier": "com.shreeramkrishna.wordsearch.spelling.checker",
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "VerbalFluencyGame does not access your location. This permission is included to meet App Store requirements, but the app does not utilize location services for any functionality.",
         "NSMicrophoneUsageDescription": "VerbalFluencyGame does not access your microphone or any sensitive user data. This permission is included by default and is not used by the app. Your privacy and security are important to us."
       }
     },
     "android": {
-      "package": "com.spelling.checker.verbal.fluency.game",
+      "package": "com.shreeramkrishna.wordsearch.spelling.checker",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
