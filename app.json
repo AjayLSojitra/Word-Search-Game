@@ -3,13 +3,13 @@
     "scheme": "verbalfluencygame",
     "extra": {
       "eas": {
-        "projectId": "e227101b-7e13-464e-947d-4c416fe0b083"
+        "projectId": "19e89d36-1cfe-4df8-90fd-f2fa2569ece3"
       },
       "oneSignalAppId": "31a5378a-2a8a-4827-b483-1f82dd480f88"
     },
-    "name": "verbal-fluency-game",
-    "slug": "verbal-fluency-game",
-    "owner": "as2infotech",
+    "name": "Word Search Game",
+    "slug": "word-search-game-app",
+    "owner": "ajay_sarvadhidigital",
     "version": "1.0.0",
     "orientation": "portrait",
     "jsEngine": "hermes",

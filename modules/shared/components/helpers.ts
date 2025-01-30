@@ -26,26 +26,45 @@ export async function openBrowser(
 
 //STATIC ADS IDS
 const isAndroid = Platform.OS === "android";
-export const staticAppOpenAd = isAndroid ? "ca-app-pub-5944540568418609/2618999213" : "ca-app-pub-5944540568418609/7327765955";
-export const staticBannerAd = isAndroid ? "ca-app-pub-5944540568418609/5048887284" : "ca-app-pub-5944540568418609/6389254658";
-export const staticInterstitialAd = isAndroid ? "ca-app-pub-5944540568418609/2298800559" : "ca-app-pub-5944540568418609/8640847625";
-export const staticRewardInterstitialAd = isAndroid ? "ca-app-pub-5944540568418609/7631018288" : "ca-app-pub-5944540568418609/9184407569";
-export const staticInterstitialAdIntervalClicks = 3;
+export const staticAppOpenAd = isAndroid
+  ? "ca-app-pub-1802560534115589/6978243138"
+  : "ca-app-pub-1802560534115589/1498685742";
+export const staticBannerAd = isAndroid
+  ? "ca-app-pub-1802560534115589/1690257431"
+  : "ca-app-pub-1802560534115589/4124849088";
+export const staticInterstitialAd = isAndroid
+  ? "ca-app-pub-1802560534115589/7611748088"
+  : "ca-app-pub-1802560534115589/2048430216";
+export const staticRewardInterstitialAd = isAndroid
+  ? "ca-app-pub-1802560534115589/8064094096"
+  : "ca-app-pub-1802560534115589/2811767413";
+export const staticInterstitialAdIntervalClicks = 4;
 export const staticInterstitialAdIntervalSeconds = 60;
-export const staticPrivacyPolicy = "http://as2infotech.infinityfreeapp.com/privacy-policy-verbal-fluency.html";
-export const appStoreLink = "https://apps.apple.com/app/verbal-fluency-game/id6480371490";
+export const staticSupportEmail = "srkwebstudio@gmail.com";
+export const staticPoweredBy = "SRK Webstudio";
+export const staticPrivacyPolicy =
+  "http://as2infotech.infinityfreeapp.com/privacy-policy-verbal-fluency.html";
+export const appStoreLink =
+  "https://apps.apple.com/app/verbal-fluency-game/id6480371490";
+export const staticAndroidPackageName =
+  "com.shreeramkrishna.wordsearch.spelling.checker";
 export const APPLE_STORE_ID = "id6480371490";
 
 export const canShowAdmobInteratitial = () => {
   if (global?.showAds) {
-    if ((global.interstitialAdIntervalClicks ?? staticInterstitialAdIntervalClicks) === (global.interstitialAdIntervalCurrentClicks ?? 0)) {
+    if (
+      (global.interstitialAdIntervalClicks ??
+        staticInterstitialAdIntervalClicks) ===
+      (global.interstitialAdIntervalCurrentClicks ?? 0)
+    ) {
       global.interstitialAdIntervalCurrentClicks = 0;
       return true;
     } else {
-      global.interstitialAdIntervalCurrentClicks = (global.interstitialAdIntervalCurrentClicks ?? 0) + 1;
+      global.interstitialAdIntervalCurrentClicks =
+        (global.interstitialAdIntervalCurrentClicks ?? 0) + 1;
       return false;
     }
   }
 
   return false;
-}
+};

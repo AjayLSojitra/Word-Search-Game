@@ -12,15 +12,24 @@ import { alphabets } from "@utils/helper";
 import ScrollHeader from "@design-system/components/navigation/scroll-header";
 import TouchableScale from "@design-system/components/shared/touchable-scale";
 import { HIT_SLOP } from "@utils/theme";
-import { TestIds, useRewardedAd, useInterstitialAd } from 'react-native-google-mobile-ads';
-import { canShowAdmobInteratitial, staticInterstitialAd, staticRewardInterstitialAd } from "@modules/shared/components/helpers";
+import {
+  TestIds,
+  useRewardedAd,
+  useInterstitialAd,
+} from "react-native-google-mobile-ads";
+import {
+  canShowAdmobInteratitial,
+  staticInterstitialAd,
+  staticRewardInterstitialAd,
+} from "@modules/shared/components/helpers";
 import AdmobBanner from "@modules/shared/components/ads/admob-banner";
-import InAppReview from 'react-native-in-app-review';
-import { OneSignal } from 'react-native-onesignal';
+import InAppReview from "react-native-in-app-review";
+import { OneSignal } from "react-native-onesignal";
 
 function WelcomeScreen() {
   const insets = useSafeAreaInsets();
-  const [showAdsConfirmationPopup, setShowAdsConfirmationPopup] = useState(false)
+  const [showAdsConfirmationPopup, setShowAdsConfirmationPopup] =
+    useState(false);
   const router = useRouter();
   const [randomWordLength, setRandomWordLength] = useState<number>();
   const [duration, setDuration] = useState<number>();
@@ -28,14 +37,22 @@ function WelcomeScreen() {
     isLoaded: isLoadedRewarded,
     isClosed: isClosedRewarded,
     load: loadRewarded,
-    show: showRewarded
-  } = useRewardedAd(__DEV__ ? TestIds.REWARDED : (global?.rewardInterstitialAd ?? staticRewardInterstitialAd));
-  const { isLoaded, isClosed, load, show, isShowing } = useInterstitialAd(__DEV__ ? TestIds.INTERSTITIAL_VIDEO : (global?.interstitialAd ?? staticInterstitialAd));
+    show: showRewarded,
+  } = useRewardedAd(
+    __DEV__
+      ? TestIds.REWARDED
+      : global?.rewardInterstitialAd ?? staticRewardInterstitialAd
+  );
+  const { isLoaded, isClosed, load, show, isShowing } = useInterstitialAd(
+    __DEV__
+      ? TestIds.INTERSTITIAL_VIDEO
+      : global?.interstitialAd ?? staticInterstitialAd
+  );
   const redirectTo = useRef<"LEVEL-SELECTION-SCREEN" | "SETTING-SCREEN">();
 
   useEffect(() => {
     OneSignal.Notifications.requestPermission(true);
-  }, [])
+  }, []);
 
   useEffect(() => {
     if (global?.show_review_popup) {
@@ -52,25 +69,25 @@ function WelcomeScreen() {
           });
       }
     }
-  }, [])
+  }, []);
 
   const loadRewardedAd = () => {
     // Start loading the rewarded straight away
     if (global?.showAds) {
       loadRewarded();
     }
-  }
+  };
 
   useEffect(() => {
-    loadRewardedAd()
+    loadRewardedAd();
   }, [loadRewarded]);
 
   useEffect(() => {
     if (isClosedRewarded) {
-      loadRewardedAd()
+      loadRewardedAd();
 
       // Action after the ad is closed
-      redirectToPlayGameScreen()
+      redirectToPlayGameScreen();
     }
   }, [isClosedRewarded]);
 
@@ -83,38 +100,59 @@ function WelcomeScreen() {
       load();
 
       // Action after the ad is closed
-      redirectToNextScreenAfterAdmobInterstitial()
+      redirectToNextScreenAfterAdmobInterstitial();
     }
   }, [isClosed]);
 
   const redirectToNextScreenAfterAdmobInterstitial = () => {
     if (redirectTo.current === "LEVEL-SELECTION-SCREEN") {
-      router.push('./level-selection')
+      router.push("./level-selection");
     }
 
     if (redirectTo.current === "SETTING-SCREEN") {
-      router.push("./settings")
+      router.push("./settings");
     }
-  }
+  };
 
-  const getDurationAccordingToRandomWordLength = useCallback((randomLength: number) => {
-    switch (randomLength) {
-      case 3: { return 30 }
-      case 4: { return 60 }
-      case 5: { return 90 }
-      case 6: { return 120 }
-      case 7: { return 150 }
-      case 8: { return 180 }
-      default: { return 60 }
-    }
-  }, [])
+  const getDurationAccordingToRandomWordLength = useCallback(
+    (randomLength: number) => {
+      switch (randomLength) {
+        case 3: {
+          return 30;
+        }
+        case 4: {
+          return 60;
+        }
+        case 5: {
+          return 90;
+        }
+        case 6: {
+          return 120;
+        }
+        case 7: {
+          return 150;
+        }
+        case 8: {
+          return 180;
+        }
+        default: {
+          return 60;
+        }
+      }
+    },
+    []
+  );
 
   const redirectToPlayGameScreen = () => {
     const minAlphabets = 0;
     const maxAlphabets = 25;
-    const randomAlphabet = Math.floor(Math.random() * (maxAlphabets - minAlphabets + 1)) + minAlphabets;
-    router.push(`./play-game?alphabet=${alphabets[randomAlphabet]}&&wordLength=${randomWordLength}&&duration=${duration}&&isForTraining=Yes`)
-  }
+    const randomAlphabet =
+      Math.floor(Math.random() * (maxAlphabets - minAlphabets + 1)) +
+      minAlphabets;
+    router.push(
+      `./play-game?alphabet=${alphabets[randomAlphabet]}&&wordLength=${randomWordLength}&&duration=${duration}&&isForTraining=Yes`
+    );
+  };
 
   return (
     <YStack flex={1} bg={"$primary"}>
@@ -130,7 +168,7 @@ function WelcomeScreen() {
                 show();
               } else {
                 // No advert ready to show yet
-                redirectToNextScreenAfterAdmobInterstitial()
+                redirectToNextScreenAfterAdmobInterstitial();
               }
             }}
           >
@@ -153,10 +191,10 @@ function WelcomeScreen() {
                 showRewarded();
               } else {
                 // No advert ready to show yet
-                redirectToPlayGameScreen()
+                redirectToPlayGameScreen();
               }
             }}
-            onNegativePress={() => { }}
+            onNegativePress={() => {}}
             showDialog={showAdsConfirmationPopup}
             setChangeShowDialogStatus={setShowAdsConfirmationPopup}
             content={`Watch a video to unlock this feature for ${duration} seconds!`}
@@ -180,7 +218,7 @@ function WelcomeScreen() {
                 show();
               } else {
                 // No advert ready to show yet
-                redirectToNextScreenAfterAdmobInterstitial()
+                redirectToNextScreenAfterAdmobInterstitial();
               }
             }}
           >
@@ -190,6 +228,7 @@ function WelcomeScreen() {
                 source={images.letsPlayPrimary}
                 style={{ height: 22, width: 22 }}
                 alt={"letsPlayPrimary"}
+                tintColor={"#128c88"}
               />
               <YStack w={"$3"} />
               <SizableText
@@ -205,32 +244,44 @@ function WelcomeScreen() {
           <YStack h={"$5"} />
           <BasicButton
             height={56}
-            linearGradientProps={{ colors: ["#000000", "#000000"] }}
+            linearGradientProps={{ colors: ["#a6897e", "#a6897e"] }}
             onPress={() => {
               const minWordLength = 3;
               const maxWordLength = 8;
-              const randomLength = Math.floor(Math.random() * (maxWordLength - minWordLength + 1)) + minWordLength
+              const randomLength =
+                Math.floor(
+                  Math.random() * (maxWordLength - minWordLength + 1)
+                ) + minWordLength;
               setRandomWordLength(randomLength);
               const dur = getDurationAccordingToRandomWordLength(randomLength);
-              setDuration(dur)
+              setDuration(dur);
 
               if (global?.showAds && isLoadedRewarded) {
-                setShowAdsConfirmationPopup(true)
+                setShowAdsConfirmationPopup(true);
               } else {
                 // redirectToPlayGameScreen
                 const minAlphabets = 0;
                 const maxAlphabets = 25;
-                const randomAlphabet = Math.floor(Math.random() * (maxAlphabets - minAlphabets + 1)) + minAlphabets;
-                router.push(`./play-game?alphabet=${alphabets[randomAlphabet]}&&wordLength=${randomLength}&&duration=${dur}&&isForTraining=Yes`)
+                const randomAlphabet =
+                  Math.floor(
+                    Math.random() * (maxAlphabets - minAlphabets + 1)
+                  ) + minAlphabets;
+                router.push(
+                  `./play-game?alphabet=${alphabets[randomAlphabet]}&&wordLength=${randomLength}&&duration=${dur}&&isForTraining=Yes`
+                );
               }
-            }
-            }
+            }}
           >
             <XStack alignItems="center">
               <Image
                 key={"premium"}
                 source={images.premium}
-                style={{ height: 22, width: 22, alignSelf: "center", marginTop: -4 }}
+                style={{
+                  height: 22,
+                  width: 22,
+                  alignSelf: "center",
+                  marginTop: -4,
+                }}
                 alt={"premium"}
               />
               <YStack w={"$3"} />
@@ -246,15 +297,14 @@ function WelcomeScreen() {
         </YStack>
       </ResponsiveContent>
 
-
-      {(Platform.OS === "android" && !isShowing && global?.showAds) && (
+      {Platform.OS === "android" && !isShowing && global?.showAds && (
         <YStack justifyContent="flex-end">
           <AdmobBanner />
         </YStack>
       )}
       <YStack h={insets.bottom} />
     </YStack>
-  )
+  );
 }
 
 export default () => (

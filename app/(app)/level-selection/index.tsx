@@ -8,18 +8,25 @@ import { Image } from "react-native";
 import ResponsiveContent from "@modules/shared/responsive-content";
 import AdmobBanner from "@modules/shared/components/ads/admob-banner";
 import { TestIds, useInterstitialAd } from "react-native-google-mobile-ads";
-import { canShowAdmobInteratitial, staticInterstitialAd } from "@modules/shared/components/helpers";
+import {
+  canShowAdmobInteratitial,
+  staticInterstitialAd,
+} from "@modules/shared/components/helpers";
 import { useEffect, useRef } from "react";
 
 function LevelSelectionScreen() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
-  const { isLoaded, isClosed, load, show, isShowing } = useInterstitialAd(__DEV__ ? TestIds.INTERSTITIAL_VIDEO : (global?.interstitialAd ?? staticInterstitialAd));
+  const { isLoaded, isClosed, load, show, isShowing } = useInterstitialAd(
+    __DEV__
+      ? TestIds.INTERSTITIAL_VIDEO
+      : global?.interstitialAd ?? staticInterstitialAd
+  );
   const redirectTo = useRef<"EASY" | "HARD">();
 
   const redirectToInitGame = (level: "EASY" | "HARD") => {
-    router.push(`./init-game?level=${level}`)
-  }
+    router.push(`./init-game?level=${level}`);
+  };
 
   useEffect(() => {
     load();
@@ -30,38 +37,35 @@ function LevelSelectionScreen() {
       load();
 
       // Action after the ad is closed
-      redirectToNextScreenAfterAdmobInterstitial()
+      redirectToNextScreenAfterAdmobInterstitial();
     }
   }, [isClosed]);
 
   const redirectToNextScreenAfterAdmobInterstitial = () => {
     if (redirectTo.current === "EASY") {
-      redirectToInitGame("EASY")
+      redirectToInitGame("EASY");
     }
 
     if (redirectTo.current === "HARD") {
-      redirectToInitGame("HARD")
+      redirectToInitGame("HARD");
     }
-  }
+  };
 
   return (
     <YStack flex={1} bg={"$primary"}>
-      <ScrollHeader
-        title="Choose Level"
-        backgroundColor={"$primary"}
-      />
+      <ScrollHeader title="Choose Level" backgroundColor={"$primary"} />
       <ResponsiveContent flex={1}>
         <YStack flex={1} mx={"$6"} justifyContent="center">
           <BasicButton
             height={56}
-            linearGradientProps={{ colors: ["#000000", "#000000"] }}
+            linearGradientProps={{ colors: ["#a6897e", "#a6897e"] }}
             onPress={() => {
               redirectTo.current = "EASY";
               if (isLoaded && canShowAdmobInteratitial()) {
                 show();
               } else {
                 // No advert ready to show yet
-                redirectToNextScreenAfterAdmobInterstitial()
+                redirectToNextScreenAfterAdmobInterstitial();
               }
             }}
           >
@@ -85,14 +89,14 @@ function LevelSelectionScreen() {
           <YStack h={"$5"} />
           <BasicButton
             height={56}
-            linearGradientProps={{ colors: ["#000000", "#000000"] }}
+            linearGradientProps={{ colors: ["#a6897e", "#a6897e"] }}
             onPress={() => {
               redirectTo.current = "HARD";
               if (isLoaded && canShowAdmobInteratitial()) {
                 show();
               } else {
                 // No advert ready to show yet
-                redirectToNextScreenAfterAdmobInterstitial()
+                redirectToNextScreenAfterAdmobInterstitial();
               }
             }}
           >
@@ -115,10 +119,10 @@ function LevelSelectionScreen() {
           </BasicButton>
         </YStack>
       </ResponsiveContent>
-      {!isShowing && (<AdmobBanner />)}
+      {!isShowing && <AdmobBanner />}
       <YStack h={insets.bottom} />
     </YStack>
-  )
+  );
 }
 
 export default LevelSelectionScreen;

@@ -1,14 +1,13 @@
 {
   "project_info": {
-    "project_number": "605935087397",
-    "firebase_url": "https://verbal-fluency-game-default-rtdb.firebaseio.com",
-    "project_id": "verbal-fluency-game",
-    "storage_bucket": "verbal-fluency-game.appspot.com"
+    "project_number": "230055028122",
+    "project_id": "word-search-game-app",
+    "storage_bucket": "word-search-game-app.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:605935087397:android:81bcbc3681257c6a6bf4cc",
+        "mobilesdk_app_id": "1:230055028122:android:036be3d881014903e9c623",
         "android_client_info": {
           "package_name": "com.shreeramkrishna.wordsearch.spelling.checker"
         }
@@ -16,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBPTIyjekG-vxzHx8pye_OIbYUtG-hKNbI"
+          "current_key": "AIzaSyBIXV2RXJUs5p48EXdj21bc2oRV8x2j86Y"
         }
       ],
       "services": {

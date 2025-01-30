@@ -8,10 +8,11 @@ import images from "@assets/images/images";
 import TouchableScale from "@design-system/components/shared/touchable-scale";
 import DeviceInfo from 'react-native-device-info';
 import LocalStorage from "@utils/local-storage";
-import { useFocusEffect } from "expo-router";
+import { router, useFocusEffect } from "expo-router";
 import ResponsiveContent from "@modules/shared/responsive-content";
 import AdmobBanner from "@modules/shared/components/ads/admob-banner";
 import { APPLE_STORE_ID, appStoreLink, staticPrivacyPolicy } from "@modules/shared/components/helpers";
+import { DeviceType, deviceType } from "expo-device";
 
 function SettingsScreen() {
   const insets = useSafeAreaInsets();
@@ -21,8 +22,9 @@ function SettingsScreen() {
   const toggleSoundSwitch = () => setIsSoundSwitchEnabled(previousState => !previousState);
 
   const privacyPolicyURL = global.privacy_policy ?? staticPrivacyPolicy
-  const supportEmail = "info.as2infotech@gmail.com"
+  const supportEmail = "srkwebstudio@gmail.com"
   const packageName = DeviceInfo.getBundleId()
+  const isPhoneDevice = deviceType === DeviceType.PHONE;
 
   useFocusEffect(
     useCallback(() => {
@@ -193,6 +195,30 @@ function SettingsScreen() {
                   >
                     {` (${supportEmail})`}
                   </SizableText>
+                </SizableText>
+              </XStack>
+            </TouchableScale>
+
+            <TouchableScale
+              onPress={() => {
+                router.push("./feedback");
+              }}
+            >
+              <XStack alignItems="center" py={isPhoneDevice ? "$4" : "$6"}>
+                <Image
+                  key={"contactUs"}
+                  source={images.feedback}
+                  style={{ height: 24, width: 24 }}
+                  alt={"contactUs"}
+                />
+                <YStack w={isPhoneDevice ? "$2" : "$3"} />
+                <SizableText
+                  fontSize={isPhoneDevice ? "$hsm" : "$2xl"}
+                  lineHeight={isPhoneDevice ? 22 : 34}
+                  color={"$white"}
+                  fontWeight={"700"}
+                >
+                  Send Feedback
                 </SizableText>
               </XStack>
             </TouchableScale>

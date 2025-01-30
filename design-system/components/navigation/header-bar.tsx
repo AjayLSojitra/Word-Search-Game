@@ -19,6 +19,7 @@ export type HeaderBarProps = {
   profileElement?: JSX.Element;
   titleNumberOfLines?: number;
   titleEllipsizeMode?: "head" | "tail" | "middle" | "clip";
+  customTitle?: JSX.Element;
 };
 
 function HeaderBar(props: HeaderBarProps) {

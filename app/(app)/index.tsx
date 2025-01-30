@@ -54,7 +54,7 @@ function SplashScreen() {
       global.interstitialAdIntervalSeconds = interstitialAdIntervalSeconds;
       global.rewardInterstitialAd = rewardInterstitialAd;
       global.serverConfigEnable = serverConfigEnable;
-      global.showAds = showAds;
+      global.showAds = false; // TODO
       global.privacy_policy = privacy_policy;
       global.show_review_popup = show_review_popup;
 
