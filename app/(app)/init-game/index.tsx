@@ -146,7 +146,7 @@ function InitGameScreen() {
   return (
     <YStack flex={1} backgroundColor={"$primary"}>
       <ScrollHeader
-        title="Verbal Fluency Game"
+        title="Word Search Game"
         backgroundColor={"$primary"}
         rightElement={
           <TouchableScale onPress={() => { router.push("./help") }}>
@@ -260,7 +260,7 @@ function InitGameScreen() {
                 show();
               }
             }}>
-              <XStack alignSelf="center" justifyContent="center" bg={"#a6897e"} borderRadius={100} alignContent="center" px={"$3"} py={"$1"}>
+              <XStack alignSelf="center" justifyContent="center" bg={"#1c2e4a"} borderRadius={100} alignContent="center" px={"$3"} py={"$1"}>
                 <Image
                   key={"random"}
                   source={images.random}
@@ -439,7 +439,7 @@ function InitGameScreen() {
         <YStack mx={"$4"} >
           <BasicButton
             height={56}
-            linearGradientProps={{ colors: ["#a6897e", "#a6897e"] }}
+            linearGradientProps={{ colors: ["#1c2e4a", "#1c2e4a"] }}
             onPress={() => {
               redirectTo.current = "PLAY-GAME";
               if (isLoaded && canShowAdmobInteratitial()) {

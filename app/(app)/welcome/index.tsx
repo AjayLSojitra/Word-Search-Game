@@ -25,8 +25,10 @@ import {
 import AdmobBanner from "@modules/shared/components/ads/admob-banner";
 import InAppReview from "react-native-in-app-review";
 import { OneSignal } from "react-native-onesignal";
+import { DeviceType, deviceType } from "expo-device";
 
 function WelcomeScreen() {
+  const isPhoneDevice = deviceType === DeviceType.PHONE;
   const insets = useSafeAreaInsets();
   const [showAdsConfirmationPopup, setShowAdsConfirmationPopup] =
     useState(false);
@@ -161,6 +163,12 @@ function WelcomeScreen() {
         back={false}
         rightElement={
           <TouchableScale
+            style={{
+              paddingHorizontal: isPhoneDevice ? 8 : 12,
+              paddingVertical: isPhoneDevice ? 8 : 12,
+              backgroundColor: "#1c2e4a",
+              borderRadius: isPhoneDevice ? 8 : 12,
+            }}
             hitSlop={HIT_SLOP}
             onPress={() => {
               redirectTo.current = "SETTING-SCREEN";
@@ -211,7 +219,7 @@ function WelcomeScreen() {
         <YStack mx={"$6"} my={"$6"}>
           <BasicButton
             height={56}
-            linearGradientProps={{ colors: ["#FFFFFF", "#FFFFFF"] }}
+            linearGradientProps={{ colors: ["#1c2e4a", "#1c2e4a"] }}
             onPress={() => {
               redirectTo.current = "LEVEL-SELECTION-SCREEN";
               if (isLoaded && canShowAdmobInteratitial()) {
@@ -228,13 +236,13 @@ function WelcomeScreen() {
                 source={images.letsPlayPrimary}
                 style={{ height: 22, width: 22 }}
                 alt={"letsPlayPrimary"}
-                tintColor={"#128c88"}
+                tintColor={"white"}
               />
               <YStack w={"$3"} />
               <SizableText
                 fontSize={"$hsm"}
                 lineHeight={18.75}
-                color={"$primary"}
+                color={"$white"}
                 fontWeight={"700"}
               >
                 Play Game
@@ -244,7 +252,7 @@ function WelcomeScreen() {
           <YStack h={"$5"} />
           <BasicButton
             height={56}
-            linearGradientProps={{ colors: ["#a6897e", "#a6897e"] }}
+            linearGradientProps={{ colors: ["#1c2e4a", "#1c2e4a"] }}
             onPress={() => {
               const minWordLength = 3;
               const maxWordLength = 8;

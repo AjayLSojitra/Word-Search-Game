@@ -248,10 +248,10 @@ Apple ID 6740090791
     - Remove unneccesary Assets.
     - Replace android_app_id and ios_app_id under react-native-google-mobile-ads in app.json.
     ✔ Expo: Project id, slug, name, owner in app.json
-    - Replace oneSignalAppId in app.json
+    ✔ Replace oneSignalAppId in app.json
     ✔ Replace name in package.json
     ✔ Replace All google services json and GoogleService-info.plist files under firebase-config folder.
-    - Remove Credentials folder.
+    ✔ Remove Credentials folder.
     - Replace Share App Message.
     - Replace the ascAppId in eas.json file.
     - Enable Firebase Appcheck.
@@ -260,5 +260,5 @@ Apple ID 6740090791
     ✔ Enable Anonymous firebase authentication from Authentication section.
     ✔ Firebase rules will be: allow read, write: if request.auth.uid != null;
     - Store all the accounts details in Google Drive.
-    - Change the Primary and Primary secondary color codes.
+    ✔ Change the Primary and Primary secondary color codes.
     - Update url in expo -> updates -> url. In app.json file.

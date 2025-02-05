@@ -1,11 +1,11 @@
 {
   "expo": {
-    "scheme": "verbalfluencygame",
+    "scheme": "Word Search Game",
     "extra": {
       "eas": {
         "projectId": "19e89d36-1cfe-4df8-90fd-f2fa2569ece3"
       },
-      "oneSignalAppId": "31a5378a-2a8a-4827-b483-1f82dd480f88"
+      "oneSignalAppId": "65166109-1d68-4abe-982e-488a3aff9f40"
     },
     "name": "Word Search Game",
     "slug": "word-search-game-app",

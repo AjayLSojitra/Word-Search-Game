@@ -58,7 +58,7 @@ function LevelSelectionScreen() {
         <YStack flex={1} mx={"$6"} justifyContent="center">
           <BasicButton
             height={56}
-            linearGradientProps={{ colors: ["#a6897e", "#a6897e"] }}
+            linearGradientProps={{ colors: ["#1c2e4a", "#1c2e4a"] }}
             onPress={() => {
               redirectTo.current = "EASY";
               if (isLoaded && canShowAdmobInteratitial()) {
@@ -89,7 +89,7 @@ function LevelSelectionScreen() {
           <YStack h={"$5"} />
           <BasicButton
             height={56}
-            linearGradientProps={{ colors: ["#a6897e", "#a6897e"] }}
+            linearGradientProps={{ colors: ["#1c2e4a", "#1c2e4a"] }}
             onPress={() => {
               redirectTo.current = "HARD";
               if (isLoaded && canShowAdmobInteratitial()) {

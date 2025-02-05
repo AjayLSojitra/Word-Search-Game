@@ -44,7 +44,7 @@ export const OtpInput = forwardRef<OtpInputRef, OtpInputProps>((props, ref) => {
     const stylesArray = [{
       borderWidth: 0,
       borderRadius: 8,
-      backgroundColor: "#000000",
+      backgroundColor: "#1c2e4a",
       height: 60,
       width: ((responsiveWidth - 42) / numberOfDigits) - 2,
       justifyContent: "center",

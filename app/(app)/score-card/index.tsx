@@ -245,7 +245,7 @@ function ScoreCardScreen() {
               <BasicButton
                 width={(responsiveWidth / 3)}
                 height={40}
-                linearGradientProps={{ colors: ["#30AF82", "#30AF82"] }}
+                linearGradientProps={{ colors: ["#964F4CFF", "#964F4CFF"] }}
                 onPress={() => {
                   shareImage()
                 }}

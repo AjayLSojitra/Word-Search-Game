@@ -17,8 +17,8 @@ export const SBTextItem: React.FC<Props> = ({ selectedIndex, index, value, onPre
             alignItems="center"
             borderRadius={8}
             borderWidth={1}
-            borderColor={isSelected ? "#a6897e" : "$white"}
-            backgroundColor={isSelected ? "white" : "#a6897e"}
+            borderColor={isSelected ? "#1c2e4a" : "$white"}
+            backgroundColor={isSelected ? "white" : "#1c2e4a"}
             onPress={onPress}
         >
             {typeof index === "number" &&
