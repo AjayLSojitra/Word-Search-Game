@@ -19,7 +19,7 @@ import { AppManifest } from "../../app-manifest";
 
 function SplashScreen() {
   const router = useRouter();
-  const isRedirectedToNextScreen = useRef<boolean>(false)
+  const isRedirectedToNextScreen = useRef<boolean>(false);
 
   function loadFirebaseApp() {
     // Initialize Firebase
@@ -27,25 +27,39 @@ function SplashScreen() {
     const app = initializeApp(firebaseConfig);
     // Initialize Cloud Firestore and get a reference to the service
     const db = getFirestore(app);
-    const colRef = collection(db, "verbal_fluency_game_configuration")
+    const colRef = collection(db, "verbal_fluency_game_configuration");
     const isAndroid = Platform.OS === "android";
 
     onSnapshot(colRef, (snapshot) => {
-      const releaseModeAndroid = snapshot?.docs[0]
-      const releaseModeiOS = snapshot?.docs[1]
+      const releaseModeAndroid = snapshot?.docs[0];
+      const releaseModeiOS = snapshot?.docs[1];
       const releaseMode = isAndroid ? releaseModeAndroid : releaseModeiOS;
 
       const serverConfigEnable = releaseMode?.get("serverConfigEnable") ?? true;
       const showAds = releaseMode?.get("showAds") ?? false;
 
-      const appOpenAd = serverConfigEnable ? (releaseMode?.get("appOpenAd") ?? "") : staticAppOpenAd;
-      const bannerAd = serverConfigEnable ? (releaseMode?.get("bannerAd") ?? "") : staticBannerAd;
-      const interstitialAd = serverConfigEnable ? (releaseMode?.get("interstitialAd") ?? "") : staticInterstitialAd;
-      const interstitialAdIntervalClicks = serverConfigEnable ? (releaseMode?.get("interstitialAdIntervalClicks") ?? "") : staticInterstitialAdIntervalClicks;
-      const interstitialAdIntervalSeconds = serverConfigEnable ? (releaseMode?.get("interstitialAdIntervalSeconds") ?? "") : staticInterstitialAdIntervalSeconds;
-      const rewardInterstitialAd = serverConfigEnable ? (releaseMode?.get("rewardInterstitialAd") ?? "") : staticRewardInterstitialAd;
-      const privacy_policy = serverConfigEnable ? (releaseMode?.get("privacy_policy") ?? "") : staticPrivacyPolicy;
-      const show_review_popup = (releaseMode?.get("show_review_popup") ?? "");
+      const appOpenAd = serverConfigEnable
+        ? releaseMode?.get("appOpenAd") ?? ""
+        : staticAppOpenAd;
+      const bannerAd = serverConfigEnable
+        ? releaseMode?.get("bannerAd") ?? ""
+        : staticBannerAd;
+      const interstitialAd = serverConfigEnable
+        ? releaseMode?.get("interstitialAd") ?? ""
+        : staticInterstitialAd;
+      const interstitialAdIntervalClicks = serverConfigEnable
+        ? releaseMode?.get("interstitialAdIntervalClicks") ?? ""
+        : staticInterstitialAdIntervalClicks;
+      const interstitialAdIntervalSeconds = serverConfigEnable
+        ? releaseMode?.get("interstitialAdIntervalSeconds") ?? ""
+        : staticInterstitialAdIntervalSeconds;
+      const rewardInterstitialAd = serverConfigEnable
+        ? releaseMode?.get("rewardInterstitialAd") ?? ""
+        : staticRewardInterstitialAd;
+      const privacy_policy = serverConfigEnable
+        ? releaseMode?.get("privacy_policy") ?? ""
+        : staticPrivacyPolicy;
+      const show_review_popup = releaseMode?.get("show_review_popup") ?? "";
 
       global.appOpenAd = appOpenAd;
       global.bannerAd = bannerAd;
@@ -58,29 +72,34 @@ function SplashScreen() {
       global.privacy_policy = privacy_policy;
       global.show_review_popup = show_review_popup;
 
-      redirectToWelcomeScreen()
-    })
+      redirectToWelcomeScreen();
+    });
   }
 
   useEffect(() => {
     setTimeout(() => {
-      redirectToWelcomeScreen()
+      redirectToWelcomeScreen();
     }, 3000);
-  }, [])
+  }, []);
 
   useEffect(() => {
     loadFirebaseApp();
-  }, [])
+  }, []);
 
   const redirectToWelcomeScreen = () => {
     if (!isRedirectedToNextScreen.current) {
       isRedirectedToNextScreen.current = true;
-      router.replace(`./welcome`)
+      router.replace(`./welcome`);
     }
-  }
+  };
 
   return (
-    <YStack flex={1} bg={"$primary"} alignItems="center" justifyContent="center">
+    <YStack
+      flex={1}
+      bg={"$primary"}
+      alignItems="center"
+      justifyContent="center"
+    >
       <Image
         key={"letsPlayPrimary"}
         source={images.appIcon}
@@ -88,7 +107,7 @@ function SplashScreen() {
         alt={"letsPlayPrimary"}
       />
     </YStack>
-  )
+  );
 }
 
 export default () => (

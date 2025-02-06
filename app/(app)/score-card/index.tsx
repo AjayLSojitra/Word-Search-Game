@@ -61,7 +61,7 @@ function ScoreCardScreen() {
         quality: 0.7,
       });
       if (Sharing.isAvailableAsync) {
-        Sharing.shareAsync(uri, { dialogTitle: "Verbal Fluency Game" })
+        Sharing.shareAsync(uri, { dialogTitle: "Word Search Game" })
       }
     } catch (e) {
       console.log(e);
@@ -245,7 +245,7 @@ function ScoreCardScreen() {
               <BasicButton
                 width={(responsiveWidth / 3)}
                 height={40}
-                linearGradientProps={{ colors: ["#964F4CFF", "#964F4CFF"] }}
+                linearGradientProps={{ colors: ["#05958f", "#05958f"] }}
                 onPress={() => {
                   shareImage()
                 }}

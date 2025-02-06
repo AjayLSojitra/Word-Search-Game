@@ -113,7 +113,7 @@ function SettingsScreen() {
               try {
                 Share.share({
                   message:
-                    `I recommend trying out this application: Spelling Checker & Verbal Fluency Game available on the Google Play Store and App Store. This app focuses on improving spelling skills and verbal fluency. Give it a try and see how it can enhance your language abilities! 
+                    `I recommend trying out this application: Spelling Checker & Word Search Game available on the Google Play Store and App Store. This app focuses on improving spelling skills and verbal fluency. Give it a try and see how it can enhance your language abilities! 
                   \nGoogle Play Store link: https://play.google.com/store/apps/details?id=${packageName}
                   \nApp Store link: ${appStoreLink}`,
                 });
