@@ -26,6 +26,7 @@ function HeaderBar(props: HeaderBarProps) {
   const {
     title,
     titleLeftIcon,
+    customTitle,
     leftElement,
     rightElement,
     back = true,
@@ -41,7 +42,13 @@ function HeaderBar(props: HeaderBarProps) {
 
   const renderCross = cross ? (
     <TouchableScale onPress={goBack}>
-      <YStack height={24} width={24} p={4} alignItems="center" justifyContent="center">
+      <YStack
+        height={24}
+        width={24}
+        p={4}
+        alignItems="center"
+        justifyContent="center"
+      >
         <Close height={18} width={18} fill={"blueGray.700"} />
       </YStack>
     </TouchableScale>
@@ -51,11 +58,17 @@ function HeaderBar(props: HeaderBarProps) {
 
   const renderBackOrCross = back ? (
     <TouchableScale onPress={goBack}>
-      <YStack height={24} width={24} p={4} alignItems="center" justifyContent="center">
+      <YStack
+        height={24}
+        width={24}
+        p={4}
+        alignItems="center"
+        justifyContent="center"
+      >
         <Image
           key={"backArrow"}
           source={images.backArrow}
-          style={{ height: 18, width: 18, }}
+          style={{ height: 18, width: 18 }}
           alt={"back arrow"}
         />
       </YStack>
@@ -73,15 +86,19 @@ function HeaderBar(props: HeaderBarProps) {
         {profileElement}
         <XStack alignItems="center" justifyContent="center" mx={"$2"}>
           {titleLeftIcon}
-          <SizableText
-            fontSize={titleSize}
-            fontWeight={"$semibold"}
-            color={"$white"}
-            numberOfLines={titleNumberOfLines}
-            ellipsizeMode={titleEllipsizeMode}
-          >
-            {title}
-          </SizableText>
+          {customTitle ? (
+            <>{customTitle}</>
+          ) : (
+            <SizableText
+              fontSize={titleSize}
+              fontWeight={"$semibold"}
+              color={"$white"}
+              numberOfLines={titleNumberOfLines}
+              ellipsizeMode={titleEllipsizeMode}
+            >
+              {title}
+            </SizableText>
+          )}
         </XStack>
         <XStack alignItems="center">
           {subTitleLeftIcon ? subTitleLeftIcon : <></>}

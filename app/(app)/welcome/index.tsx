@@ -26,12 +26,32 @@ import AdmobBanner from "@modules/shared/components/ads/admob-banner";
 import InAppReview from "react-native-in-app-review";
 import { OneSignal } from "react-native-onesignal";
 import { DeviceType, deviceType } from "expo-device";
+import useTriggeredEvent from "@modules/shared/components/use-triggered-event";
+import contents from "@assets/contents/contents";
+import useResponsiveWidth from "@modules/shared/hooks/useResponsiveWidth";
 
 function WelcomeScreen() {
   const isPhoneDevice = deviceType === DeviceType.PHONE;
   const insets = useSafeAreaInsets();
   const [showAdsConfirmationPopup, setShowAdsConfirmationPopup] =
     useState(false);
+
+  const languageData =
+    contents.welcomeScreenSelectedLanguage?.[
+      global?.currentSelectedLanguage ?? "English"
+    ];
+
+  const [selectedLanguageRefreshKey, setSelectedLanguageRefreshKey] =
+    useState(0);
+
+  useTriggeredEvent(
+    "languageSelection",
+    () => {
+      setSelectedLanguageRefreshKey(selectedLanguageRefreshKey + 1); // Trigger a re-render using a refresh key
+    },
+    [selectedLanguageRefreshKey]
+  );
+  const responsiveWidth = useResponsiveWidth();
   const router = useRouter();
   const [randomWordLength, setRandomWordLength] = useState<number>();
   const [duration, setDuration] = useState<number>();
@@ -230,24 +250,30 @@ function WelcomeScreen() {
               }
             }}
           >
-            <XStack alignItems="center">
+            <YStack width={responsiveWidth - 60}>
               <Image
                 key={"letsPlayPrimary"}
                 source={images.letsPlayPrimary}
-                style={{ height: 22, width: 22 }}
+                style={{
+                  height: isPhoneDevice ? 22 : 33,
+                  width: isPhoneDevice ? 22 : 33,
+                  tintColor: "white",
+                  zIndex: 1,
+                  position: "absolute",
+                  left: isPhoneDevice ? 18 : 28,
+                }}
                 alt={"letsPlayPrimary"}
-                tintColor={"white"}
               />
-              <YStack w={"$3"} />
               <SizableText
-                fontSize={"$hsm"}
-                lineHeight={18.75}
+                fontSize={isPhoneDevice ? "$hsm" : "$hmd"}
+                lineHeight={isPhoneDevice ? 30 : 40}
                 color={"$white"}
                 fontWeight={"700"}
+                textAlign="center"
               >
-                Play Game
+                {languageData.play_game}
               </SizableText>
-            </XStack>
+            </YStack>
           </BasicButton>
           <YStack h={"$5"} />
           <BasicButton
@@ -280,27 +306,29 @@ function WelcomeScreen() {
               }
             }}
           >
-            <XStack alignItems="center">
+            <YStack width={responsiveWidth - 60}>
               <Image
                 key={"premium"}
                 source={images.premium}
                 style={{
-                  height: 22,
-                  width: 22,
-                  alignSelf: "center",
-                  marginTop: -4,
+                  height: isPhoneDevice ? 22 : 33,
+                  width: isPhoneDevice ? 22 : 33,
+                  zIndex: 1,
+                  position: "absolute",
+                  left: isPhoneDevice ? 18 : 28,
                 }}
                 alt={"premium"}
               />
-              <YStack w={"$3"} />
               <SizableText
-                fontSize={"$hsm"}
+                fontSize={isPhoneDevice ? "$hsm" : "$hmd"}
+                lineHeight={isPhoneDevice ? 30 : 40}
                 color={"$white"}
                 fontWeight={"700"}
+                textAlign="center"
               >
-                Train Your Mind
+                {languageData.train_your_mind}
               </SizableText>
-            </XStack>
+            </YStack>
           </BasicButton>
         </YStack>
       </ResponsiveContent>

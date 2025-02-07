@@ -5,8 +5,10 @@ import { useEffect, useRef } from "react";
 import { useRouter } from "expo-router";
 import ErrorBoundary from "@modules/shared/components/error-boundary";
 import {
+  languages,
   staticAppOpenAd,
   staticBannerAd,
+  staticDefaultLanguage,
   staticInterstitialAd,
   staticInterstitialAdIntervalClicks,
   staticInterstitialAdIntervalSeconds,
@@ -16,10 +18,26 @@ import {
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, onSnapshot } from "firebase/firestore";
 import { AppManifest } from "../../app-manifest";
+import { LANGUAGE_KEY } from "@modules/shared/components/constants";
+import LocalStorage from "@utils/local-storage";
 
 function SplashScreen() {
   const router = useRouter();
   const isRedirectedToNextScreen = useRef<boolean>(false);
+
+  const fetchCurrentLanguage = () => {
+    LocalStorage.getItemDefault(LANGUAGE_KEY).then((val) => {
+      if (val) {
+        global.currentSelectedLanguage = val;
+      } else {
+        global.currentSelectedLanguage = languages[0].name;
+      }
+    });
+  };
+
+  useEffect(() => {
+    fetchCurrentLanguage();
+  });
 
   function loadFirebaseApp() {
     // Initialize Firebase
@@ -53,6 +71,9 @@ function SplashScreen() {
       const interstitialAdIntervalSeconds = serverConfigEnable
         ? releaseMode?.get("interstitialAdIntervalSeconds") ?? ""
         : staticInterstitialAdIntervalSeconds;
+      const defaultLanguage = serverConfigEnable
+        ? releaseMode?.get("defaultLanguage") ?? staticDefaultLanguage
+        : staticDefaultLanguage;
       const rewardInterstitialAd = serverConfigEnable
         ? releaseMode?.get("rewardInterstitialAd") ?? ""
         : staticRewardInterstitialAd;
@@ -68,6 +89,7 @@ function SplashScreen() {
       global.interstitialAdIntervalSeconds = interstitialAdIntervalSeconds;
       global.rewardInterstitialAd = rewardInterstitialAd;
       global.serverConfigEnable = serverConfigEnable;
+      global.defaultLanguage = defaultLanguage;
       global.showAds = false; // TODO
       global.privacy_policy = privacy_policy;
       global.show_review_popup = show_review_popup;

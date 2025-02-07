@@ -13,8 +13,13 @@ import {
   staticInterstitialAd,
 } from "@modules/shared/components/helpers";
 import { useEffect, useRef } from "react";
+import contents from "@assets/contents/contents";
 
 function LevelSelectionScreen() {
+  const languageData =
+    contents.levelSelectionScreenSelectedLanguage?.[
+      global?.currentSelectedLanguage ?? "English"
+    ];
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const { isLoaded, isClosed, load, show, isShowing } = useInterstitialAd(
@@ -53,7 +58,7 @@ function LevelSelectionScreen() {
 
   return (
     <YStack flex={1} bg={"$primary"}>
-      <ScrollHeader title="Choose Level" backgroundColor={"$primary"} />
+      <ScrollHeader title={languageData.choose_level} backgroundColor={"$primary"} />
       <ResponsiveContent flex={1}>
         <YStack flex={1} mx={"$6"} justifyContent="center">
           <BasicButton
@@ -75,7 +80,7 @@ function LevelSelectionScreen() {
                 color={"$white"}
                 fontWeight={"700"}
               >
-                Easy
+                {languageData.easy}
               </SizableText>
               <YStack w={"$3"} />
               <Image
@@ -106,7 +111,7 @@ function LevelSelectionScreen() {
                 color={"$white"}
                 fontWeight={"700"}
               >
-                Hard
+                {languageData.hard}
               </SizableText>
               <YStack w={"$3"} />
               <Image

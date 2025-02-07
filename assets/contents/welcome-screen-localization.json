@@ -1,0 +1,42 @@
+{
+  "English": {
+    "play_game": "Play Game",
+    "train_your_mind": "Train Your Mind"
+  },
+  "Hindi": {
+    "play_game": "खेल खेलें",
+    "train_your_mind": "अपने दिमाग को प्रशिक्षित करें"
+  },
+  "Chinese": {
+    "play_game": "玩游戏",
+    "train_your_mind": "训练你的大脑"
+  },
+  "Spanish": {
+    "play_game": "Jugar",
+    "train_your_mind": "Entrena tu mente"
+  },
+  "Italian": {
+    "play_game": "Gioca",
+    "train_your_mind": "Allena la tua mente"
+  },
+  "Portuguese": {
+    "play_game": "Jogar",
+    "train_your_mind": "Treine sua mente"
+  },
+  "Russian": {
+    "play_game": "Играть в игру",
+    "train_your_mind": "Тренируйте свой ум"
+  },
+  "French": {
+    "play_game": "Jouer",
+    "train_your_mind": "Entraînez votre esprit"
+  },
+  "German": {
+    "play_game": "Spiel spielen",
+    "train_your_mind": "Trainiere deinen Geist"
+  },
+  "Urdu": {
+    "play_game": "کھیل کھیلیں",
+    "train_your_mind": "اپنے دماغ کو تربیت دیں"
+  }
+}

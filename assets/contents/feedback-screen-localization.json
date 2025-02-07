@@ -1,0 +1,122 @@
+{
+  "English": {
+    "feedback_support": "Feedback & Support",
+    "your_review": "Your review will help us to give you a better experience!",
+    "general_feedback": "General feedback",
+    "features_suggestions": "features & suggestions",
+    "technical_help": "Technical help",
+    "your_feedback": "Your valuable feedback!",
+    "send_feedback": "send Feedback",
+    "please_write_your_feedback": "Please write your feedback!",
+    "please_choose_feedback_rating": "Please choose feedback rating!",
+    "thank_you_for_feedback": "Thank you for your valuable feedback!"
+  },
+  "Hindi": {
+    "feedback_support": "प्रतिक्रिया और समर्थन",
+    "your_review": "आपकी समीक्षा हमें बेहतर अनुभव देने में मदद करेगी!",
+    "general_feedback": "सामान्य प्रतिक्रिया",
+    "features_suggestions": "विशेषताएँ और सुझाव",
+    "technical_help": "तकनीकी सहायता",
+    "your_feedback": "आपकी मूल्यवान प्रतिक्रिया!",
+    "send_feedback": "प्रतिक्रिया भेजें",
+    "please_write_your_feedback": "कृपया अपनी प्रतिक्रिया लिखें!",
+    "please_choose_feedback_rating": "कृपया प्रतिक्रिया रेटिंग चुनें!",
+    "thank_you_for_feedback": "आपकी मूल्यवान प्रतिक्रिया के लिए धन्यवाद!"
+  },
+  "Chinese": {
+    "feedback_support": "反馈与支持",
+    "your_review": "您的评论将帮助我们为您提供更好的体验！",
+    "general_feedback": "一般反馈",
+    "features_suggestions": "功能和建议",
+    "technical_help": "技术支持",
+    "your_feedback": "您的宝贵反馈！",
+    "send_feedback": "发送反馈",
+    "please_write_your_feedback": "请写下您的反馈！",
+    "please_choose_feedback_rating": "请选择反馈评级！",
+    "thank_you_for_feedback": "感谢您的宝贵反馈！"
+  },
+  "Spanish": {
+    "feedback_support": "Comentarios y Soporte",
+    "your_review": "¡Tu reseña nos ayudará a brindarte una mejor experiencia!",
+    "general_feedback": "Comentarios generales",
+    "features_suggestions": "Características y sugerencias",
+    "technical_help": "Ayuda técnica",
+    "your_feedback": "¡Tus comentarios son valiosos!",
+    "send_feedback": "Enviar comentarios",
+    "please_write_your_feedback": "¡Por favor, escribe tus comentarios!",
+    "please_choose_feedback_rating": "¡Por favor, elige una calificación de retroalimentación!",
+    "thank_you_for_feedback": "¡Gracias por tus valiosos comentarios!"
+  },
+  "Italian": {
+    "feedback_support": "Feedback e Supporto",
+    "your_review": "La tua recensione ci aiuterà a darti una migliore esperienza!",
+    "general_feedback": "Feedback generale",
+    "features_suggestions": "Funzionalità e suggerimenti",
+    "technical_help": "Assistenza tecnica",
+    "your_feedback": "Il tuo feedback è prezioso!",
+    "send_feedback": "Invia feedback",
+    "please_write_your_feedback": "Per favore scrivi il tuo feedback!",
+    "please_choose_feedback_rating": "Per favore scegli la valutazione del feedback!",
+    "thank_you_for_feedback": "Grazie per il tuo prezioso feedback!"
+  },
+  "Portuguese": {
+    "feedback_support": "Feedback e Suporte",
+    "your_review": "Sua avaliação nos ajudará a proporcionar uma melhor experiência!",
+    "general_feedback": "Feedback geral",
+    "features_suggestions": "Recursos e sugestões",
+    "technical_help": "Ajuda técnica",
+    "your_feedback": "Seu feedback é valioso!",
+    "send_feedback": "Enviar feedback",
+    "please_write_your_feedback": "Por favor, escreva seu feedback!",
+    "please_choose_feedback_rating": "Por favor, escolha a avaliação de feedback!",
+    "thank_you_for_feedback": "Obrigado pelo seu valioso feedback!"
+  },
+  "Russian": {
+    "feedback_support": "Обратная связь и поддержка",
+    "your_review": "Ваш отзыв поможет нам предоставить вам лучший опыт!",
+    "general_feedback": "Общий отзыв",
+    "features_suggestions": "Функции и предложения",
+    "technical_help": "Техническая помощь",
+    "your_feedback": "Ваши ценные отзывы!",
+    "send_feedback": "Отправить отзыв",
+    "please_write_your_feedback": "Пожалуйста, напишите свой отзыв!",
+    "please_choose_feedback_rating": "Пожалуйста, выберите рейтинг отзыва!",
+    "thank_you_for_feedback": "Спасибо за ваш ценный отзыв!"
+  },
+  "French": {
+    "feedback_support": "Commentaires et Support",
+    "your_review": "Votre avis nous aidera à vous offrir une meilleure expérience !",
+    "general_feedback": "Retour général",
+    "features_suggestions": "Fonctionnalités et suggestions",
+    "technical_help": "Assistance technique",
+    "your_feedback": "Votre avis est précieux !",
+    "send_feedback": "Envoyer des commentaires",
+    "please_write_your_feedback": "Veuillez écrire vos commentaires !",
+    "please_choose_feedback_rating": "Veuillez choisir une note pour vos commentaires !",
+    "thank_you_for_feedback": "Merci pour vos précieux commentaires !"
+  },
+  "German": {
+    "feedback_support": "Feedback & Unterstützung",
+    "your_review": "Ihre Bewertung hilft uns, Ihnen ein besseres Erlebnis zu bieten!",
+    "general_feedback": "Allgemeines Feedback",
+    "features_suggestions": "Funktionen & Vorschläge",
+    "technical_help": "Technische Hilfe",
+    "your_feedback": "Ihr wertvolles Feedback!",
+    "send_feedback": "Feedback senden",
+    "please_write_your_feedback": "Bitte schreiben Sie Ihr Feedback!",
+    "please_choose_feedback_rating": "Bitte wählen Sie eine Feedback-Bewertung!",
+    "thank_you_for_feedback": "Vielen Dank für Ihr wertvolles Feedback!"
+  },
+  "Urdu": {
+    "feedback_support": "رائے اور مدد",
+    "your_review": "آپ کی رائے ہمیں بہتر تجربہ دینے میں مدد کرے گی!",
+    "general_feedback": "عمومی رائے",
+    "features_suggestions": "خصوصیات اور تجاویز",
+    "technical_help": "تکنیکی مدد",
+    "your_feedback": "آپ کی قیمتی رائے!",
+    "send_feedback": "رائے بھیجیں",
+    "please_write_your_feedback": "براہ کرم اپنی رائے لکھیں!",
+    "please_choose_feedback_rating": "براہ کرم رائے کی درجہ بندی منتخب کریں!",
+    "thank_you_for_feedback": "آپ کی قیمتی رائے کا شکریہ!"
+  }
+}

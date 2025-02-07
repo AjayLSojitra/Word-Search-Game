@@ -1,0 +1,52 @@
+{
+  "English": {
+    "choose_level": "Choose Level",
+    "easy": "Easy",
+    "hard": "Hard"
+  },
+  "Hindi": {
+    "choose_level": "स्तर चुनें",
+    "easy": "आसान",
+    "hard": "कठिन"
+  },
+  "Chinese": {
+    "choose_level": "选择级别",
+    "easy": "简单",
+    "hard": "困难"
+  },
+  "Spanish": {
+    "choose_level": "Elegir nivel",
+    "easy": "Fácil",
+    "hard": "Difícil"
+  },
+  "Italian": {
+    "choose_level": "Scegli livello",
+    "easy": "Facile",
+    "hard": "Difficile"
+  },
+  "Portuguese": {
+    "choose_level": "Escolher nível",
+    "easy": "Fácil",
+    "hard": "Difícil"
+  },
+  "Russian": {
+    "choose_level": "Выбрать уровень",
+    "easy": "Легкий",
+    "hard": "Трудный"
+  },
+  "French": {
+    "choose_level": "Choisir le niveau",
+    "easy": "Facile",
+    "hard": "Difficile"
+  },
+  "German": {
+    "choose_level": "Wähle das Level",
+    "easy": "Einfach",
+    "hard": "Schwierig"
+  },
+  "Urdu": {
+    "choose_level": "سطح منتخب کریں",
+    "easy": "آسان",
+    "hard": "مشکل"
+  }
+}

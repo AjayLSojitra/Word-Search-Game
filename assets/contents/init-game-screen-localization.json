@@ -1,0 +1,122 @@
+{
+  "English": {
+    "word_search_game": "Word Search Game",
+    "pick_random": "Pick Random",
+    "pick_duration": "Pick Duration",
+    "seconds": "Seconds",
+    "pick_length": "Pick Length",
+    "letters": "Letters",
+    "challenge_yourself": "Challenge yourself to find as many",
+    "letter_words_starting_with": "-letter words starting with",
+    "in": "in",
+    "lets_play": "Let's Play"
+  },
+  "Hindi": {
+    "word_search_game": "शब्द खोज खेल",
+    "pick_random": "रैंडम चुनें",
+    "pick_duration": "अवधि चुनें",
+    "seconds": "सेकंड",
+    "pick_length": "लंबाई चुनें",
+    "letters": "अक्षर",
+    "challenge_yourself": "खुद को चुनौती दें और जितने हो सके शब्द ढूंढें",
+    "letter_words_starting_with": "-अक्षर शब्द जो शुरू होते हैं",
+    "in": "में",
+    "lets_play": "आइए खेलें"
+  },
+  "Chinese": {
+    "word_search_game": "单词搜索游戏",
+    "pick_random": "随机选择",
+    "pick_duration": "选择持续时间",
+    "seconds": "秒",
+    "pick_length": "选择长度",
+    "letters": "字母",
+    "challenge_yourself": "挑战自己找到尽可能多的",
+    "letter_words_starting_with": "-以字母开始的单词",
+    "in": "在",
+    "lets_play": "让我们开始玩"
+  },
+  "Spanish": {
+    "word_search_game": "Juego de Búsqueda de Palabras",
+    "pick_random": "Elegir aleatorio",
+    "pick_duration": "Elegir duración",
+    "seconds": "Segundos",
+    "pick_length": "Elegir longitud",
+    "letters": "Letras",
+    "challenge_yourself": "Desafíate a encontrar tantos",
+    "letter_words_starting_with": "-palabras que comienzan con la letra",
+    "in": "en",
+    "lets_play": "Vamos a jugar"
+  },
+  "Italian": {
+    "word_search_game": "Gioco di Ricerca Parole",
+    "pick_random": "Scegli Casuale",
+    "pick_duration": "Scegli Durata",
+    "seconds": "Secondi",
+    "pick_length": "Scegli Lunghezza",
+    "letters": "Lettere",
+    "challenge_yourself": "Sfida te stesso a trovare il maggior numero di",
+    "letter_words_starting_with": "-parole che iniziano con la lettera",
+    "in": "in",
+    "lets_play": "Giochiamo"
+  },
+  "Portuguese": {
+    "word_search_game": "Jogo de Busca de Palavras",
+    "pick_random": "Escolher Aleatório",
+    "pick_duration": "Escolher Duração",
+    "seconds": "Segundos",
+    "pick_length": "Escolher Comprimento",
+    "letters": "Letras",
+    "challenge_yourself": "Desafie-se a encontrar o maior número possível de",
+    "letter_words_starting_with": "-palavras que começam com a letra",
+    "in": "em",
+    "lets_play": "Vamos Jogar"
+  },
+  "Russian": {
+    "word_search_game": "Игра по поиску слов",
+    "pick_random": "Выбрать случайно",
+    "pick_duration": "Выберите продолжительность",
+    "seconds": "Секунды",
+    "pick_length": "Выберите длину",
+    "letters": "Буквы",
+    "challenge_yourself": "Бросьте себе вызов найти как можно больше",
+    "letter_words_starting_with": "-слов на букву",
+    "in": "в",
+    "lets_play": "Давайте играть"
+  },
+  "French": {
+    "word_search_game": "Jeu de Recherche de Mots",
+    "pick_random": "Choisir au hasard",
+    "pick_duration": "Choisir la durée",
+    "seconds": "Secondes",
+    "pick_length": "Choisir la longueur",
+    "letters": "Lettres",
+    "challenge_yourself": "Mettez-vous au défi de trouver autant de",
+    "letter_words_starting_with": "-mots commençant par la lettre",
+    "in": "dans",
+    "lets_play": "Jouons"
+  },
+  "German": {
+    "word_search_game": "Wortsuche Spiel",
+    "pick_random": "Zufällig wählen",
+    "pick_duration": "Dauer wählen",
+    "seconds": "Sekunden",
+    "pick_length": "Länge wählen",
+    "letters": "Buchstaben",
+    "challenge_yourself": "Fordere dich heraus, so viele wie möglich zu finden",
+    "letter_words_starting_with": "-Wörter, die mit dem Buchstaben beginnen",
+    "in": "in",
+    "lets_play": "Lass uns spielen"
+  },
+  "Urdu": {
+    "word_search_game": "لفظ تلاش کھیل",
+    "pick_random": "رینڈم منتخب کریں",
+    "pick_duration": "مدت منتخب کریں",
+    "seconds": "سیکنڈ",
+    "pick_length": "لمبائی منتخب کریں",
+    "letters": "حروف",
+    "challenge_yourself": "خود کو چیلنج کریں کہ جتنے ہو سکے تلاش کریں",
+    "letter_words_starting_with": "-حرف سے شروع ہونے والے الفاظ",
+    "in": "میں",
+    "lets_play": "آئیے کھیلیں"
+  }
+}

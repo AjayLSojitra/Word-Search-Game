@@ -29,7 +29,7 @@ import useKeyboardAnimatedHeight from "@modules/shared/hooks/use-keyboard-animat
 import Animated, { useAnimatedStyle } from "react-native-reanimated";
 import InputAccessoryViewiOS from "@modules/shared/components/input-accessory-view-details";
 import { DeviceType, deviceType } from "expo-device";
-
+import contents from "@assets/contents/contents";
 
 function AddContentsScreen() {
   const insets = useSafeAreaInsets();
@@ -42,11 +42,15 @@ function AddContentsScreen() {
   const responsiveWidth = useResponsiveWidth();
   const isPhoneDevice = deviceType === DeviceType.PHONE;
 
-  
+  const languageData =
+    contents.feedbackScreenSelectedLanguage?.[
+      global?.currentSelectedLanguage ?? "English"
+    ];
+
   const feedbackTypes = [
-    { title: "General Feedback" },
-    { title: "Features Suggestions" },
-    { title: "Technical Help" },
+    { title: languageData.general_feedback },
+    { title: languageData.features_suggestions },
+    { title: languageData.technical_help },
   ];
 
   //For Firestore
@@ -66,21 +70,7 @@ function AddContentsScreen() {
   return (
     <YStack flex={1} bg={"$primary"}>
       <ScrollHeader
-        customTitle={
-          <SizableText
-            fontSize={isPhoneDevice ? "$hmd" : "$hlg"}
-            lineHeight={isPhoneDevice ? 32 : 48}
-            color={"$white"}
-            fontWeight={"700"}
-            textAlign="center"
-            rotateY={"15deg"}
-            textShadowOffset={{ width: 0, height: 4 }}
-            textShadowColor={"$secondPrimaryColor"}
-            textShadowRadius={8}
-          >
-            Feedback Support
-          </SizableText>
-        }
+        title={languageData.feedback_support}
         backgroundColor={"$primary"}
       />
       <ResponsiveContent flex={1}>
@@ -92,7 +82,7 @@ function AddContentsScreen() {
           fontWeight={"$semibold"}
           textAlign="center"
         >
-          Your Review
+          {languageData.your_review}
         </SizableText>
         <YStack h={"$8"} />
         <RadioGroup
@@ -150,7 +140,7 @@ function AddContentsScreen() {
             control={control}
             type={"text"}
             textInputProps={{
-              placeholder: 'Your Feedback',
+              placeholder: languageData.your_feedback,
               focusable: true,
               autoFocus: false,
               fontSize: isPhoneDevice ? "$hxs" : "$xl",
@@ -228,7 +218,7 @@ function AddContentsScreen() {
           <BasicButton
             height={isPhoneDevice ? 48 : 72}
             disabledLinearGradientProps={{ colors: ["#a1a1aa", "#a1a1aa"] }}
-            linearGradientProps={{ colors: ["#a6897e", "#a6897e"] }}
+            linearGradientProps={{ colors: ["#1c2e4a", "#1c2e4a"] }}
             onPress={async () => {
               const feedback = watch("feedback") ?? "";
               if (feedback.length > 0) {
@@ -241,7 +231,7 @@ function AddContentsScreen() {
                       "feedback-type": selectedFeedbackType.toString(),
                     });
 
-                    showNormalToast("thank_you_for_feedback");
+                    showNormalToast(languageData.thank_you_for_feedback);
                     try {
                       if (router.canGoBack()) {
                         router.back();
@@ -253,10 +243,10 @@ function AddContentsScreen() {
                     alert(err);
                   }
                 } else {
-                  showErrorToast("please_choose_feedback_rating");
+                  showErrorToast(languageData.please_choose_feedback_rating);
                 }
               } else {
-                showErrorToast("please_write_your_feedback");
+                showErrorToast(languageData.please_write_your_feedback);
               }
             }}
           >
@@ -267,7 +257,7 @@ function AddContentsScreen() {
               textAlign="center"
               lineHeight={isPhoneDevice ? 24 : 34}
             >
-              Send Feedback
+              {languageData.send_feedback}
             </SizableText>
           </BasicButton>
         </YStack>
