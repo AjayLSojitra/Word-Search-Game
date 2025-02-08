@@ -8,6 +8,7 @@ import images from "@assets/images/images";
 import ResponsiveContent from "@modules/shared/responsive-content";
 import AdmobBanner from "@modules/shared/components/ads/admob-banner";
 import { BannerAdSize } from "react-native-google-mobile-ads";
+import contents from "@assets/contents/contents";
 
 function TimeOverScreen() {
   const {
@@ -21,6 +22,10 @@ function TimeOverScreen() {
       repeatWord?: string
     }
     = useGlobalSearchParams();
+    const languageData =
+    contents.timeOverScreenSelectedLanguage?.[
+      global?.currentSelectedLanguage ?? "English"
+    ];
   const insets = useSafeAreaInsets();
   const router = useRouter();
 
@@ -49,7 +54,7 @@ function TimeOverScreen() {
           textShadowColor={"$primary"}
           textShadowRadius={8}
         >
-          {`Time Over`}
+          {languageData.time_over}
         </SizableText>
 
         <YStack alignItems="center">
@@ -70,7 +75,7 @@ function TimeOverScreen() {
                 fontWeight={"$normal"}
                 textAlign="center"
               >
-                {`Correct Word`}
+                {languageData.correct_word}
               </SizableText>
 
               <SizableText
@@ -92,7 +97,7 @@ function TimeOverScreen() {
                 fontWeight={"$normal"}
                 textAlign="center"
               >
-                {`Wrong Word`}
+                {languageData.wrong_word}
               </SizableText>
 
               <SizableText
@@ -112,7 +117,7 @@ function TimeOverScreen() {
                 fontWeight={"$normal"}
                 textAlign="center"
               >
-                {`Repeat Word`}
+                {languageData.repeat_word}
               </SizableText>
 
               <SizableText
@@ -151,7 +156,7 @@ function TimeOverScreen() {
                 textAlign="center"
                 textTransform="uppercase"
               >
-                {`Go To Home`}
+                {languageData.go_to_home}
               </SizableText>
             </XStack>
           </BasicButton>

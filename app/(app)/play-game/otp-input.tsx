@@ -68,7 +68,9 @@ export const OtpInput = forwardRef<OtpInputRef, OtpInputProps>((props, ref) => {
 
     return stylesArray;
   };
-
+  const isEnglish =  global?.currentSelectedLanguage ?? "English"
+  console.log("isEnglish :" , isEnglish);
+  
   return (
     <View style={[styles.container, containerStyle]}>
       <View style={[styles.inputsContainer, inputsContainerStyle]}>

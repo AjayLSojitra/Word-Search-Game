@@ -1,0 +1,72 @@
+{
+  "English": {
+    "time_over": "Time Over",
+    "correct_word": "Correct Word",
+    "go_to_home": "Go To Home",
+    "wrong_word": "Wrong Word",
+    "repeat_word": "Repeat Word"
+  },
+  "Hindi": {
+    "time_over": "समय समाप्त",
+    "correct_word": "सही शब्द",
+    "go_to_home": "होम पर जाएं",
+    "wrong_word": "गलत शब्द",
+    "repeat_word": "शब्द दोहराएं"
+  },
+  "Chinese": {
+    "time_over": "时间到",
+    "correct_word": "正确的词",
+    "go_to_home": "返回首页",
+    "wrong_word": "错误的词",
+    "repeat_word": "重复词"
+  },
+  "Spanish": {
+    "time_over": "Tiempo Terminó",
+    "correct_word": "Palabra Correcta",
+    "go_to_home": "Ir a Casa",
+    "wrong_word": "Palabra Incorrecta",
+    "repeat_word": "Repetir Palabra"
+  },
+  "Italian": {
+    "time_over": "Tempo Scaduto",
+    "correct_word": "Parola Corretta",
+    "go_to_home": "Vai alla Home",
+    "wrong_word": "Parola Sbagliata",
+    "repeat_word": "Ripeti Parola"
+  },
+  "Portuguese": {
+    "time_over": "Tempo Esgotado",
+    "correct_word": "Palavra Correta",
+    "go_to_home": "Ir para a Página Inicial",
+    "wrong_word": "Palavra Errada",
+    "repeat_word": "Repetir Palavra"
+  },
+  "Russian": {
+    "time_over": "Время вышло",
+    "correct_word": "Правильное слово",
+    "go_to_home": "На главную",
+    "wrong_word": "Неправильное слово",
+    "repeat_word": "Повторить слово"
+  },
+  "French": {
+    "time_over": "Temps écoulé",
+    "correct_word": "Mot Correct",
+    "go_to_home": "Aller à l'Accueil",
+    "wrong_word": "Mot Incorrect",
+    "repeat_word": "Répéter le Mot"
+  },
+  "German": {
+    "time_over": "Zeit abgelaufen",
+    "correct_word": "Richtiges Wort",
+    "go_to_home": "Zur Startseite",
+    "wrong_word": "Falsches Wort",
+    "repeat_word": "Wort wiederholen"
+  },
+  "Urdu": {
+    "time_over": "وقت ختم",
+    "correct_word": "صحیح لفظ",
+    "go_to_home": "ہوم پر جائیں",
+    "wrong_word": "غلط لفظ",
+    "repeat_word": "لفظ دہرائیں"
+  }
+}

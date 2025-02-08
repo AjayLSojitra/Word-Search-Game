@@ -5,17 +5,18 @@ import { useFocusEffect, useGlobalSearchParams, useRouter } from "expo-router";
 import { Image } from "react-native";
 import images from "@assets/images/images";
 import useResponsiveWidth from "@modules/shared/hooks/useResponsiveWidth";
-import { Audio } from 'expo-av';
+import { Audio } from "expo-av";
 import sounds from "@assets/sounds/sounds";
 import { useCallback, useEffect, useRef, useState } from "react";
-import * as Sharing from 'expo-sharing';
-import ViewShot, { captureRef } from 'react-native-view-shot';
+import * as Sharing from "expo-sharing";
+import ViewShot, { captureRef } from "react-native-view-shot";
 import { SHADOW } from "@design-system/utils/constants";
 import BasicButton from "@design-system/components/buttons/basic-button";
 import LocalStorage from "@utils/local-storage";
 import ResponsiveContent from "@modules/shared/responsive-content";
 import AdmobBanner from "@modules/shared/components/ads/admob-banner";
 import { BannerAdSize } from "react-native-google-mobile-ads";
+import contents from "@assets/contents/contents";
 
 function ScoreCardScreen() {
   const {
@@ -25,16 +26,18 @@ function ScoreCardScreen() {
     alphabet = "",
     wordLength = "0",
     duration = "0",
-  }:
-    {
-      correctWord?: string
-      wrongWord?: string
-      repeatWord?: string
-      alphabet?: string,
-      wordLength?: string,
-      duration?: string,
-    }
-    = useGlobalSearchParams();
+  }: {
+    correctWord?: string;
+    wrongWord?: string;
+    repeatWord?: string;
+    alphabet?: string;
+    wordLength?: string;
+    duration?: string;
+  } = useGlobalSearchParams();
+  const languageData =
+    contents.scoreCardScreenSelectedLanguage?.[
+      global?.currentSelectedLanguage ?? "English"
+    ];
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const responsiveWidth = useResponsiveWidth();
@@ -43,25 +46,23 @@ function ScoreCardScreen() {
   const isSoundEnabled = useRef(true);
   useFocusEffect(
     useCallback(() => {
-      LocalStorage.getItemDefault("SOUND_KEY").then(
-        (val) => {
-          isSoundEnabled.current = val == null || val === "Yes";
-          if (val == null || val === "Yes") {
-            playSound()
-          }
+      LocalStorage.getItemDefault("SOUND_KEY").then((val) => {
+        isSoundEnabled.current = val == null || val === "Yes";
+        if (val == null || val === "Yes") {
+          playSound();
         }
-      );
+      });
     }, [])
   );
 
   const shareImage = async () => {
     try {
       const uri = await captureRef(ref, {
-        format: 'png',
+        format: "png",
         quality: 0.7,
       });
       if (Sharing.isAvailableAsync) {
-        Sharing.shareAsync(uri, { dialogTitle: "Word Search Game" })
+        Sharing.shareAsync(uri, { dialogTitle: "Word Search Game" });
       }
     } catch (e) {
       console.log(e);
@@ -70,7 +71,7 @@ function ScoreCardScreen() {
 
   const formattedValue = (value: number) => {
     return value > 9 ? value : `0` + value;
-  }
+  };
 
   async function playSound() {
     if (isSoundEnabled.current) {
@@ -83,18 +84,14 @@ function ScoreCardScreen() {
   useEffect(() => {
     return sound
       ? () => {
-        sound.unloadAsync();
-      }
+          sound.unloadAsync();
+        }
       : undefined;
   }, [sound]);
 
   return (
     <YStack flex={1} backgroundColor={"$black"}>
-      <ScrollHeader
-        title=""
-        backgroundColor={"$black"}
-        back={false}
-      />
+      <ScrollHeader title="" backgroundColor={"$black"} back={false} />
 
       <ResponsiveContent flex={1}>
         <ViewShot ref={ref}>
@@ -113,9 +110,17 @@ function ScoreCardScreen() {
               adjustsFontSizeToFit
               numberOfLines={1}
             >
-              {`Ready to take on the challenge?`}
+              {languageData.ready_to_take_on_the_challenge}
             </SizableText>
-            <YStack mx={"$6"} px={"$6"} py={"$4"} alignItems="center" bg={"$white"} borderRadius={8} {...SHADOW.basicCard}>
+            <YStack
+              mx={"$6"}
+              px={"$6"}
+              py={"$4"}
+              alignItems="center"
+              bg={"$white"}
+              borderRadius={8}
+              {...SHADOW.basicCard}
+            >
               <SizableText
                 fontSize={"$hxs"}
                 color={"$black"}
@@ -126,7 +131,12 @@ function ScoreCardScreen() {
                 {`${new Date().toDateString()}  ${new Date().toLocaleTimeString()}`}
               </SizableText>
               <YStack h={"$4"} />
-              <YStack borderRadius={8} p={"$1"} backgroundColor={"$primary"} {...SHADOW.basicCard}>
+              <YStack
+                borderRadius={8}
+                p={"$1"}
+                backgroundColor={"$primary"}
+                {...SHADOW.basicCard}
+              >
                 <Image
                   key={"appIcon"}
                   source={images.icon}
@@ -143,14 +153,19 @@ function ScoreCardScreen() {
                   textAlign="center"
                   lineHeight={30}
                 >
-                  {`${formattedValue(parseInt(correctWord))} /`} <SizableText
+                  {`${formattedValue(parseInt(correctWord))} /`}{" "}
+                  <SizableText
                     fontSize={"$2xl"}
                     color={"$white"}
                     fontWeight={"$bold700"}
                     textAlign="center"
                     lineHeight={30}
                   >
-                    {`${formattedValue(parseInt(correctWord) + parseInt(wrongWord) + parseInt(repeatWord))}`}
+                    {`${formattedValue(
+                      parseInt(correctWord) +
+                        parseInt(wrongWord) +
+                        parseInt(repeatWord)
+                    )}`}
                   </SizableText>
                 </SizableText>
               </YStack>
@@ -163,7 +178,7 @@ function ScoreCardScreen() {
                 lineHeight={30}
                 textTransform="uppercase"
               >
-                {`Correct Words `}
+                {languageData.correct_words}
               </SizableText>
               <YStack h={"$3"} />
               <SizableText
@@ -172,7 +187,58 @@ function ScoreCardScreen() {
                 fontWeight={"$bold700"}
                 textAlign="center"
               >
-                {`Congratulations on completing the challenge of ${wordLength}-letter words starting with ${alphabet} in ${duration} seconds!`}
+                {languageData.congratulations}{" "}
+                <SizableText
+                  fontSize={"$hxs"}
+                  color={"$primary"}
+                  fontWeight={"$bold700"}
+                  textAlign="center"
+                >
+                  {" "}
+                  {wordLength}{" "}
+                </SizableText>
+                <SizableText
+                  fontSize={"$hxs"}
+                  color={"$primary"}
+                  fontWeight={"$bold700"}
+                  textAlign="center"
+                >
+                  {languageData.letter_words_starting_with}
+                </SizableText>
+                <SizableText
+                  fontSize={"$hxs"}
+                  color={"$primary"}
+                  fontWeight={"$bold700"}
+                  textAlign="center"
+                >
+                  {" "}
+                  {alphabet}{" "}
+                </SizableText>
+                <SizableText
+                  fontSize={"$hxs"}
+                  color={"$primary"}
+                  fontWeight={"$bold700"}
+                  textAlign="center"
+                >
+                  {languageData.in}
+                </SizableText>
+                <SizableText
+                  fontSize={"$hxs"}
+                  color={"$primary"}
+                  fontWeight={"$bold700"}
+                  textAlign="center"
+                >
+                  {" "}
+                  {duration}{" "}
+                </SizableText>
+                <SizableText
+                  fontSize={"$hxs"}
+                  color={"$primary"}
+                  fontWeight={"$bold700"}
+                  textAlign="center"
+                >
+                  {languageData.seconds}
+                </SizableText>
               </SizableText>
             </YStack>
             <YStack h={"$3"} />
@@ -187,7 +253,15 @@ function ScoreCardScreen() {
           </YStack>
         </ViewShot>
 
-        <YStack top={0} left={0} right={0} bottom={0} bg={"$black"} zIndex={1} position="absolute">
+        <YStack
+          top={0}
+          left={0}
+          right={0}
+          bottom={0}
+          bg={"$black"}
+          zIndex={1}
+          position="absolute"
+        >
           <SizableText
             fontSize={"$6xl"}
             color={"$white"}
@@ -202,7 +276,7 @@ function ScoreCardScreen() {
             adjustsFontSizeToFit
             numberOfLines={1}
           >
-            {`Game Over`}
+            {languageData.game_over}
           </SizableText>
 
           <YStack alignItems="center">
@@ -222,9 +296,9 @@ function ScoreCardScreen() {
                   color={"$white"}
                   fontWeight={"$bold700"}
                   textAlign="center"
-                  lineHeight={30}
+                  lineHeight={32}
                 >
-                  {`Your Score`}
+                  {languageData.your_score}
                 </SizableText>
                 <YStack h={"$1"} />
                 <YStack bg={"$white"} borderRadius={100} px={10} pt={5}>
@@ -243,11 +317,11 @@ function ScoreCardScreen() {
             <YStack h={"$8"} />
             <XStack justifyContent="center">
               <BasicButton
-                width={(responsiveWidth / 3)}
+                width={responsiveWidth / 3}
                 height={40}
                 linearGradientProps={{ colors: ["#05958f", "#05958f"] }}
                 onPress={() => {
-                  shareImage()
+                  shareImage();
                 }}
               >
                 <XStack alignItems="center" justifyContent="center">
@@ -264,9 +338,8 @@ function ScoreCardScreen() {
                     color={"$white"}
                     fontWeight={"700"}
                     textAlign="center"
-                    textTransform="uppercase"
                   >
-                    {`Share`}
+                    {languageData.share}
                   </SizableText>
                 </XStack>
               </BasicButton>
@@ -278,11 +351,11 @@ function ScoreCardScreen() {
           <YStack mx={"$4"} mb={"$4"}>
             <XStack alignItems="center">
               <BasicButton
-                width={(responsiveWidth / 2) - 24}
+                width={responsiveWidth / 2 - 24}
                 height={46}
                 linearGradientProps={{ colors: ["#ffffff", "#ffffff"] }}
                 onPress={() => {
-                  router.dismissAll()
+                  router.dismissAll();
                 }}
               >
                 <XStack alignItems="center" justifyContent="center">
@@ -299,19 +372,18 @@ function ScoreCardScreen() {
                     color={"$black"}
                     fontWeight={"700"}
                     textAlign="center"
-                    textTransform="uppercase"
                   >
-                    {`Go To Home`}
+                    {languageData.go_to_home}
                   </SizableText>
                 </XStack>
               </BasicButton>
               <YStack w={"$4"} />
               <BasicButton
-                width={(responsiveWidth / 2) - 24}
+                width={responsiveWidth / 2 - 24}
                 height={46}
                 linearGradientProps={{ colors: ["#ffffff", "#ffffff"] }}
                 onPress={() => {
-                  router.back()
+                  router.back();
                 }}
               >
                 <XStack alignItems="center" justifyContent="center">
@@ -328,9 +400,8 @@ function ScoreCardScreen() {
                     color={"$black"}
                     fontWeight={"700"}
                     textAlign="center"
-                    textTransform="uppercase"
                   >
-                    {`Play Again`}
+                    {languageData.play_again}
                   </SizableText>
                 </XStack>
               </BasicButton>
@@ -341,7 +412,7 @@ function ScoreCardScreen() {
       <AdmobBanner bannerSize={BannerAdSize.ANCHORED_ADAPTIVE_BANNER} />
       <YStack h={insets.bottom} />
     </YStack>
-  )
+  );
 }
 
 export default ScoreCardScreen;

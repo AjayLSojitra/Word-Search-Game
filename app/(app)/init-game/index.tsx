@@ -499,70 +499,11 @@ function InitGameScreen() {
               color={"$white"}
               textAlign="center"
             >
-              {languageData.challenge_yourself}
-              <SizableText
-                mx={"$4"}
-                mb={"$4"}
-                fontSize={"$sm"}
-                fontWeight={"$semibold"}
-                color={"$white"}
-                textAlign="center"
-              >
-                {"  "}
-                {wordLengths[selectedWordLengthIndex]}
-              </SizableText>
-              <SizableText
-                mx={"$4"}
-                mb={"$4"}
-                fontSize={"$sm"}
-                fontWeight={"$semibold"}
-                color={"$white"}
-                textAlign="center"
-              >
-                {languageData.letter_words_starting_with}
-              </SizableText>
-              <SizableText
-                mx={"$4"}
-                mb={"$4"}
-                fontSize={"$sm"}
-                fontWeight={"$semibold"}
-                color={"$white"}
-                textAlign="center"
-              >
-                {"  "}
-                {alphabets[selectedAlphabetIndex]}
-              </SizableText>
-              <SizableText
-                mx={"$4"}
-                mb={"$4"}
-                fontSize={"$sm"}
-                fontWeight={"$semibold"}
-                color={"$white"}
-                textAlign="center"
-              >
-                {"  "}
-                {languageData.in}
-              </SizableText>
-              <SizableText
-                mx={"$4"}
-                mb={"$4"}
-                fontSize={"$sm"}
-                fontWeight={"$semibold"}
-                color={"$white"}
-                textAlign="center"
-              >
-                {"  "} {durations[selectedDurationIndex]}
-              </SizableText>
-              <SizableText
-                mx={"$4"}
-                mb={"$4"}
-                fontSize={"$sm"}
-                fontWeight={"$semibold"}
-                color={"$white"}
-                textAlign="center"
-              >
-               {"  "} {languageData.seconds}
-              </SizableText>
+              {languageData.challenge_yourself}{" "}
+              {wordLengths[selectedWordLengthIndex]}
+              {languageData.letter_words_starting_with}{" "}
+              {alphabets[selectedAlphabetIndex]} {languageData.in}{" "}
+              {durations[selectedDurationIndex]} {languageData.seconds}
             </SizableText>
           </YStack>
         </ScrollView>

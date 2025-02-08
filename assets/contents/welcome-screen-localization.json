@@ -1,42 +1,62 @@
 {
   "English": {
     "play_game": "Play Game",
-    "train_your_mind": "Train Your Mind"
+    "train_your_mind": "Train Your Mind",
+    "train_yourself_to_write_as_many": "Train yourself to write as many",
+    "letter_words_starting_with": "-letter words starting with"
   },
   "Hindi": {
     "play_game": "खेल खेलें",
-    "train_your_mind": "अपने दिमाग को प्रशिक्षित करें"
+    "train_your_mind": "अपने दिमाग को प्रशिक्षित करें",
+    "train_yourself_to_write_as_many": "अपने आप को उतने ही लिखने के लिए प्रशिक्षित करें",
+    "letter_words_starting_with": "-अक्षर शब्द जो से शुरू होते हैं"
   },
   "Chinese": {
     "play_game": "玩游戏",
-    "train_your_mind": "训练你的大脑"
+    "train_your_mind": "训练你的大脑",
+    "train_yourself_to_write_as_many": "训练自己写尽可能多",
+    "letter_words_starting_with": "以字母开头的词"
   },
   "Spanish": {
     "play_game": "Jugar",
-    "train_your_mind": "Entrena tu mente"
+    "train_your_mind": "Entrena tu mente",
+    "train_yourself_to_write_as_many": "Entrénate para escribir tantos",
+    "letter_words_starting_with": "palabras de letras que comienzan con"
   },
   "Italian": {
     "play_game": "Gioca",
-    "train_your_mind": "Allena la tua mente"
+    "train_your_mind": "Allena la tua mente",
+    "train_yourself_to_write_as_many": "Allenati a scrivere il maggior numero possibile",
+    "letter_words_starting_with": "parole di lettere che iniziano con"
   },
   "Portuguese": {
     "play_game": "Jogar",
-    "train_your_mind": "Treine sua mente"
+    "train_your_mind": "Treine sua mente",
+    "train_yourself_to_write_as_many": "Treine-se para escrever o maior número possível",
+    "letter_words_starting_with": "palavras de letras que começam com"
   },
   "Russian": {
     "play_game": "Играть в игру",
-    "train_your_mind": "Тренируйте свой ум"
+    "train_your_mind": "Тренируйте свой ум",
+    "train_yourself_to_write_as_many": "Тренируйтесь писать как можно больше",
+    "letter_words_starting_with": "слова с буквами, начинающиеся с"
   },
   "French": {
     "play_game": "Jouer",
-    "train_your_mind": "Entraînez votre esprit"
+    "train_your_mind": "Entraînez votre esprit",
+    "train_yourself_to_write_as_many": "Entraînez-vous à écrire autant que possible",
+    "letter_words_starting_with": "mots de lettres commençant par"
   },
   "German": {
     "play_game": "Spiel spielen",
-    "train_your_mind": "Trainiere deinen Geist"
+    "train_your_mind": "Trainiere deinen Geist",
+    "train_yourself_to_write_as_many": "Trainiere dich, so viele wie möglich zu schreiben",
+    "letter_words_starting_with": "Buchstabenwörter, die mit beginnen"
   },
   "Urdu": {
     "play_game": "کھیل کھیلیں",
-    "train_your_mind": "اپنے دماغ کو تربیت دیں"
+    "train_your_mind": "اپنے دماغ کو تربیت دیں",
+    "train_yourself_to_write_as_many": "اپنے آپ کو جتنا ممکن ہو لکھنے کی تربیت دیں",
+    "letter_words_starting_with": "حروف والے الفاظ جو سے شروع ہوتے ہیں"
   }
 }

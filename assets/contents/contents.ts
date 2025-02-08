@@ -4,6 +4,8 @@ const contents = {
   levelSelectionScreenSelectedLanguage: require("./level-selection-screen-localization.json"),
   initGameScreenSelectedLanguage: require("./init-game-screen-localization.json"),
   feedbackScreenSelectedLanguage: require("./feedback-screen-localization.json"),
+  scoreCardScreenSelectedLanguage: require("./score-card-screen-localization.json"),
+  timeOverScreenSelectedLanguage: require("./time-over-screen-localization.json"),
 };
 
 export default contents;

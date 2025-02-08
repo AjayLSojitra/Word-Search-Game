@@ -1,8 +1,18 @@
 import { SizableText, XStack, YStack } from "tamagui";
-import { FlatList, Image, Keyboard, ListRenderItem, Platform } from "react-native";
+import {
+  FlatList,
+  Image,
+  Keyboard,
+  ListRenderItem,
+} from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import ScrollHeader from "@design-system/components/navigation/scroll-header";
-import { useFocusEffect, useGlobalSearchParams, useNavigation, useRouter } from "expo-router";
+import {
+  useFocusEffect,
+  useGlobalSearchParams,
+  useNavigation,
+  useRouter,
+} from "expo-router";
 import TouchableScale from "@design-system/components/shared/touchable-scale";
 import images from "@assets/images/images";
 import { SHADOW } from "@design-system/utils/constants";
@@ -27,6 +37,7 @@ import { TestIds, useInterstitialAd } from "react-native-google-mobile-ads";
 import { staticInterstitialAd } from "@modules/shared/components/helpers";
 import AdsNotifyDialog from "@modules/shared/components/confirmation-dialog/ads-notify-dialog";
 import useKeyboardAnimatedHeight from "@modules/shared/hooks/use-keyboard-animated-height";
+import contents from "@assets/contents/contents";
 
 type RenderItem = ListRenderItem<SpellInputs>;
 
@@ -36,25 +47,29 @@ function PlayGameScreen() {
     wordLength = "0",
     duration = "0",
     isForTraining = "No",
-  }:
-    {
-      alphabet?: string,
-      wordLength?: string,
-      duration?: string,
-      isForTraining?: string
-    }
-    = useGlobalSearchParams();
+  }: {
+    alphabet?: string;
+    wordLength?: string;
+    duration?: string;
+    isForTraining?: string;
+  } = useGlobalSearchParams();
+  const languageData =
+    contents.welcomeScreenSelectedLanguage?.[
+      global?.currentSelectedLanguage ?? "English"
+    ];
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const scrollViewRef = useRef<any>(null);
   const words = wordfiles.english;
   const [spellItems, setSpellItems] = useState<SpellInputs[]>([]);
-  const inputRef = useRef<OtpInputRef>(null);;
+  const inputRef = useRef<OtpInputRef>(null);
 
   const [sound, setSound] = useState<Audio.Sound>();
   async function playTimerOverWarningCountdownSound() {
     if (isSoundEnabled.current) {
-      const { sound } = await Audio.Sound.createAsync(sounds.timerOverWarningCountdown);
+      const { sound } = await Audio.Sound.createAsync(
+        sounds.timerOverWarningCountdown
+      );
       setSound(sound);
       await sound.playAsync();
     }
@@ -79,12 +94,17 @@ function PlayGameScreen() {
   useEffect(() => {
     return sound
       ? () => {
-        sound.unloadAsync();
-      }
+          sound.unloadAsync();
+        }
       : undefined;
   }, [sound]);
 
-  const { isLoaded, isClosed, load, show, error, isShowing } = useInterstitialAd(__DEV__ ? TestIds.INTERSTITIAL_VIDEO : (global?.interstitialAd ?? staticInterstitialAd));
+  const { isLoaded, isClosed, load, show, error, isShowing } =
+    useInterstitialAd(
+      __DEV__
+        ? TestIds.INTERSTITIAL_VIDEO
+        : global?.interstitialAd ?? staticInterstitialAd
+    );
   const isInterstitialShowed = useRef<boolean>(false);
 
   useEffect(() => {
@@ -102,32 +122,42 @@ function PlayGameScreen() {
       load();
 
       // Action after the ad is closed
-      setShowAdsConfirmationPopup(false)
-      redirectToNextScreenAfterAdmobInterstitial()
+      setShowAdsConfirmationPopup(false);
+      redirectToNextScreenAfterAdmobInterstitial();
     }
   }, [isClosed]);
 
   const redirectToNextScreenAfterAdmobInterstitial = () => {
     if (isForTraining === "Yes") {
-      router.replace(`./time-over?correctWord=${getCorrectSpellCount()}&&wrongWord=${getWrongSpellCount()}&&repeatWord=${getRepeatSpellCount()}`)
+      router.replace(
+        `./time-over?correctWord=${getCorrectSpellCount()}&&wrongWord=${getWrongSpellCount()}&&repeatWord=${getRepeatSpellCount()}`
+      );
     } else {
-      router.replace(`./score-card?correctWord=${getCorrectSpellCount()}&&wrongWord=${getWrongSpellCount()}&&repeatWord=${getRepeatSpellCount()}&&alphabet=${alphabet}&&wordLength=${wordLength}&&duration=${duration}`)
+      router.replace(
+        `./score-card?correctWord=${getCorrectSpellCount()}&&wrongWord=${getWrongSpellCount()}&&repeatWord=${getRepeatSpellCount()}&&alphabet=${alphabet}&&wordLength=${wordLength}&&duration=${duration}`
+      );
     }
-  }
+  };
 
-  const [timerCountdown, setTimerCountdown] = useState<number>(parseInt(duration ?? "0"));
+  const [timerCountdown, setTimerCountdown] = useState<number>(
+    parseInt(duration ?? "0")
+  );
   const [startTimerInterval, setStartTimerInterval] = useState<boolean>(true);
   const timerRef = useRef(timerCountdown);
   const intervalCompleted = useRef(false);
-  const minDurationForHalfTime = 30
+  const minDurationForHalfTime = 30;
 
   let timerId;
   useEffect(() => {
     timerId = setInterval(() => {
-      if ((parseInt(duration ?? "0")) > minDurationForHalfTime && timerRef.current === ((parseInt(duration ?? "0")) / 2) && !intervalCompleted.current) {
+      if (
+        parseInt(duration ?? "0") > minDurationForHalfTime &&
+        timerRef.current === parseInt(duration ?? "0") / 2 &&
+        !intervalCompleted.current
+      ) {
         //Half Time Interval
         stopTimer();
-        router.push(`./half-time?isForTraining=${isForTraining}`)
+        router.push(`./half-time?isForTraining=${isForTraining}`);
       } else {
         intervalCompleted.current = false;
         timerRef.current -= 1;
@@ -142,7 +172,7 @@ function PlayGameScreen() {
 
           //Show Interstitial Ad
           if (isLoaded && global?.showAds) {
-            setShowAdsConfirmationPopup(true)
+            setShowAdsConfirmationPopup(true);
             setTimeout(() => {
               if (!isInterstitialShowed.current) {
                 isInterstitialShowed.current = true;
@@ -151,7 +181,7 @@ function PlayGameScreen() {
             }, 3000);
           } else {
             // No advert ready to show yet
-            redirectToNextScreenAfterAdmobInterstitial()
+            redirectToNextScreenAfterAdmobInterstitial();
           }
         } else {
           setTimerCountdown(timerRef.current);
@@ -165,36 +195,43 @@ function PlayGameScreen() {
 
   const startTimer = () => {
     setStartTimerInterval(!startTimerInterval);
-  }
+  };
 
   const stopTimer = () => {
     clearInterval(timerId);
-  }
+  };
 
   const formattedValue = (value: number) => {
     return value > 9 ? value : `0` + value;
-  }
+  };
 
   const remainSecForHalfTimeInterval = () => {
-    return (timerRef.current) - ((parseInt(duration ?? "0")) / 2);
-  }
+    return timerRef.current - parseInt(duration ?? "0") / 2;
+  };
 
   const canShowHalfTimeIntervalWarning = () => {
-    return (parseInt(duration ?? "0")) > minDurationForHalfTime && remainSecForHalfTimeInterval() >= 0 && remainSecForHalfTimeInterval() <= 4;
-  }
+    return (
+      parseInt(duration ?? "0") > minDurationForHalfTime &&
+      remainSecForHalfTimeInterval() >= 0 &&
+      remainSecForHalfTimeInterval() <= 4
+    );
+  };
 
-  //For Play Half Time Inerval Warning Sound 
+  //For Play Half Time Inerval Warning Sound
   useEffect(() => {
-    if ((parseInt(duration ?? "0")) > minDurationForHalfTime && ((timerRef.current) - ((parseInt(duration ?? "0")) / 2)) === 4) {
-      playTimerOverWarningCountdownSound()
+    if (
+      parseInt(duration ?? "0") > minDurationForHalfTime &&
+      timerRef.current - parseInt(duration ?? "0") / 2 === 4
+    ) {
+      playTimerOverWarningCountdownSound();
     }
-  }, [timerRef.current, duration])
+  }, [timerRef.current, duration]);
 
   useEffect(() => {
     if (canShowHalfTimeIntervalWarning()) {
-      playAnim()
+      playAnim();
     }
-  }, [timerRef.current, duration])
+  }, [timerRef.current, duration]);
 
   const scale = useSharedValue(1);
   const animatedStyle = useAnimatedStyle(
@@ -207,21 +244,24 @@ function PlayGameScreen() {
 
     setTimeout(() => {
       scale.value = withTiming(1, { duration: 50 });
-    }, 250)
-  }
+    }, 250);
+  };
 
   const navigation = useNavigation();
   useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
+    const unsubscribe = navigation.addListener("focus", () => {
       intervalCompleted.current = true;
       startTimer();
-      inputRef.current.focus()
+      inputRef.current.focus();
     });
 
     return unsubscribe;
   }, [navigation]);
 
-  const keyExtractor = useCallback((item, index) => (item?.inputValue ?? "") + (index ?? 0), []);
+  const keyExtractor = useCallback(
+    (item, index) => (item?.inputValue ?? "") + (index ?? 0),
+    []
+  );
 
   const renderItem: RenderItem = useCallback((item) => {
     return <SpellInputCard item={item?.item} />;
@@ -237,153 +277,158 @@ function PlayGameScreen() {
 
   const check = (text: string) => {
     if (words.length === 0) {
-      console.error('ERROR! Dictionaries are not loaded')
-      return
+      console.error("ERROR! Dictionaries are not loaded");
+      return;
     }
 
-    const regex = `/\/[^0-9a-zA-Z-_]\/g/`
+    const regex = `/\/[^0-9a-zA-Z-_]\/g/`;
     const textArr = text
-      .replace(regex, ' ')
-      .split(' ')
-      .filter(item => item)
+      .replace(regex, " ")
+      .split(" ")
+      .filter((item) => item);
 
-    const outObj = {}
+    const outObj = {};
 
     for (let i = 0; i < textArr.length; i++) {
-      const checked = checkWord(textArr[i])
-      const checkedList = Array.isArray(checked)
-        ? checked
-        : [checked]
+      const checked = checkWord(textArr[i]);
+      const checkedList = Array.isArray(checked) ? checked : [checked];
 
       for (let j = 0; j < checkedList.length; j++) {
         if (checkedList[j] == null) {
-          outObj[textArr[i]] = true
+          outObj[textArr[i]] = true;
         }
       }
     }
 
-    return Object.keys(outObj)
-  }
+    return Object.keys(outObj);
+  };
 
   const checkWord = (wordProp: string, recblock?: boolean) => {
     // Just go away, if the word is not literal
-    if (wordProp == null || wordProp === '' || !isNaN(Number(wordProp))) {
-      return
+    if (wordProp == null || wordProp === "" || !isNaN(Number(wordProp))) {
+      return;
     }
 
     // Way of reducing the load-time of dictionary
     // Post-escaping comments from files
-    const word: string = wordProp.replace(/^#/, '')
+    const word: string = wordProp.replace(/^#/, "");
 
     // If the word exists, returns true
     if (words.indexOf(word) >= 0 || words.indexOf(word.toLowerCase()) >= 0) {
-      return true
+      return true;
     }
 
     // Check for the presence of the add. chars
-    const esymb = '-/\''
+    const esymb = "-/'";
 
     // Checking parts of words
     for (let i = 0; i < esymb.length; i++) {
       if (recblock || word.indexOf(esymb[i]) === -1) {
-        continue
+        continue;
       }
 
-      const retArray = word
-        .split(esymb[i])
-        .map((item: string, i: number) => {
-          if (i === 0) {
-            return checkWord(item, true)
-          } else {
-            const res = checkWord(item, true)
-            return res || checkWord(esymb[i] + item, true)
-          }
-        })
+      const retArray = word.split(esymb[i]).map((item: string, i: number) => {
+        if (i === 0) {
+          return checkWord(item, true);
+        } else {
+          const res = checkWord(item, true);
+          return res || checkWord(esymb[i] + item, true);
+        }
+      });
 
-      return retArray
+      return retArray;
     }
-  }
+  };
 
   const clearAllInputs = () => {
-    inputRef.current.clear()
-  }
+    inputRef.current.clear();
+  };
 
   const getCorrectSpellCount = useCallback(() => {
-    return (spellItems?.filter(({ status }) => status === "CORRECT") ?? []).length
-  },
-    [spellItems]
-  );
+    return (spellItems?.filter(({ status }) => status === "CORRECT") ?? [])
+      .length;
+  }, [spellItems]);
 
   const getWrongSpellCount = useCallback(() => {
-    return (spellItems?.filter(({ status }) => status === "WRONG") ?? []).length
-  },
-    [spellItems]
-  );
+    return (spellItems?.filter(({ status }) => status === "WRONG") ?? [])
+      .length;
+  }, [spellItems]);
 
   const getRepeatSpellCount = useCallback(() => {
-    return (spellItems?.filter(({ status }) => status === "DUPLICATE") ?? []).length
-  },
-    [spellItems]
-  );
+    return (spellItems?.filter(({ status }) => status === "DUPLICATE") ?? [])
+      .length;
+  }, [spellItems]);
 
   const validateInputs = (inputValues: string) => {
     const inputSpell = inputValues;
 
-    const isAnyEmptyInput = inputSpell.length !== parseInt(wordLength)
+    const isAnyEmptyInput = inputSpell.length !== parseInt(wordLength);
     if (!isAnyEmptyInput) {
       //Check for first alphabet (If wrong Red Color)
       const firstAlphabet = Array.from(inputSpell)[0];
       if (firstAlphabet != alphabet) {
         //First input value is start with wrong alphabet!
         playWrongSound();
-        setSpellItems([{ "inputValue": inputSpell, "status": "WRONG" }, ...spellItems])
-        clearAllInputs()
+        setSpellItems([
+          { inputValue: inputSpell, status: "WRONG" },
+          ...spellItems,
+        ]);
+        clearAllInputs();
         return;
       }
 
       // //check for correct spelling (If wrong Red color else if correct then Green Color)
-      const spellCorrectionResult = check(inputSpell)
+      const spellCorrectionResult = check(inputSpell);
       if (spellCorrectionResult.length === 0) {
         //Check for Duplication (If found duplication Yellow color)
-        if (spellItems.some(item => item.inputValue === inputSpell)) {
+        if (spellItems.some((item) => item.inputValue === inputSpell)) {
           //Duplicate Spelling!
           playWrongSound();
-          setSpellItems([{ "inputValue": inputSpell, "status": "DUPLICATE" }, ...spellItems])
-          clearAllInputs()
+          setSpellItems([
+            { inputValue: inputSpell, status: "DUPLICATE" },
+            ...spellItems,
+          ]);
+          clearAllInputs();
           return;
         }
 
         //Correct Spelling!
         playCorrectSound();
-        setSpellItems([{ "inputValue": inputSpell, "status": "CORRECT" }, ...spellItems])
-        clearAllInputs()
+        setSpellItems([
+          { inputValue: inputSpell, status: "CORRECT" },
+          ...spellItems,
+        ]);
+        clearAllInputs();
         return;
       } else {
         //Wrong Spelling!
         playWrongSound();
-        setSpellItems([{ "inputValue": inputSpell, "status": "WRONG" }, ...spellItems])
-        clearAllInputs()
+        setSpellItems([
+          { inputValue: inputSpell, status: "WRONG" },
+          ...spellItems,
+        ]);
+        clearAllInputs();
         return;
       }
     }
-  }
+  };
 
   const isSoundEnabled = useRef(true);
   const [isSoundSwitchEnabled, setIsSoundSwitchEnabled] = useState(true);
-  const toggleSound = () => isSoundEnabled.current = !isSoundEnabled.current;
-  const toggleSoundSwitch = () => setIsSoundSwitchEnabled(previousState => !previousState);
+  const toggleSound = () => (isSoundEnabled.current = !isSoundEnabled.current);
+  const toggleSoundSwitch = () =>
+    setIsSoundSwitchEnabled((previousState) => !previousState);
   useFocusEffect(
     useCallback(() => {
-      LocalStorage.getItemDefault("SOUND_KEY").then(
-        (val) => {
-          isSoundEnabled.current = val == null || val === "Yes";
-          setIsSoundSwitchEnabled(val == null || val === "Yes")
-        }
-      );
+      LocalStorage.getItemDefault("SOUND_KEY").then((val) => {
+        isSoundEnabled.current = val == null || val === "Yes";
+        setIsSoundSwitchEnabled(val == null || val === "Yes");
+      });
     }, [])
   );
 
-  const [showAdsConfirmationPopup, setShowAdsConfirmationPopup] = useState(false)
+  const [showAdsConfirmationPopup, setShowAdsConfirmationPopup] =
+    useState(false);
 
   const keyboardAnimatedHeight = useKeyboardAnimatedHeight();
   const keyboardAnimatedStyle = useAnimatedStyle(() => ({
@@ -393,17 +438,29 @@ function PlayGameScreen() {
   return (
     <YStack flex={1} backgroundColor={"$primary"}>
       <ScrollHeader
-        title={isForTraining === "Yes" ? "Train Your Mind" : "Play Game"}
+        title={
+          isForTraining === "Yes"
+            ? languageData.train_your_mind
+            : languageData.play_game
+        }
         backgroundColor={"$primary"}
         rightElement={
-
           <XStack alignItems="center">
-            {isForTraining === "Yes" &&
-              <TouchableScale style={{ marginRight: 8 }} hitSlop={HIT_SLOP} onPress={() => {
-                stopTimer();
-                router.push("./help?isForTraining=Yes")
-              }}>
-                <YStack alignItems="center" justifyContent="center" height={24} width={24}>
+            {isForTraining === "Yes" && (
+              <TouchableScale
+                style={{ marginRight: 8 }}
+                hitSlop={HIT_SLOP}
+                onPress={() => {
+                  stopTimer();
+                  router.push("./help?isForTraining=Yes");
+                }}
+              >
+                <YStack
+                  alignItems="center"
+                  justifyContent="center"
+                  height={24}
+                  width={24}
+                >
                   <Image
                     key={"help"}
                     source={images.help}
@@ -412,17 +469,31 @@ function PlayGameScreen() {
                   />
                 </YStack>
               </TouchableScale>
-            }
-            <TouchableScale hitSlop={HIT_SLOP} onPress={() => {
-              LocalStorage.setItemDefault("SOUND_KEY", isSoundEnabled.current ? "No" : "Yes", () => {
-                toggleSound()
-                toggleSoundSwitch()
-              })
-            }}>
-              <YStack alignItems="center" justifyContent="center" height={24} width={24}>
+            )}
+            <TouchableScale
+              hitSlop={HIT_SLOP}
+              onPress={() => {
+                LocalStorage.setItemDefault(
+                  "SOUND_KEY",
+                  isSoundEnabled.current ? "No" : "Yes",
+                  () => {
+                    toggleSound();
+                    toggleSoundSwitch();
+                  }
+                );
+              }}
+            >
+              <YStack
+                alignItems="center"
+                justifyContent="center"
+                height={24}
+                width={24}
+              >
                 <Image
                   key={"sound"}
-                  source={isSoundSwitchEnabled ? images.soundOnWhite : images.soundOff}
+                  source={
+                    isSoundSwitchEnabled ? images.soundOnWhite : images.soundOff
+                  }
                   style={{ height: 24, width: 24 }}
                   alt={"sound"}
                 />
@@ -461,11 +532,12 @@ function PlayGameScreen() {
             <YStack w={"$2"} />
             <SizableText
               size={"$hsm"}
-              color={(timerCountdown < 5) ? "$red.600" : "$blueGray.500"}
+              color={timerCountdown < 5 ? "$red.600" : "$blueGray.500"}
               fontWeight={"$semibold"}
               textAlign="center"
             >
-              {formattedValue(timerCountdown)}<SizableText
+              {formattedValue(timerCountdown)}
+              <SizableText
                 size={"$hsm"}
                 color={"$primary"}
                 fontWeight={"$bold900"}
@@ -489,18 +561,19 @@ function PlayGameScreen() {
             >
               <Animated.View style={animatedStyle}>
                 <SizableText
-
                   size={"$xs"}
                   color={"$white"}
                   fontWeight={"$semibold"}
                   textAlign="center"
                 >
-                  {remainSecForHalfTimeInterval() > 0 ? `Half Time in ${remainSecForHalfTimeInterval()}s` : "It's Half Time "}
+                  {remainSecForHalfTimeInterval() > 0
+                    ? `Half Time in ${remainSecForHalfTimeInterval()}s`
+                    : "It's Half Time "}
                 </SizableText>
               </Animated.View>
             </XStack>
           )}
-          {canShowHalfTimeIntervalWarning() && (<YStack flex={1} />)}
+          {canShowHalfTimeIntervalWarning() && <YStack flex={1} />}
           <XStack
             {...SHADOW.basicCard}
             bg={"$white"}
@@ -525,7 +598,8 @@ function PlayGameScreen() {
               fontWeight={"$semibold"}
               textAlign="center"
             >
-              {`${formattedValue(getCorrectSpellCount())}`}<SizableText
+              {`${formattedValue(getCorrectSpellCount())}`}
+              <SizableText
                 size={"$hsm"}
                 color={"$primary"}
                 fontWeight={"$bold900"}
@@ -560,13 +634,24 @@ function PlayGameScreen() {
             fontWeight={"$medium"}
             textAlign="center"
           >
-            {`Train yourself to write as many ${wordLength}-letter words starting with ‘${alphabet}’`}
+            {languageData.train_yourself_to_write_as_many}
+            {"  "}
+            {wordLength}
+            {languageData.letter_words_starting_with}
+            {"  "}
+            {`${alphabet}`}.
           </SizableText>
         </>
       )}
-      <ResponsiveContent flex={1} m={"$2"} alignItems="center" justifyContent="center" onPress={() => {
-        Keyboard.dismiss()
-      }}>
+      <ResponsiveContent
+        flex={1}
+        m={"$2"}
+        alignItems="center"
+        justifyContent="center"
+        onPress={() => {
+          Keyboard.dismiss();
+        }}
+      >
         <FlatList
           scrollEnabled={true}
           ref={scrollViewRef}
@@ -583,14 +668,16 @@ function PlayGameScreen() {
         />
       </ResponsiveContent>
       <YStack alignItems="center">
-        {!isShowing && (<>
-          <AdmobBanner />
-          <Animated.View style={keyboardAnimatedStyle} />
-        </>)}
+        {!isShowing && (
+          <>
+            <AdmobBanner />
+            <Animated.View style={keyboardAnimatedStyle} />
+          </>
+        )}
       </YStack>
       <YStack h={insets.bottom} />
     </YStack>
-  )
+  );
 }
 
 export default PlayGameScreen;
