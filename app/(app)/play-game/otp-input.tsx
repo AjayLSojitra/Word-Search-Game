@@ -12,7 +12,14 @@ import InputAccessoryViewiOS from "@modules/shared/components/input-accessory-vi
 export const OtpInput = forwardRef<OtpInputRef, OtpInputProps>((props, ref) => {
   const {
     models: { text, inputRef, focusedInputIndex, hasCursor },
-    actions: { clear, handlePress, handleTextChange, focus, handleFocus, handleBlur },
+    actions: {
+      clear,
+      handlePress,
+      handleTextChange,
+      focus,
+      handleFocus,
+      handleBlur,
+    },
     forms: { setTextWithRef },
   } = useOtpInput(props);
   const {
@@ -39,17 +46,28 @@ export const OtpInput = forwardRef<OtpInputRef, OtpInputProps>((props, ref) => {
   const responsiveWidth = useResponsiveWidth();
 
   useImperativeHandle(ref, () => ({ clear, focus, setValue: setTextWithRef }));
+  const selectedLanguage = global?.currentSelectedLanguage ?? "English";
+  const widthStyle =
+    selectedLanguage === "English"
+      ? (responsiveWidth - 42) / numberOfDigits - 2
+      : responsiveWidth / 1.5 ;
 
-  const generatePinCodeContainerStyle = (isFocusedInput: boolean, char: string) => {
-    const stylesArray = [{
-      borderWidth: 0,
-      borderRadius: 8,
-      backgroundColor: "#1c2e4a",
-      height: 60,
-      width: ((responsiveWidth - 42) / numberOfDigits) - 2,
-      justifyContent: "center",
-      alignItems: "center",
-    } as ViewStyle, pinCodeContainerStyle];
+  const generatePinCodeContainerStyle = (
+    isFocusedInput: boolean,
+    char: string
+  ) => {
+    const stylesArray = [
+      {
+        borderWidth: 0,
+        borderRadius: 8,
+        backgroundColor: "#1c2e4a",
+        height: 60,
+        width: widthStyle,
+        justifyContent: "center",
+        alignItems: "center",
+      } as ViewStyle,
+      pinCodeContainerStyle,
+    ];
     if (focusColor && isFocusedInput) {
       stylesArray.push({ borderColor: focusColor });
     }
@@ -68,17 +86,101 @@ export const OtpInput = forwardRef<OtpInputRef, OtpInputProps>((props, ref) => {
 
     return stylesArray;
   };
-  const isEnglish =  global?.currentSelectedLanguage ?? "English"
-  console.log("isEnglish :" , isEnglish);
-  
+
+  const renderOtpInputs = () => {
+    const isEnglish = selectedLanguage === "English"; // Check for the language
+
+    // If the language is "English", we show individual digits in one touchable scale
+    if (isEnglish) {
+      return Array(numberOfDigits)
+        .fill(0)
+        .map((_, index) => {
+          const char = text[index];
+          const isFocusedInput =
+            index === focusedInputIndex && !disabled && Boolean(hasCursor);
+
+          return (
+            <TouchableScale
+              key={`${char}-${index}`}
+              disabled={disabled}
+              onPress={handlePress}
+              style={generatePinCodeContainerStyle(isFocusedInput, char)}
+              testID="otp-input"
+            >
+              {isFocusedInput && !hideStick ? (
+                <VerticalStick
+                  focusColor={focusColor}
+                  style={focusStickStyle}
+                  focusStickBlinkingDuration={focusStickBlinkingDuration}
+                />
+              ) : (
+                <SizableText
+                  size={numberOfDigits > 6 ? "$hmd" : "$hlg"}
+                  lineHeight={numberOfDigits > 6 ? 30 : 40}
+                  color={char ? "$primary" : "$blueGray.400"}
+                  fontWeight={"$bold900"}
+                >
+                  {char && secureTextEntry
+                    ? "•"
+                    : char ?? (index === 0 ? alphabet : "-")}
+                </SizableText>
+              )}
+            </TouchableScale>
+          );
+        });
+    } else {
+      // For non-English language, render a single TouchableScale with combined characters
+      const otpString = text
+        .split("")
+        .map((char, index) => {
+          if (index === 0) return alphabet; // Show alphabet on the first index
+          return char && secureTextEntry ? "•" : char ?? "-"; // Render dots or characters
+        })
+        .join(""); // Combine all characters into one string
+
+      return (
+        <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
+        <TouchableScale
+          key="single-touchable"
+          onPress={handlePress}
+          style={[generatePinCodeContainerStyle(true, otpString)]} // Adjust the width here
+          testID="otp-input"
+        >
+          <SizableText
+            size={numberOfDigits > 6 ? "$hmd" : "$hlg"}
+            lineHeight={numberOfDigits > 6 ? 30 : 40}
+            color={text ? "$primary" : "$blueGray.400"}
+            fontWeight={"$bold900"}
+          >
+            {text[0] ? text[0] : alphabet}{" "}
+            {/* Display the first character as alphabet */}
+            {text
+              .slice(1)
+              .split("")
+              .map((char, index) =>
+                char && secureTextEntry ? "•" : char ?? "-"
+              )
+              .join("")}{" "}
+            {/* Display remaining characters with secure text entry if necessary */}
+          </SizableText>
+        </TouchableScale>
+      </View>
+      );
+    }
+  };
+
   return (
     <View style={[styles.container, containerStyle]}>
       <View style={[styles.inputsContainer, inputsContainerStyle]}>
+        {renderOtpInputs()}
+      </View>
+      {/* <View style={[styles.inputsContainer, inputsContainerStyle]}>
         {Array(numberOfDigits)
           .fill(0)
           .map((_, index) => {
             const char = text[index];
-            const isFocusedInput = index === focusedInputIndex && !disabled && Boolean(hasCursor);
+            const isFocusedInput =
+              index === focusedInputIndex && !disabled && Boolean(hasCursor);
 
             return (
               <TouchableScale
@@ -101,13 +203,15 @@ export const OtpInput = forwardRef<OtpInputRef, OtpInputProps>((props, ref) => {
                     color={char ? "$primary" : "$blueGray.400"}
                     fontWeight={"$bold900"}
                   >
-                    {char && secureTextEntry ? "•" : (char ?? (index === 0 ? alphabet : "-"))}
+                    {char && secureTextEntry
+                      ? "•"
+                      : char ?? (index === 0 ? alphabet : "-")}
                   </SizableText>
                 )}
               </TouchableScale>
             );
           })}
-      </View>
+      </View> */}
       <TextInput
         value={text}
         onChangeText={handleTextChange}
