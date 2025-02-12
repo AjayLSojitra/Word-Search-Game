@@ -1,9 +1,10 @@
-import { SizableText, XStack, YStack } from "tamagui";
+import { SizableText, View, XStack, YStack } from "tamagui";
 import {
   FlatList,
   Image,
   Keyboard,
   ListRenderItem,
+  TextInput,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import ScrollHeader from "@design-system/components/navigation/scroll-header";
@@ -53,10 +54,23 @@ function PlayGameScreen() {
     duration?: string;
     isForTraining?: string;
   } = useGlobalSearchParams();
+
+  const [textInputValue, setTextInputValue] = useState("");
+  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
+
+  const handleTextInputChange = (text) => {
+    setTextInputValue(text);
+  };
+
+  const handleKeyPress = (key) => {
+    setTextInputValue(textInputValue + key);
+  };
+
   const languageData =
     contents.welcomeScreenSelectedLanguage?.[
       global?.currentSelectedLanguage ?? "English"
     ];
+  const selectedLanguage = global?.currentSelectedLanguage ?? "English";
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const scrollViewRef = useRef<any>(null);
@@ -184,7 +198,8 @@ function PlayGameScreen() {
             redirectToNextScreenAfterAdmobInterstitial();
           }
         } else {
-          setTimerCountdown(timerRef.current);
+          // setTimerCountdown(timerRef.current); //TODO
+          stopTimer();
         }
       }
     }, 1000);

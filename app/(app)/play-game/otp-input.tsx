@@ -1,4 +1,4 @@
-import { forwardRef, useImperativeHandle } from "react";
+import { forwardRef, useImperativeHandle, useState } from "react";
 import { Platform, TextInput, View, ViewStyle } from "react-native";
 import { useOtpInput } from "./use-otp-input";
 import { styles } from "./otp-input.styles";
@@ -8,6 +8,7 @@ import useResponsiveWidth from "@modules/shared/hooks/useResponsiveWidth";
 import { SizableText } from "tamagui";
 import TouchableScale from "@design-system/components/shared/touchable-scale";
 import InputAccessoryViewiOS from "@modules/shared/components/input-accessory-view-details";
+import CustomKeyboard from "@modules/shared/components/custom-keyboard/CustomKeyboard";
 
 export const OtpInput = forwardRef<OtpInputRef, OtpInputProps>((props, ref) => {
   const {
@@ -44,13 +45,24 @@ export const OtpInput = forwardRef<OtpInputRef, OtpInputProps>((props, ref) => {
     disabledPinCodeContainerStyle,
   } = theme;
   const responsiveWidth = useResponsiveWidth();
-
+  const [isCustomKeyboardVisible, setIsCustomKeyboardVisible] = useState(false);
   useImperativeHandle(ref, () => ({ clear, focus, setValue: setTextWithRef }));
   const selectedLanguage = global?.currentSelectedLanguage ?? "English";
   const widthStyle =
     selectedLanguage === "English"
       ? (responsiveWidth - 42) / numberOfDigits - 2
-      : responsiveWidth / 1.5 ;
+      : responsiveWidth / 1.5;
+
+  const handleFocusCustomKeyboard = () => {
+    setIsCustomKeyboardVisible(true);
+    handleFocus();
+  };
+
+  // When input is blurred, hide the custom keyboard
+  const handleBlurCustomKeyboard = () => {
+    setIsCustomKeyboardVisible(false);
+    handleBlur();
+  };
 
   const generatePinCodeContainerStyle = (
     isFocusedInput: boolean,
@@ -139,32 +151,34 @@ export const OtpInput = forwardRef<OtpInputRef, OtpInputProps>((props, ref) => {
         .join(""); // Combine all characters into one string
 
       return (
-        <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
-        <TouchableScale
-          key="single-touchable"
-          onPress={handlePress}
-          style={[generatePinCodeContainerStyle(true, otpString)]} // Adjust the width here
-          testID="otp-input"
+        <View
+          style={{ justifyContent: "center", alignItems: "center", flex: 1 }}
         >
-          <SizableText
-            size={numberOfDigits > 6 ? "$hmd" : "$hlg"}
-            lineHeight={numberOfDigits > 6 ? 30 : 40}
-            color={text ? "$primary" : "$blueGray.400"}
-            fontWeight={"$bold900"}
+          <TouchableScale
+            key="single-touchable"
+            onPress={handlePress}
+            style={[generatePinCodeContainerStyle(true, otpString)]} // Adjust the width here
+            testID="otp-input"
           >
-            {text[0] ? text[0] : alphabet}{" "}
-            {/* Display the first character as alphabet */}
-            {text
-              .slice(1)
-              .split("")
-              .map((char, index) =>
-                char && secureTextEntry ? "•" : char ?? "-"
-              )
-              .join("")}{" "}
-            {/* Display remaining characters with secure text entry if necessary */}
-          </SizableText>
-        </TouchableScale>
-      </View>
+            <SizableText
+              size={numberOfDigits > 6 ? "$hmd" : "$hlg"}
+              lineHeight={numberOfDigits > 6 ? 30 : 40}
+              color={text ? "$primary" : "$blueGray.400"}
+              fontWeight={"$bold900"}
+            >
+              {text[0] ? text[0] : alphabet}{" "}
+              {/* Display the first character as alphabet */}
+              {text
+                .slice(1)
+                .split("")
+                .map((char, index) =>
+                  char && secureTextEntry ? "•" : char ?? "-"
+                )
+                .join("")}{" "}
+              {/* Display remaining characters with secure text entry if necessary */}
+            </SizableText>
+          </TouchableScale>
+        </View>
       );
     }
   };
@@ -174,44 +188,7 @@ export const OtpInput = forwardRef<OtpInputRef, OtpInputProps>((props, ref) => {
       <View style={[styles.inputsContainer, inputsContainerStyle]}>
         {renderOtpInputs()}
       </View>
-      {/* <View style={[styles.inputsContainer, inputsContainerStyle]}>
-        {Array(numberOfDigits)
-          .fill(0)
-          .map((_, index) => {
-            const char = text[index];
-            const isFocusedInput =
-              index === focusedInputIndex && !disabled && Boolean(hasCursor);
 
-            return (
-              <TouchableScale
-                key={`${char}-${index}`}
-                disabled={disabled}
-                onPress={handlePress}
-                style={generatePinCodeContainerStyle(isFocusedInput, char)}
-                testID="otp-input"
-              >
-                {isFocusedInput && !hideStick ? (
-                  <VerticalStick
-                    focusColor={focusColor}
-                    style={focusStickStyle}
-                    focusStickBlinkingDuration={focusStickBlinkingDuration}
-                  />
-                ) : (
-                  <SizableText
-                    size={numberOfDigits > 6 ? "$hmd" : "$hlg"}
-                    lineHeight={numberOfDigits > 6 ? 30 : 40}
-                    color={char ? "$primary" : "$blueGray.400"}
-                    fontWeight={"$bold900"}
-                  >
-                    {char && secureTextEntry
-                      ? "•"
-                      : char ?? (index === 0 ? alphabet : "-")}
-                  </SizableText>
-                )}
-              </TouchableScale>
-            );
-          })}
-      </View> */}
       <TextInput
         value={text}
         onChangeText={handleTextChange}
@@ -226,12 +203,16 @@ export const OtpInput = forwardRef<OtpInputRef, OtpInputProps>((props, ref) => {
         aria-disabled={disabled}
         editable={!disabled}
         testID="otp-input-hidden"
-        onFocus={handleFocus}
-        onBlur={handleBlur}
+        onFocus={handleFocusCustomKeyboard}
+        onBlur={handleBlurCustomKeyboard}
         {...textInputProps}
         style={[styles.hiddenInput, textInputProps?.style]}
         inputAccessoryViewID="inputAccessoryView"
       />
+
+      {isCustomKeyboardVisible && (
+        <CustomKeyboard onKeyPress={handleTextChange} />
+      )}
       {Platform.OS === "ios" && <InputAccessoryViewiOS title={"Done"} />}
     </View>
   );
