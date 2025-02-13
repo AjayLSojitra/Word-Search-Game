@@ -1,11 +1,19 @@
 import { forwardRef, useImperativeHandle, useState } from "react";
-import { Platform, TextInput, View, ViewStyle } from "react-native";
+import {
+  Keyboard,
+  Platform,
+  TextInput,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
+  ViewStyle,
+} from "react-native";
 import { useOtpInput } from "./use-otp-input";
 import { styles } from "./otp-input.styles";
 import { VerticalStick } from "./vertical-stick";
 import { OtpInputProps, OtpInputRef } from "./otp-input.types";
 import useResponsiveWidth from "@modules/shared/hooks/useResponsiveWidth";
-import { SizableText } from "tamagui";
+import { SizableText, YStack } from "tamagui";
 import TouchableScale from "@design-system/components/shared/touchable-scale";
 import InputAccessoryViewiOS from "@modules/shared/components/input-accessory-view-details";
 import CustomKeyboard from "@modules/shared/components/custom-keyboard/CustomKeyboard";
@@ -184,36 +192,38 @@ export const OtpInput = forwardRef<OtpInputRef, OtpInputProps>((props, ref) => {
   };
 
   return (
-    <View style={[styles.container, containerStyle]}>
-      <View style={[styles.inputsContainer, inputsContainerStyle]}>
-        {renderOtpInputs()}
+    <>
+      <View style={[styles.container, containerStyle]}>
+        <View style={[styles.inputsContainer, inputsContainerStyle]}>
+          {renderOtpInputs()}
+        </View>
+        <TextInput
+          value={text}
+          onChangeText={handleTextChange}
+          maxLength={numberOfDigits}
+          inputMode="text"
+          textContentType="username"
+          ref={inputRef}
+          autoCapitalize="characters"
+          autoFocus={autoFocus}
+          secureTextEntry={secureTextEntry}
+          autoComplete={"username"}
+          aria-disabled={disabled}
+          editable={!disabled}
+          testID="otp-input-hidden"
+          onFocus={handleFocusCustomKeyboard}
+          onBlur={handleBlurCustomKeyboard}
+          {...textInputProps}
+          style={[styles.hiddenInput, textInputProps?.style]}
+          inputAccessoryViewID="inputAccessoryView"
+        />
       </View>
-
-      <TextInput
-        value={text}
-        onChangeText={handleTextChange}
-        maxLength={numberOfDigits}
-        inputMode="text"
-        textContentType="username"
-        ref={inputRef}
-        autoCapitalize="characters"
-        autoFocus={autoFocus}
-        secureTextEntry={secureTextEntry}
-        autoComplete={"username"}
-        aria-disabled={disabled}
-        editable={!disabled}
-        testID="otp-input-hidden"
-        onFocus={handleFocusCustomKeyboard}
-        onBlur={handleBlurCustomKeyboard}
-        {...textInputProps}
-        style={[styles.hiddenInput, textInputProps?.style]}
-        inputAccessoryViewID="inputAccessoryView"
-      />
-
-      {isCustomKeyboardVisible && (
-        <CustomKeyboard onKeyPress={handleTextChange} />
-      )}
-      {Platform.OS === "ios" && <InputAccessoryViewiOS title={"Done"} />}
-    </View>
+      <View>
+        {isCustomKeyboardVisible && (
+          <CustomKeyboard onKeyPress={handleTextChange} />
+        )}
+        {Platform.OS === "ios" && <InputAccessoryViewiOS title={"Done"} />}
+      </View>
+    </>
   );
 });

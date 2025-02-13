@@ -627,7 +627,7 @@ function PlayGameScreen() {
         </XStack>
         <YStack h={"$3"} />
 
-        <YStack justifyContent="center" mx={"$4"}>
+        <YStack justifyContent="center" >
           <OtpInput
             ref={inputRef}
             numberOfDigits={parseInt(wordLength)}
