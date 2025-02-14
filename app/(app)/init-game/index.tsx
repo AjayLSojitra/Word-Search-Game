@@ -48,6 +48,7 @@ import { DeviceType, deviceType } from "expo-device";
 const BlurView = Animated.createAnimatedComponent(_BlurView);
 
 function InitGameScreen() {
+  const currentAlphabets = alphabets();
   const languageData =
     contents.initGameScreenSelectedLanguage?.[
       global?.currentSelectedLanguage ?? "English"
@@ -103,7 +104,7 @@ function InitGameScreen() {
 
   const redirectToNextScreenAfterAdmobInterstitial = () => {
     router.push(
-      `./countdown?alphabet=${alphabets[selectedAlphabetIndex]}&&wordLength=${wordLengths[selectedWordLengthIndex]}&&duration=${durations[selectedDurationIndex]}`
+      `./countdown?alphabet=${currentAlphabets[selectedAlphabetIndex]}&&wordLength=${wordLengths[selectedWordLengthIndex]}&&duration=${durations[selectedDurationIndex]}`
     );
   };
 
@@ -268,11 +269,11 @@ function InitGameScreen() {
                 parallaxScrollingScale: 0.9,
                 parallaxScrollingOffset: 50,
               }}
-              data={alphabets}
+              data={currentAlphabets}
               renderItem={({ index }) => (
                 <SBItem
                   index={index}
-                  value={alphabets[index]}
+                  value={currentAlphabets[index]}
                   selectedIndex={selectedAlphabetIndex}
                   onPress={() => {
                     setSelectedAlphabetIndex(index);
@@ -502,7 +503,7 @@ function InitGameScreen() {
               {languageData.challenge_yourself}{" "}
               {wordLengths[selectedWordLengthIndex]}
               {languageData.letter_words_starting_with}{" "}
-              {alphabets[selectedAlphabetIndex]} {languageData.in}{" "}
+              {currentAlphabets[selectedAlphabetIndex]} {languageData.in}{" "}
               {durations[selectedDurationIndex]} {languageData.seconds}
             </SizableText>
           </YStack>

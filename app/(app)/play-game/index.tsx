@@ -55,22 +55,10 @@ function PlayGameScreen() {
     isForTraining?: string;
   } = useGlobalSearchParams();
 
-  const [textInputValue, setTextInputValue] = useState("");
-  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
-
-  const handleTextInputChange = (text) => {
-    setTextInputValue(text);
-  };
-
-  const handleKeyPress = (key) => {
-    setTextInputValue(textInputValue + key);
-  };
-
   const languageData =
     contents.welcomeScreenSelectedLanguage?.[
       global?.currentSelectedLanguage ?? "English"
     ];
-  const selectedLanguage = global?.currentSelectedLanguage ?? "English";
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const scrollViewRef = useRef<any>(null);
@@ -627,7 +615,7 @@ function PlayGameScreen() {
         </XStack>
         <YStack h={"$3"} />
 
-        <YStack justifyContent="center" >
+        <YStack justifyContent="center">
           <OtpInput
             ref={inputRef}
             numberOfDigits={parseInt(wordLength)}

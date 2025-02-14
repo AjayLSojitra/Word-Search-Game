@@ -1,19 +1,11 @@
 import { forwardRef, useImperativeHandle, useState } from "react";
-import {
-  Keyboard,
-  Platform,
-  TextInput,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  View,
-  ViewStyle,
-} from "react-native";
+import { Platform, TextInput, View, ViewStyle } from "react-native";
 import { useOtpInput } from "./use-otp-input";
 import { styles } from "./otp-input.styles";
 import { VerticalStick } from "./vertical-stick";
 import { OtpInputProps, OtpInputRef } from "./otp-input.types";
 import useResponsiveWidth from "@modules/shared/hooks/useResponsiveWidth";
-import { SizableText, YStack } from "tamagui";
+import { SizableText } from "tamagui";
 import TouchableScale from "@design-system/components/shared/touchable-scale";
 import InputAccessoryViewiOS from "@modules/shared/components/input-accessory-view-details";
 import CustomKeyboard from "@modules/shared/components/custom-keyboard/CustomKeyboard";
@@ -106,7 +98,17 @@ export const OtpInput = forwardRef<OtpInputRef, OtpInputProps>((props, ref) => {
 
     return stylesArray;
   };
-
+  const handleKeyPress = (key: string) => {
+    let updatedText = text;
+    if (key === "Backspace") {
+      updatedText = updatedText.slice(0, -1); // Remove last character
+    } else if (key === "Space") {
+      updatedText += " "; // Add space
+    } else {
+      updatedText += key; // Add the typed key
+    }
+    handleTextChange(updatedText); // Update the text in the OTP input
+  };
   const renderOtpInputs = () => {
     const isEnglish = selectedLanguage === "English"; // Check for the language
 
@@ -149,14 +151,13 @@ export const OtpInput = forwardRef<OtpInputRef, OtpInputProps>((props, ref) => {
           );
         });
     } else {
-      // For non-English language, render a single TouchableScale with combined characters
       const otpString = text
         .split("")
         .map((char, index) => {
           if (index === 0) return alphabet; // Show alphabet on the first index
           return char && secureTextEntry ? "•" : char ?? "-"; // Render dots or characters
         })
-        .join(""); // Combine all characters into one string
+        .join("");
 
       return (
         <View
@@ -174,16 +175,14 @@ export const OtpInput = forwardRef<OtpInputRef, OtpInputProps>((props, ref) => {
               color={text ? "$primary" : "$blueGray.400"}
               fontWeight={"$bold900"}
             >
-              {text[0] ? text[0] : alphabet}{" "}
-              {/* Display the first character as alphabet */}
+              {text[0] ? text[0] : alphabet}
               {text
                 .slice(1)
                 .split("")
                 .map((char, index) =>
                   char && secureTextEntry ? "•" : char ?? "-"
                 )
-                .join("")}{" "}
-              {/* Display remaining characters with secure text entry if necessary */}
+                .join("")}
             </SizableText>
           </TouchableScale>
         </View>
@@ -197,6 +196,31 @@ export const OtpInput = forwardRef<OtpInputRef, OtpInputProps>((props, ref) => {
         <View style={[styles.inputsContainer, inputsContainerStyle]}>
           {renderOtpInputs()}
         </View>
+        <View
+          style={{
+            borderWidth: 1,
+            borderRadius: 8,
+            backgroundColor: "#f5f5f5",
+            height: 60,
+            justifyContent: "center",
+            alignItems: "center",
+            paddingHorizontal: 10,
+            width: responsiveWidth / numberOfDigits - 12,
+          }}
+        >
+          <SizableText
+            size={numberOfDigits > 6 ? "$hmd" : "$hlg"}
+            lineHeight={numberOfDigits > 6 ? 30 : 40}
+            color={text ? "$primary" : "$blueGray.400"}
+            fontWeight={"$bold900"}
+          >
+            {text
+              .split("")
+              .map((char, index) =>
+                secureTextEntry ? "•" : char ?? (index === 0 ? alphabet : "-")
+              )}
+          </SizableText>
+        </View>
         <TextInput
           value={text}
           onChangeText={handleTextChange}
@@ -207,8 +231,6 @@ export const OtpInput = forwardRef<OtpInputRef, OtpInputProps>((props, ref) => {
           autoCapitalize="characters"
           autoFocus={autoFocus}
           secureTextEntry={secureTextEntry}
-          autoComplete={"username"}
-          aria-disabled={disabled}
           editable={!disabled}
           testID="otp-input-hidden"
           onFocus={handleFocusCustomKeyboard}
@@ -216,14 +238,15 @@ export const OtpInput = forwardRef<OtpInputRef, OtpInputProps>((props, ref) => {
           {...textInputProps}
           style={[styles.hiddenInput, textInputProps?.style]}
           inputAccessoryViewID="inputAccessoryView"
+          autoComplete={"username"}
+          aria-disabled={disabled}
+          blurOnSubmit={false}
         />
       </View>
-      <View>
-        {isCustomKeyboardVisible && (
-          <CustomKeyboard onKeyPress={handleTextChange} />
-        )}
-        {Platform.OS === "ios" && <InputAccessoryViewiOS title={"Done"} />}
-      </View>
+      {isCustomKeyboardVisible && (
+        <CustomKeyboard onKeyPress={handleKeyPress} />
+      )}
+      {Platform.OS === "ios" && <InputAccessoryViewiOS title={"Done"} />}
     </>
   );
 });
