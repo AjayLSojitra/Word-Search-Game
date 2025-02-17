@@ -1,38 +1,30 @@
-import { forwardRef, useImperativeHandle, useState } from "react";
-import { Platform, TextInput, View, ViewStyle } from "react-native";
+import { forwardRef, useImperativeHandle } from "react";
+import { Platform, View, ViewStyle } from "react-native";
 import { useOtpInput } from "./use-otp-input";
 import { styles } from "./otp-input.styles";
 import { VerticalStick } from "./vertical-stick";
 import { OtpInputProps, OtpInputRef } from "./otp-input.types";
 import useResponsiveWidth from "@modules/shared/hooks/useResponsiveWidth";
-import { SizableText } from "tamagui";
+import { SizableText, YStack } from "tamagui";
 import TouchableScale from "@design-system/components/shared/touchable-scale";
 import InputAccessoryViewiOS from "@modules/shared/components/input-accessory-view-details";
 import CustomKeyboard from "@modules/shared/components/custom-keyboard/CustomKeyboard";
+import ResponsiveContent from "@modules/shared/responsive-content";
 
 export const OtpInput = forwardRef<OtpInputRef, OtpInputProps>((props, ref) => {
   const {
-    models: { text, inputRef, focusedInputIndex, hasCursor },
-    actions: {
-      clear,
-      handlePress,
-      handleTextChange,
-      focus,
-      handleFocus,
-      handleBlur,
-    },
+    models: { text, focusedInputIndex, hasCursor },
+    actions: { clear, handlePress, handleTextChange, focus },
     forms: { setTextWithRef },
   } = useOtpInput(props);
   const {
     disabled,
     numberOfDigits = 6,
-    autoFocus = true,
     hideStick,
     focusColor = "#A4D0A4",
     focusStickBlinkingDuration,
     secureTextEntry = false,
     theme = {},
-    textInputProps,
     alphabet,
   } = props;
   const {
@@ -45,24 +37,12 @@ export const OtpInput = forwardRef<OtpInputRef, OtpInputProps>((props, ref) => {
     disabledPinCodeContainerStyle,
   } = theme;
   const responsiveWidth = useResponsiveWidth();
-  const [isCustomKeyboardVisible, setIsCustomKeyboardVisible] = useState(false);
   useImperativeHandle(ref, () => ({ clear, focus, setValue: setTextWithRef }));
   const selectedLanguage = global?.currentSelectedLanguage ?? "English";
   const widthStyle =
     selectedLanguage === "English"
       ? (responsiveWidth - 42) / numberOfDigits - 2
       : responsiveWidth / 1.5;
-
-  const handleFocusCustomKeyboard = () => {
-    setIsCustomKeyboardVisible(true);
-    handleFocus();
-  };
-
-  // When input is blurred, hide the custom keyboard
-  const handleBlurCustomKeyboard = () => {
-    setIsCustomKeyboardVisible(false);
-    handleBlur();
-  };
 
   const generatePinCodeContainerStyle = (
     isFocusedInput: boolean,
@@ -120,7 +100,6 @@ export const OtpInput = forwardRef<OtpInputRef, OtpInputProps>((props, ref) => {
           const char = text[index];
           const isFocusedInput =
             index === focusedInputIndex && !disabled && Boolean(hasCursor);
-
           return (
             <TouchableScale
               key={`${char}-${index}`}
@@ -196,56 +175,13 @@ export const OtpInput = forwardRef<OtpInputRef, OtpInputProps>((props, ref) => {
         <View style={[styles.inputsContainer, inputsContainerStyle]}>
           {renderOtpInputs()}
         </View>
-        <View
-          style={{
-            borderWidth: 1,
-            borderRadius: 8,
-            backgroundColor: "#f5f5f5",
-            height: 60,
-            justifyContent: "center",
-            alignItems: "center",
-            paddingHorizontal: 10,
-            width: responsiveWidth / numberOfDigits - 12,
-          }}
-        >
-          <SizableText
-            size={numberOfDigits > 6 ? "$hmd" : "$hlg"}
-            lineHeight={numberOfDigits > 6 ? 30 : 40}
-            color={text ? "$primary" : "$blueGray.400"}
-            fontWeight={"$bold900"}
-          >
-            {text
-              .split("")
-              .map((char, index) =>
-                secureTextEntry ? "•" : char ?? (index === 0 ? alphabet : "-")
-              )}
-          </SizableText>
-        </View>
-        <TextInput
-          value={text}
-          onChangeText={handleTextChange}
-          maxLength={numberOfDigits}
-          inputMode="text"
-          textContentType="username"
-          ref={inputRef}
-          autoCapitalize="characters"
-          autoFocus={autoFocus}
-          secureTextEntry={secureTextEntry}
-          editable={!disabled}
-          testID="otp-input-hidden"
-          onFocus={handleFocusCustomKeyboard}
-          onBlur={handleBlurCustomKeyboard}
-          {...textInputProps}
-          style={[styles.hiddenInput, textInputProps?.style]}
-          inputAccessoryViewID="inputAccessoryView"
-          autoComplete={"username"}
-          aria-disabled={disabled}
-          blurOnSubmit={false}
-        />
       </View>
-      {isCustomKeyboardVisible && (
-        <CustomKeyboard onKeyPress={handleKeyPress} />
-      )}
+      <ResponsiveContent>
+        <YStack marginTop={16}>
+          <CustomKeyboard onKeyPress={handleKeyPress} />
+        </YStack>
+      </ResponsiveContent>
+
       {Platform.OS === "ios" && <InputAccessoryViewiOS title={"Done"} />}
     </>
   );

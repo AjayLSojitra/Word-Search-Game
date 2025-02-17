@@ -1,11 +1,5 @@
-import { SizableText, View, XStack, YStack } from "tamagui";
-import {
-  FlatList,
-  Image,
-  Keyboard,
-  ListRenderItem,
-  TextInput,
-} from "react-native";
+import { SizableText, XStack, YStack } from "tamagui";
+import { FlatList, Image, ListRenderItem } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import ScrollHeader from "@design-system/components/navigation/scroll-header";
 import {
@@ -186,8 +180,7 @@ function PlayGameScreen() {
             redirectToNextScreenAfterAdmobInterstitial();
           }
         } else {
-          // setTimerCountdown(timerRef.current); //TODO
-          stopTimer();
+          setTimerCountdown(timerRef.current);
         }
       }
     }, 1000);
@@ -614,60 +607,53 @@ function PlayGameScreen() {
           </XStack>
         </XStack>
         <YStack h={"$3"} />
-
-        <YStack justifyContent="center">
-          <OtpInput
-            ref={inputRef}
-            numberOfDigits={parseInt(wordLength)}
-            focusColor="black"
-            hideStick
-            onFilled={(text) => validateInputs(text)}
-            alphabet={alphabet}
-            autoFocus
+        {isForTraining === "Yes" && (
+          <>
+            <YStack h={"$4"} />
+            <SizableText
+              mx={"$4"}
+              size={"$hxs"}
+              color={"$white"}
+              fontWeight={"$medium"}
+              textAlign="center"
+            >
+              {languageData.train_yourself_to_write_as_many}
+              {"  "}
+              {wordLength}
+              {languageData.letter_words_starting_with}
+              {"  "}
+              {`${alphabet}`}.
+            </SizableText>
+            <YStack h={"$4"} />
+          </>
+        )}
+        <YStack height={150} marginTop={"$4"}>
+          <FlatList
+            scrollEnabled={true}
+            ref={scrollViewRef}
+            horizontal={false}
+            keyboardShouldPersistTaps={"handled"}
+            numColumns={1000}
+            columnWrapperStyle={{ flexWrap: "wrap", flex: 1 }}
+            showsVerticalScrollIndicator={false}
+            ItemSeparatorComponent={renderSeparator}
+            ListEmptyComponent={renderEmptyState}
+            data={spellItems}
+            renderItem={renderItem}
+            keyExtractor={keyExtractor}
           />
         </YStack>
       </ResponsiveContent>
-      {isForTraining === "Yes" && (
-        <>
-          <YStack h={"$2"} />
-          <SizableText
-            mx={"$4"}
-            size={"$hxs"}
-            color={"$white"}
-            fontWeight={"$medium"}
-            textAlign="center"
-          >
-            {languageData.train_yourself_to_write_as_many}
-            {"  "}
-            {wordLength}
-            {languageData.letter_words_starting_with}
-            {"  "}
-            {`${alphabet}`}.
-          </SizableText>
-        </>
-      )}
-      <ResponsiveContent
-        flex={1}
-        m={"$2"}
-        alignItems="center"
-        justifyContent="center"
-        onPress={() => {
-          Keyboard.dismiss();
-        }}
-      >
-        <FlatList
-          scrollEnabled={true}
-          ref={scrollViewRef}
-          horizontal={false}
-          keyboardShouldPersistTaps={"handled"}
-          numColumns={1000}
-          columnWrapperStyle={{ flexWrap: "wrap", flex: 1 }}
-          showsVerticalScrollIndicator={false}
-          ItemSeparatorComponent={renderSeparator}
-          ListEmptyComponent={renderEmptyState}
-          data={spellItems}
-          renderItem={renderItem}
-          keyExtractor={keyExtractor}
+
+      <ResponsiveContent flex={1} justifyContent="flex-end">
+        <OtpInput
+          ref={inputRef}
+          numberOfDigits={parseInt(wordLength)}
+          focusColor="black"
+          hideStick
+          onFilled={(text) => validateInputs(text)}
+          alphabet={alphabet}
+          autoFocus
         />
       </ResponsiveContent>
       <YStack alignItems="center">

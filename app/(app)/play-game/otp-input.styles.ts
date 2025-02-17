@@ -9,7 +9,8 @@ export const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "space-between",
     marginHorizontal: 18,
-  },
+    marginBottom:8
+  },  
   codeContainer: {
     borderWidth: 1,
     borderRadius: 12,

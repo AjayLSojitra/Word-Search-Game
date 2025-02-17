@@ -1,4 +1,4 @@
-import { SizableText, XStack, YStack } from "tamagui";
+import { SizableText, YStack } from "tamagui";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import BasicButton from "@design-system/components/buttons/basic-button";
 import { Image, Platform } from "react-native";
@@ -166,13 +166,11 @@ function WelcomeScreen() {
   );
 
   const redirectToPlayGameScreen = () => {
-    const minAlphabets = 0;
-    const maxAlphabets = 25;
-    const randomAlphabet =
-      Math.floor(Math.random() * (maxAlphabets - minAlphabets + 1)) +
-      minAlphabets;
+    const alphabetList = alphabets();
+    const randomAlphabetIndex = Math.floor(Math.random() * alphabetList.length);
+    const randomAlphabet = alphabetList[randomAlphabetIndex];
     router.push(
-      `./play-game?alphabet=${alphabets[randomAlphabet]}&&wordLength=${randomWordLength}&&duration=${duration}&&isForTraining=Yes`
+      `./play-game?alphabet=${randomAlphabet}&&wordLength=${randomWordLength}&&duration=${duration}&&isForTraining=Yes`
     );
   };
 
@@ -293,15 +291,14 @@ function WelcomeScreen() {
               if (global?.showAds && isLoadedRewarded) {
                 setShowAdsConfirmationPopup(true);
               } else {
-                // redirectToPlayGameScreen
-                const minAlphabets = 0;
-                const maxAlphabets = 25;
-                const randomAlphabet =
-                  Math.floor(
-                    Math.random() * (maxAlphabets - minAlphabets + 1)
-                  ) + minAlphabets;
+                const alphabetList = alphabets();
+                const randomAlphabetIndex = Math.floor(
+                  Math.random() * alphabetList.length
+                );
+                const randomAlphabet = alphabetList[randomAlphabetIndex];
+
                 router.push(
-                  `./play-game?alphabet=${alphabets[randomAlphabet]}&&wordLength=${randomLength}&&duration=${dur}&&isForTraining=Yes`
+                  `./play-game?alphabet=${randomAlphabet}&&wordLength=${randomLength}&&duration=${dur}&&isForTraining=Yes`
                 );
               }
             }}

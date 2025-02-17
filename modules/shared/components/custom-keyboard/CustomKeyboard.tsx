@@ -1,5 +1,5 @@
 import TouchableScale from "@design-system/components/shared/touchable-scale";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 
 const layouts: { [key: string]: string[][] } = {
@@ -73,12 +73,10 @@ interface CustomKeyboardProps {
 
 const CustomKeyboard: React.FC<CustomKeyboardProps> = ({ onKeyPress }) => {
   const currentLanguage = global?.currentSelectedLanguage ?? "English";
-  const [keyboardLayout, setKeyboardLayout] = useState<string[][]>([]);
+  const [keyboardLayout] = useState<string[][]>(
+    layouts[currentLanguage] || layouts.English
+  );
   const [isNewWord, setIsNewWord] = useState(true);
-
-  useEffect(() => {
-    setKeyboardLayout(layouts[currentLanguage] || layouts.English);
-  }, [currentLanguage]);
 
   const getSpaceKeyText = (currentLanguage: string) => {
     switch (currentLanguage) {
@@ -162,7 +160,7 @@ const styles = StyleSheet.create({
   keyboard: {
     padding: 10,
     backgroundColor: "#d5d6e0", // Light background for the keyboard
-    marginTop: 10,
+    marginTop: 20,
   },
   row: {
     flexDirection: "row", // Arrange keys horizontally
