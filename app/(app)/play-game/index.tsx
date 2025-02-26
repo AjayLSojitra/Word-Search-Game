@@ -56,10 +56,11 @@ function PlayGameScreen() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const scrollViewRef = useRef<any>(null);
-  const words = wordfiles.english;
+  const currentLanguage = global?.currentSelectedLanguage ?? "English";
+  const words = wordfiles[currentLanguage];
+
   const [spellItems, setSpellItems] = useState<SpellInputs[]>([]);
   const inputRef = useRef<OtpInputRef>(null);
-
   const [sound, setSound] = useState<Audio.Sound>();
   async function playTimerOverWarningCountdownSound() {
     if (isSoundEnabled.current) {
