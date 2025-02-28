@@ -317,7 +317,7 @@ function ScoreCardScreen() {
             <YStack h={"$8"} />
             <XStack justifyContent="center">
               <BasicButton
-                width={responsiveWidth / 3}
+                width={responsiveWidth / 2.5}
                 height={40}
                 linearGradientProps={{ colors: ["#05958f", "#05958f"] }}
                 onPress={() => {

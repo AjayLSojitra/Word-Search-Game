@@ -65,7 +65,6 @@ export const alphabets = () => {
         "स",
         "ह",
         "क्ष",
-        "त्र",
         "ज्ञ",
       ];
     case "Chinese":

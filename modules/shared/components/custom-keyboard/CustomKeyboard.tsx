@@ -14,7 +14,7 @@ const layouts: { [key: string]: string[][] } = {
     ["ऑ", "अं", "अः", "क", "ख", "ग", "घ", "च", "छ", "ज"],
     ["झ", "ट", "ठ", "ड", "ढ", "ण", "त", "थ", "द", "ध"],
     ["न", "प", "फ", "ब", "भ", "म", "य", "र", "ल", "व"],
-    ["श", "ष", "स", "ह", "क्ष", "त्र", "ज्ञ", "Backspace"],
+    ["श", "ष", "स", "ह", "क्ष", "ज्ञ", "Backspace"],
     ["Space"],
   ],
   Chinese: [
@@ -54,8 +54,8 @@ const layouts: { [key: string]: string[][] } = {
     ["Space"],
   ],
   German: [
-    ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
-    ["A", "S", "D", "F", "G", "H", "J", "K", "L", "Ö", "Ä"],
+    ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "A"],
+    ["S", "D", "F", "G", "H", "J", "K", "L", "Ö", "Ä"],
     ["Z", "X", "C", "V", "B", "N", "M", "Backspace"],
     ["Space"],
   ],
@@ -110,12 +110,7 @@ const CustomKeyboard: React.FC<CustomKeyboardProps> = ({ onKeyPress }) => {
       setIsNewWord(true);
     } else {
       if (isNewWord) {
-        // Only apply toUpperCase() for English
-        if (currentLanguage === "English") {
-          onKeyPress(key.toUpperCase());
-        } else {
-          onKeyPress(key);
-        }
+        onKeyPress(key);
       }
     }
   };
