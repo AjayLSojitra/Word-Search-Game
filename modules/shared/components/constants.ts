@@ -1,3 +1,5 @@
 //FOR LOCAL STORAGE KEYS
 export const SOUND_KEY = "SOUND_KEY";
 export const LANGUAGE_KEY = "LANGUAGE_KEY";
+export const CATEGORIES_KEY = "CATEGORIES_KEY";
+

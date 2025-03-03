@@ -1,6 +1,8 @@
 import TouchableScale from "@design-system/components/shared/touchable-scale";
 import React, { useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Dimensions } from "react-native";
+
+const { width: screenWidth } = Dimensions.get("window");
 
 const layouts: { [key: string]: string[][] } = {
   English: [
@@ -10,18 +12,18 @@ const layouts: { [key: string]: string[][] } = {
     ["Space"],
   ],
   Hindi: [
-    ["अ", "आ", "इ", "ई", "उ", "ऊ", "ऋ", "ए", "ऐ", "ओ"],
-    ["ऑ", "अं", "अः", "क", "ख", "ग", "घ", "च", "छ", "ज"],
-    ["झ", "ट", "ठ", "ड", "ढ", "ण", "त", "थ", "द", "ध"],
-    ["न", "प", "फ", "ब", "भ", "म", "य", "र", "ल", "व"],
-    ["श", "ष", "स", "ह", "क्ष", "ज्ञ", "Backspace"],
+    ["अ", "आ", "इ", "ई", "उ", "ऊ", "ए", "ऐ", "ओ", "ऑ"],
+    ["क", "ख", "ग", "घ", "च", "छ", "ज", "झ", "अं", "अः"],
+    ["ट", "ठ", "ड", "ढ", "ण", "त", "थ", "द", "ध", "न"],
+    ["प", "फ", "ब", "भ", "म", "य", "र", "ल", "व", "श"],
+    ["ष", "स", "ह", "क्ष", "ज्ञ", "ऋ", "Backspace"],
     ["Space"],
   ],
   Chinese: [
-    ["阿", "比", "西", "的", "伊", "艾", "吉", "哈", "杰", "开", "域"],
-    ["拉", "际", "年", "空", "门", "天", "界", "光", "辰", "宇", "星"],
-    ["尔", "姆", "娜", "哦", "屁", "提", "优", "维", "达", "克"],
-    ["Space", "Backspace"],
+    ["阿", "比", "西", "的", "伊", "艾", "吉", "哈", "杰", "开"],
+    ["域", "拉", "际", "年", "空", "门", "天", "界", "光", "辰"],
+    ["宇", "星", "尔", "姆", "娜", "哦", "屁", "提", "优"],
+    ["维", "达", "Space", "克", "Backspace"],
   ],
   Spanish: [
     ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
@@ -54,9 +56,9 @@ const layouts: { [key: string]: string[][] } = {
     ["Space"],
   ],
   German: [
-    ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "A"],
-    ["S", "D", "F", "G", "H", "J", "K", "L", "Ö", "Ä"],
-    ["Z", "X", "C", "V", "B", "N", "M", "Backspace"],
+    ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
+    ["A", "S", "D", "F", "G", "H", "J", "K", "L", "Ö"],
+    ["Z", "X", "C", "V", "B", "N", "M", "Ä", "Backspace"],
     ["Space"],
   ],
   Urdu: [
@@ -114,6 +116,8 @@ const CustomKeyboard: React.FC<CustomKeyboardProps> = ({ onKeyPress }) => {
       }
     }
   };
+
+  const keyWidth = (screenWidth - 58) / 10;
   return (
     <View style={styles.keyboard}>
       {keyboardLayout.map((row, rowIndex) => (
@@ -124,6 +128,7 @@ const CustomKeyboard: React.FC<CustomKeyboardProps> = ({ onKeyPress }) => {
               onPress={() => handleKeyPress(key)}
               style={[
                 styles.key,
+                { width: key === "Space" ? 170 : keyWidth },
                 key === "Backspace"
                   ? styles.backspaceKey
                   : key === "Space"
@@ -160,11 +165,11 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: "row", // Arrange keys horizontally
     justifyContent: "center", // Center keys in the row
-    marginBottom: 10, // Space between rows
+    marginBottom: 2, // Space between rows
   },
   key: {
-    width: 34, // Width of each key
-    height: 50, // Height of each key
+    // width: 30, // Width of each key
+    height: 45, // Height of each key
     backgroundColor: "#ffffff", // White background for keys
     justifyContent: "center",
     alignItems: "center",

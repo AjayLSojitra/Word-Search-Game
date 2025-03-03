@@ -6,6 +6,7 @@ const contents = {
   feedbackScreenSelectedLanguage: require("./feedback-screen-localization.json"),
   scoreCardScreenSelectedLanguage: require("./score-card-screen-localization.json"),
   timeOverScreenSelectedLanguage: require("./time-over-screen-localization.json"),
+  categories: require("./categories.json")
 };
 
 export default contents;

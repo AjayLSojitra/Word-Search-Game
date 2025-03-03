@@ -34,7 +34,7 @@ const images = {
   mood5: require("./mood-5.png"),
   feedback: require("./feedback.png"),
   language: require("./language.png"),
-
+  categories : require("./menu.png")
 };
 
 export default images;

@@ -18,12 +18,24 @@ import {
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, onSnapshot } from "firebase/firestore";
 import { AppManifest } from "../../app-manifest";
-import { LANGUAGE_KEY } from "@modules/shared/components/constants";
+import { CATEGORIES_KEY, LANGUAGE_KEY } from "@modules/shared/components/constants";
 import LocalStorage from "@utils/local-storage";
+import contents from "@assets/contents/contents";
+import { triggerEvent } from "@modules/shared/components/use-triggered-event";
 
 function SplashScreen() {
   const router = useRouter();
   const isRedirectedToNextScreen = useRef<boolean>(false);
+
+  function fetchStaticCategoriesOnFallback() {
+    LocalStorage.setItemDefault(
+      CATEGORIES_KEY,
+      JSON.stringify(contents.categories),
+      () => {
+        triggerEvent("CategoriesDataAdded");
+      }
+    );
+  }
 
   const fetchCurrentLanguage = () => {
     LocalStorage.getItemDefault(LANGUAGE_KEY).then((val) => {
@@ -37,6 +49,7 @@ function SplashScreen() {
 
   useEffect(() => {
     fetchCurrentLanguage();
+    fetchStaticCategoriesOnFallback();
   });
 
   function loadFirebaseApp() {

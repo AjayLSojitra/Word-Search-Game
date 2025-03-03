@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { DeviceEventEmitter } from "react-native";
 
 // Define event types
-export type EVENT_TYPE = "languageSelection";
+export type EVENT_TYPE = "languageSelection" | "CategoriesDataAdded";
 
 // Trigger event function
 export const triggerEvent = (type: EVENT_TYPE, data?: any) => {

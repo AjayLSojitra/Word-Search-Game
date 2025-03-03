@@ -1,4 +1,4 @@
-import { SizableText, YStack } from "tamagui";
+import { SizableText, XStack, YStack } from "tamagui";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import BasicButton from "@design-system/components/buttons/basic-button";
 import { Image, Platform } from "react-native";
@@ -70,7 +70,7 @@ function WelcomeScreen() {
       ? TestIds.INTERSTITIAL_VIDEO
       : global?.interstitialAd ?? staticInterstitialAd
   );
-  const redirectTo = useRef<"LEVEL-SELECTION-SCREEN" | "SETTING-SCREEN">();
+  const redirectTo = useRef<"LEVEL-SELECTION-SCREEN" | "SETTING-SCREEN" | "CATEGORY-SCREEN">();
 
   useEffect(() => {
     OneSignal.Notifications.requestPermission(true);
@@ -133,6 +133,10 @@ function WelcomeScreen() {
 
     if (redirectTo.current === "SETTING-SCREEN") {
       router.push("./settings");
+    }
+
+    if (redirectTo.current === "CATEGORY-SCREEN") {
+      router.push("./categories");
     }
   };
 
@@ -270,6 +274,45 @@ function WelcomeScreen() {
                 textAlign="center"
               >
                 {languageData.play_game}
+              </SizableText>
+            </YStack>
+          </BasicButton>
+          <YStack h={"$5"} />
+          <BasicButton
+            height={56}
+            linearGradientProps={{ colors: ["#1c2e4a", "#1c2e4a"] }}
+            onPress={() => {
+              redirectTo.current = "CATEGORY-SCREEN";
+              if (isLoaded && canShowAdmobInteratitial()) {
+                show();
+              } else {
+                // No advert ready to show yet
+                redirectToNextScreenAfterAdmobInterstitial();
+              }
+            }}
+          >
+            <YStack width={responsiveWidth - 60}>
+              <Image
+                key={"categories"}
+                source={images.categories}
+                style={{
+                  height: isPhoneDevice ? 22 : 33,
+                  width: isPhoneDevice ? 22 : 33,
+                  tintColor: "white",
+                  zIndex: 1,
+                  position: "absolute",
+                  left: isPhoneDevice ? 18 : 28,
+                }}
+                alt={"categories"}
+              />
+              <SizableText
+                fontSize={isPhoneDevice ? "$hsm" : "$hmd"}
+                lineHeight={isPhoneDevice ? 30 : 40}
+                color={"$white"}
+                fontWeight={"700"}
+                textAlign="center"
+              >
+                {languageData.pick_category}
               </SizableText>
             </YStack>
           </BasicButton>

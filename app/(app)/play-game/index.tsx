@@ -181,7 +181,8 @@ function PlayGameScreen() {
             redirectToNextScreenAfterAdmobInterstitial();
           }
         } else {
-          setTimerCountdown(timerRef.current);
+          // setTimerCountdown(timerRef.current); //TODO
+          stopTimer();
         }
       }
     }, 1000);
