@@ -14,10 +14,12 @@ function CountDownScreen() {
     alphabet = "",
     wordLength = "0",
     duration = "0",
+    item = ""
   }: {
     alphabet?: string;
     wordLength?: string;
     duration?: string;
+    item?: string
   } = useGlobalSearchParams();
   const insets = useSafeAreaInsets();
   const [sound, setSound] = useState<Audio.Sound>();
@@ -73,7 +75,7 @@ function CountDownScreen() {
         onAnimationLoadeda={() => {}}
         onAnimationFinisha={() => {
           router.replace(
-            `./play-game?alphabet=${alphabet}&&wordLength=${wordLength}&&duration=${duration}`
+            `./play-game?alphabet=${alphabet}&&wordLength=${wordLength}&&duration=${duration}&&item=${item}`
           );
         }}
       />

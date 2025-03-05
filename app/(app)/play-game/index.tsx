@@ -33,6 +33,7 @@ import { staticInterstitialAd } from "@modules/shared/components/helpers";
 import AdsNotifyDialog from "@modules/shared/components/confirmation-dialog/ads-notify-dialog";
 import useKeyboardAnimatedHeight from "@modules/shared/hooks/use-keyboard-animated-height";
 import contents from "@assets/contents/contents";
+import { CategoryInput } from "./category-input";
 
 type RenderItem = ListRenderItem<SpellInputs>;
 
@@ -42,11 +43,13 @@ function PlayGameScreen() {
     wordLength = "0",
     duration = "0",
     isForTraining = "No",
+    item = "",
   }: {
     alphabet?: string;
     wordLength?: string;
     duration?: string;
     isForTraining?: string;
+    item?: string;
   } = useGlobalSearchParams();
 
   const languageData =
@@ -357,6 +360,11 @@ function PlayGameScreen() {
       .length;
   }, [spellItems]);
 
+  const validateCategoriesInputs = (inputValues: string) => {
+    const inputSpell = inputValues;
+    console.log("inputSpell :", inputSpell);
+  };
+
   const validateInputs = (inputValues: string) => {
     const inputSpell = inputValues;
 
@@ -541,10 +549,13 @@ function PlayGameScreen() {
                 fontWeight={"$bold900"}
                 textAlign="center"
               >
-                {` / ${formattedValue(parseInt(duration))}`}
+                {` / ${
+                  formattedValue(parseInt(duration)) || formattedValue(180)
+                }`}
               </SizableText>
             </SizableText>
           </XStack>
+
           <YStack flex={1} />
           {canShowHalfTimeIntervalWarning() && (
             <XStack
@@ -648,15 +659,28 @@ function PlayGameScreen() {
       </ResponsiveContent>
 
       <ResponsiveContent flex={1} justifyContent="flex-end">
-        <OtpInput
-          ref={inputRef}
-          numberOfDigits={parseInt(wordLength)}
-          focusColor="black"
-          hideStick
-          onFilled={(text) => validateInputs(text)}
-          alphabet={alphabet}
-          autoFocus
-        />
+        {alphabet ? (
+          <OtpInput
+            ref={inputRef}
+            numberOfDigits={parseInt(wordLength)}
+            focusColor="black"
+            hideStick
+            onFilled={(text) => validateInputs(text)}
+            alphabet={alphabet}
+            autoFocus
+            item=""
+          />
+        ) : (
+          <CategoryInput
+            ref={inputRef}
+            focusColor="black"
+            hideStick
+            autoFocus
+            item={item}
+            alphabet=""
+            onFilled={(text) => validateCategoriesInputs(text)} // Use the `text` in your parent function
+          />
+        )}
       </ResponsiveContent>
       <YStack alignItems="center">
         {!isShowing && (

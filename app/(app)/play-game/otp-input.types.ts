@@ -13,6 +13,7 @@ export interface OtpInputProps {
   disabled?: boolean;
   textInputProps?: TextInputProps;
   alphabet: string
+  item:string
 }
 
 export interface OtpInputRef {
