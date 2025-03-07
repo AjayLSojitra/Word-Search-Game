@@ -51,7 +51,7 @@ function CategoriesScreen() {
         justifyContent: "center",
         alignItems: "center",
         margin: 10,
-        backgroundColor: "#1c2e4a",
+        backgroundColor: "white",
         padding: 20,
         borderRadius: 10,
       }}
@@ -59,7 +59,7 @@ function CategoriesScreen() {
       <SizableText
         fontSize={16}
         fontWeight={"600"}
-        color={"white"}
+        color={"#1c2e4a"}
         numberOfLines={1}
         adjustsFontSizeToFit
       >

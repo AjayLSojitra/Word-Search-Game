@@ -75,7 +75,7 @@ function CountDownScreen() {
         onAnimationLoadeda={() => {}}
         onAnimationFinisha={() => {
           router.replace(
-            `./play-game?alphabet=${alphabet}&&wordLength=${wordLength}&&duration=${duration}&&item=${item}`
+            `./play-game?alphabet=${alphabet}&&wordLength=${wordLength}&&duration=${duration}&&category=${item}`
           );
         }}
       />

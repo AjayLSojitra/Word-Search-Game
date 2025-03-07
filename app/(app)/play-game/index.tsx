@@ -43,13 +43,13 @@ function PlayGameScreen() {
     wordLength = "0",
     duration = "0",
     isForTraining = "No",
-    item = "",
+    category = "",
   }: {
     alphabet?: string;
     wordLength?: string;
     duration?: string;
     isForTraining?: string;
-    item?: string;
+    category?: string;
   } = useGlobalSearchParams();
 
   const languageData =
@@ -60,7 +60,9 @@ function PlayGameScreen() {
   const router = useRouter();
   const scrollViewRef = useRef<any>(null);
   const currentLanguage = global?.currentSelectedLanguage ?? "English";
-  const words = wordfiles[currentLanguage];
+  const words = alphabet
+    ? wordfiles[currentLanguage] // If alphabet exists, take from wordfiles
+    : contents.englishCategoriesItem[category];
 
   const [spellItems, setSpellItems] = useState<SpellInputs[]>([]);
   const inputRef = useRef<OtpInputRef>(null);
@@ -264,6 +266,11 @@ function PlayGameScreen() {
     []
   );
 
+const [currentWord, setCurrentWord] = useState();
+  const currentCategoryWord = (value) => {
+    setCurrentWord(value);
+  };
+
   const renderItem: RenderItem = useCallback((item) => {
     return <SpellInputCard item={item?.item} />;
   }, []);
@@ -289,7 +296,6 @@ function PlayGameScreen() {
       .filter((item) => item);
 
     const outObj = {};
-
     for (let i = 0; i < textArr.length; i++) {
       const checked = checkWord(textArr[i]);
       const checkedList = Array.isArray(checked) ? checked : [checked];
@@ -360,14 +366,46 @@ function PlayGameScreen() {
       .length;
   }, [spellItems]);
 
+  
   const validateCategoriesInputs = (inputValues: string) => {
     const inputSpell = inputValues;
-    console.log("inputSpell :", inputSpell);
+    const spellCorrectionResult = check(inputSpell);
+      if (spellCorrectionResult.length === 0) {
+        //Check for Duplication (If found duplication Yellow color)
+        if (spellItems.some((item) => item.inputValue === inputSpell)) {
+          //Duplicate Spelling!
+          playWrongSound();
+          setSpellItems([
+            { inputValue: inputSpell, status: "DUPLICATE" },
+            ...spellItems,
+          ]);
+          clearAllInputs();
+          return;
+        }
+
+        //Correct Spelling!
+        playCorrectSound();
+        setSpellItems([
+          { inputValue: inputSpell, status: "CORRECT" },
+          ...spellItems,
+        ]);
+        clearAllInputs();
+        return;
+      } else {
+        //Wrong Spelling!
+        playWrongSound();
+        setSpellItems([
+          { inputValue: inputSpell, status: "WRONG" },
+          ...spellItems,
+        ]);
+        clearAllInputs();
+        return;
+      }
+  
   };
 
   const validateInputs = (inputValues: string) => {
     const inputSpell = inputValues;
-
     const isAnyEmptyInput = inputSpell.length !== parseInt(wordLength);
     if (!isAnyEmptyInput) {
       //Check for first alphabet (If wrong Red Color)
@@ -673,12 +711,14 @@ function PlayGameScreen() {
         ) : (
           <CategoryInput
             ref={inputRef}
+            numberOfDigits={parseInt(currentWord)}
             focusColor="black"
             hideStick
             autoFocus
-            item={item}
+            item={category}
             alphabet=""
             onFilled={(text) => validateCategoriesInputs(text)} // Use the `text` in your parent function
+            currentCategoryItem={currentCategoryWord}
           />
         )}
       </ResponsiveContent>

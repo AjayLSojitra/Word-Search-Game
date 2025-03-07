@@ -14,6 +14,7 @@ export interface OtpInputProps {
   textInputProps?: TextInputProps;
   alphabet: string
   item:string
+  currentCategoryItem?:any
 }
 
 export interface OtpInputRef {

@@ -104,15 +104,15 @@ const CustomKeyboard: React.FC<CustomKeyboardProps> = ({ onKeyPress }) => {
         return "مسافت"; // Space in Urdu
     }
   };
-  const handleKeyPress = (key: string) => {
+  const handleKeyPress = (key) => {
     if (key === "Backspace") {
-      onKeyPress(key);
+      onKeyPress(key);  // Call backspace function
     } else if (key === "Space") {
-      onKeyPress(" ");
-      setIsNewWord(true);
+      onKeyPress(" ");  // Add space to input
+      setIsNewWord(true); // After space, treat it as a new word if needed
     } else {
       if (isNewWord) {
-        onKeyPress(key);
+        onKeyPress(key);  // Add key press to the input
       }
     }
   };

@@ -26,6 +26,7 @@ export const OtpInput = forwardRef<OtpInputRef, OtpInputProps>((props, ref) => {
     secureTextEntry = false,
     theme = {},
     alphabet,
+    onFilled,
   } = props;
   const {
     containerStyle,
@@ -43,7 +44,6 @@ export const OtpInput = forwardRef<OtpInputRef, OtpInputProps>((props, ref) => {
     selectedLanguage === "English"
       ? (responsiveWidth - 42) / numberOfDigits - 2
       : responsiveWidth / 1.5;
-
   const generatePinCodeContainerStyle = (
     isFocusedInput: boolean,
     char: string

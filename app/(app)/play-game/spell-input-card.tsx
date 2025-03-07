@@ -41,7 +41,6 @@ function SpellInputCard({
     }
   }
 
-
   return (
     <YStack
       bg={getBGColor()}
