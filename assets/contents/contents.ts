@@ -7,7 +7,7 @@ const contents = {
   scoreCardScreenSelectedLanguage: require("./score-card-screen-localization.json"),
   timeOverScreenSelectedLanguage: require("./time-over-screen-localization.json"),
   categories: require("./categories.json"),
-  englishCategoriesItem : require("./english-category-item.json")
+  CurrentLanguageCategoriesItem : require("./current-language-category-item.json")
 };
 
 export default contents;

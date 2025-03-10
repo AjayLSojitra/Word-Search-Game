@@ -47,12 +47,12 @@ export const CategoryInput = forwardRef<OtpInputRef, OtpInputProps>(
       focus,
       setValue: setTextWithRef,
     }));
-
-    const languageData = contents.englishCategoriesItem;
+    const selectedLanguage = global?.currentSelectedLanguage ?? "English";
+    const languageData = contents.CurrentLanguageCategoriesItem[selectedLanguage];
+    
     const selectedCategory = languageData[item];
     const [currentWordIndex, setCurrentWordIndex] = useState(0);
     const [currentWord, setCurrentWord] = useState(selectedCategory[0]);
-    const selectedLanguage = global?.currentSelectedLanguage ?? "English";
 
     const widthStyle =
       selectedLanguage === "English"
@@ -181,7 +181,7 @@ export const CategoryInput = forwardRef<OtpInputRef, OtpInputProps>(
         const otpString = text
           .split("")
           .map((char, index) => {
-            if (index === 0) return currentWord[0]; // Show alphabet on the first index
+            if (index === 0) return currentWord[0].toUpperCase(); // Show alphabet on the first index
             return char && secureTextEntry ? "•" : char ?? "-"; // Render dots or characters
           })
           .join("");
@@ -202,7 +202,7 @@ export const CategoryInput = forwardRef<OtpInputRef, OtpInputProps>(
                 color={text ? "$primary" : "$blueGray.400"}
                 fontWeight={"$bold900"}
               >
-                {text[0] ? text[0] : currentWord[0]}
+                {text[0] ? text[0] : currentWord[0].toUpperCase()}
                 {text
                   .slice(1)
                   .split("")

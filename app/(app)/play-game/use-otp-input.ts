@@ -25,7 +25,7 @@ export const useOtpInput = ({
   const handleTextChange = (value: string) => {
     if (disabled) return;
 
-    const re = /^[A-ZÑÁÀÂÉÊÍÓÔÚÇÄÖÜßА-Яअ-ऺऀ-ॿ\u4e00-\u9fffا-ے]+$/;
+    const re = /^[A-ZÑÁÀÂÉÊÍÓÔÚÇÄÖÜßА-Яअ-ऺऀ-ॿ\u4e00-\u9fffا-ےÃ]+$/;
     if (re.test(value) || value.length <= 0) {
       setText(value);
       onTextChange?.(value);

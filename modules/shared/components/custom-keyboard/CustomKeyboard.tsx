@@ -28,8 +28,8 @@ const layouts: { [key: string]: string[][] } = {
   Spanish: [
     ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
     ["A", "S", "D", "F", "G", "H", "J", "K", "L", "Ñ"],
-    ["Z", "X", "C", "V", "B", "N", "M", "Backspace"],
-    ["Space"],
+    ["Ç", "Z", "X", "C", "V", "B", "N", "M", "Backspace"],
+    ["Á", "É", "Í", "Ó", "Ú", "Space"],
   ],
   Italian: [
     ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
@@ -40,33 +40,34 @@ const layouts: { [key: string]: string[][] } = {
   Portuguese: [
     ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
     ["A", "S", "D", "F", "G", "H", "J", "K", "L", "Ç"],
-    ["Z", "X", "C", "V", "B", "N", "M", "Backspace"],
+    ["Í", "Z", "X", "C", "V", "B", "N", "M", "Á", "É"],
+    ["Ó", "Ú", "À", "Ê", "Õ", "Ô", "Í", "Ã", "Backspace"],
     ["Space"],
   ],
   Russian: [
     ["Й", "Ц", "У", "К", "Е", "Н", "Г", "Ш", "Щ", "З"],
     ["Ф", "Ы", "В", "А", "П", "Р", "О", "Л", "Д", "Ж"],
     ["Э", "Я", "Ч", "С", "М", "И", "Т", "Ь", "Б", "Ю"],
-    ["Space", "Backspace"],
+    ["Ё", "Ъ", "Space", "Backspace"],
   ],
   French: [
     ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
-    ["A", "S", "D", "F", "G", "H", "J", "K", "L"],
-    ["Z", "X", "C", "V", "B", "N", "M", "Backspace"],
-    ["Space"],
+    ["A", "S", "D", "F", "G", "H", "J", "K", "L", "É"],
+    ["Z", "X", "C", "V", "B", "N", "M", "Ç", "À", "Ê"],
+    ["Space", "Backspace"],
   ],
   German: [
     ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
     ["A", "S", "D", "F", "G", "H", "J", "K", "L", "Ö"],
-    ["Z", "X", "C", "V", "B", "N", "M", "Ä", "Backspace"],
-    ["Space"],
+    ["Z", "X", "C", "V", "B", "N", "M", "Ä", "Ü", "ß"],
+    ["Space", "Backspace"],
   ],
   Urdu: [
     ["ا", "ب", "پ", "ت", "ٹ", "ج", "چ", "ح", "خ", "د"],
     ["ڈ", "ر", "ز", "س", "ش", "ص", "ض", "ط", "ظ", "ع"],
     ["غ", "ف", "ق", "ک", "گ", "ل", "م", "ن", "Backspace"],
-    ["Space"],
-  ],
+    ["و", "ہ", "ء", "ی", "یٔ", "Space"]
+  ]
 };
 
 interface CustomKeyboardProps {
@@ -106,13 +107,13 @@ const CustomKeyboard: React.FC<CustomKeyboardProps> = ({ onKeyPress }) => {
   };
   const handleKeyPress = (key) => {
     if (key === "Backspace") {
-      onKeyPress(key);  // Call backspace function
+      onKeyPress(key); // Call backspace function
     } else if (key === "Space") {
-      onKeyPress(" ");  // Add space to input
+      onKeyPress(" "); // Add space to input
       setIsNewWord(true); // After space, treat it as a new word if needed
     } else {
       if (isNewWord) {
-        onKeyPress(key);  // Add key press to the input
+        onKeyPress(key); // Add key press to the input
       }
     }
   };

@@ -26,7 +26,6 @@ export const OtpInput = forwardRef<OtpInputRef, OtpInputProps>((props, ref) => {
     secureTextEntry = false,
     theme = {},
     alphabet,
-    onFilled,
   } = props;
   const {
     containerStyle,
@@ -171,12 +170,12 @@ export const OtpInput = forwardRef<OtpInputRef, OtpInputProps>((props, ref) => {
 
   return (
     <>
-      <View style={[styles.container, containerStyle]}>
-        <View style={[styles.inputsContainer, inputsContainerStyle]}>
-          {renderOtpInputs()}
-        </View>
-      </View>
       <ResponsiveContent>
+        <View style={[styles.container, containerStyle]}>
+          <View style={[styles.inputsContainer, inputsContainerStyle]}>
+            {renderOtpInputs()}
+          </View>
+        </View>
         <YStack marginTop={16}>
           <CustomKeyboard onKeyPress={handleKeyPress} />
         </YStack>

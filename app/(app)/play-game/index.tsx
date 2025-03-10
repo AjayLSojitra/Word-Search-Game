@@ -62,7 +62,7 @@ function PlayGameScreen() {
   const currentLanguage = global?.currentSelectedLanguage ?? "English";
   const words = alphabet
     ? wordfiles[currentLanguage] // If alphabet exists, take from wordfiles
-    : contents.englishCategoriesItem[category];
+    : contents.CurrentLanguageCategoriesItem[currentLanguage][category];
 
   const [spellItems, setSpellItems] = useState<SpellInputs[]>([]);
   const inputRef = useRef<OtpInputRef>(null);
@@ -266,7 +266,7 @@ function PlayGameScreen() {
     []
   );
 
-const [currentWord, setCurrentWord] = useState();
+  const [currentWord, setCurrentWord] = useState();
   const currentCategoryWord = (value) => {
     setCurrentWord(value);
   };
@@ -370,38 +370,37 @@ const [currentWord, setCurrentWord] = useState();
   const validateCategoriesInputs = (inputValues: string) => {
     const inputSpell = inputValues;
     const spellCorrectionResult = check(inputSpell);
-      if (spellCorrectionResult.length === 0) {
-        //Check for Duplication (If found duplication Yellow color)
-        if (spellItems.some((item) => item.inputValue === inputSpell)) {
-          //Duplicate Spelling!
-          playWrongSound();
-          setSpellItems([
-            { inputValue: inputSpell, status: "DUPLICATE" },
-            ...spellItems,
-          ]);
-          clearAllInputs();
-          return;
-        }
-
-        //Correct Spelling!
-        playCorrectSound();
-        setSpellItems([
-          { inputValue: inputSpell, status: "CORRECT" },
-          ...spellItems,
-        ]);
-        clearAllInputs();
-        return;
-      } else {
-        //Wrong Spelling!
+    if (spellCorrectionResult.length === 0) {
+      //Check for Duplication (If found duplication Yellow color)
+      if (spellItems.some((item) => item.inputValue === inputSpell)) {
+        //Duplicate Spelling!
         playWrongSound();
         setSpellItems([
-          { inputValue: inputSpell, status: "WRONG" },
+          { inputValue: inputSpell, status: "DUPLICATE" },
           ...spellItems,
         ]);
         clearAllInputs();
         return;
       }
-  
+
+      //Correct Spelling!
+      playCorrectSound();
+      setSpellItems([
+        { inputValue: inputSpell, status: "CORRECT" },
+        ...spellItems,
+      ]);
+      clearAllInputs();
+      return;
+    } else {
+      //Wrong Spelling!
+      playWrongSound();
+      setSpellItems([
+        { inputValue: inputSpell, status: "WRONG" },
+        ...spellItems,
+      ]);
+      clearAllInputs();
+      return;
+    }
   };
 
   const validateInputs = (inputValues: string) => {
