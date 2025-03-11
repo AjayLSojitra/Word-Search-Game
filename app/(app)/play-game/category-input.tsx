@@ -67,6 +67,7 @@ export const CategoryInput = forwardRef<OtpInputRef, OtpInputProps>(
     );
     useEffect(() => {
       setCategoryWordLength(currentWord.length); // Pass the current word's length to the parent
+    
       // Only proceed if the length of the text matches the categoryWordLength
       if (text.length === categoryWordLength) {
         // Check if the text matches the current word (case-insensitive)
@@ -74,7 +75,13 @@ export const CategoryInput = forwardRef<OtpInputRef, OtpInputProps>(
           // Word typed correctly, move to the next word
           if (currentWordIndex < selectedCategory.length - 1) {
             setCurrentWordIndex((prevIndex) => prevIndex + 1);
+          } else {
+            // If there's no next word, show a log
+            console.log("You have completed all words in the category!");
+            // Optionally, show an alert or message
+            alert("Congratulations! You've completed all the words in this category.");
           }
+    
           handleTextChange(""); // Clear the input field for the next word
         }
       }
