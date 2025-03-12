@@ -149,7 +149,7 @@ export const OtpInput = forwardRef<OtpInputRef, OtpInputProps>((props, ref) => {
           >
             <SizableText
               size={numberOfDigits > 6 ? "$hmd" : "$hlg"}
-              lineHeight={numberOfDigits > 6 ? 30 : 40}
+              lineHeight={numberOfDigits > 6 ? 30 : 42}
               color={text ? "$primary" : "$blueGray.400"}
               fontWeight={"$bold900"}
             >

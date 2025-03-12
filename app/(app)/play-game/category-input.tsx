@@ -205,7 +205,7 @@ export const CategoryInput = forwardRef<OtpInputRef, OtpInputProps>(
             >
               <SizableText
                 size={currentWord.length > 6 ? "$hmd" : "$hlg"}
-                lineHeight={currentWord.length > 6 ? 30 : 40}
+                lineHeight={currentWord.length > 6 ? 30 : 42}
                 color={text ? "$primary" : "$blueGray.400"}
                 fontWeight={"$bold900"}
               >

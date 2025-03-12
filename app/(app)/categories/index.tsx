@@ -44,7 +44,7 @@ function CategoriesScreen() {
   const renderItem = ({ item }) => (
     <TouchableScale
       onPress={() => {
-        router.push(`./countdown?item=${item}&&duration=${180}`);
+        router.push(`./countdown?item=${item}`);
       }}
       style={{
         flex: 1,

@@ -17,13 +17,13 @@ const layouts: { [key: string]: string[][] } = {
     ["क", "ख", "ग", "घ", "च", "छ", "ज", "झ", "ट", "ठ"],
     ["ड", "ढ", "ण", "त", "थ", "द", "ध", "न", "प", "फ"],
     ["ब", "भ", "म", "य", "र", "ल", "व", "श", "ष", "स"],
-    ["ह", "क्ष", "ज्ञ", "Space", "Backspace"],  
+    ["ह", "क्ष", "ज्ञ", "Space", "Backspace"],
   ],
   Chinese: [
     ["阿", "比", "西", "的", "伊", "艾", "吉", "哈", "杰", "开"],
     ["域", "拉", "际", "年", "空", "门", "天", "界", "光", "辰"],
     ["宇", "星", "尔", "姆", "娜", "哦", "屁", "提", "优"],
-    ["维", "达", "Space", "克", "Backspace"],
+    ["维", "达", "Space", "克", "瓜", "Backspace"],
   ],
   Spanish: [
     ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
@@ -84,11 +84,11 @@ const CustomKeyboard: React.FC<CustomKeyboardProps> = ({ onKeyPress }) => {
   const getSpaceKeyText = (currentLanguage: string) => {
     switch (currentLanguage) {
       case "English":
-        return "English"; // Space in Hindi
+        return "Space"; // Space in Hindi
       case "Hindi":
-        return "हिंदी"; // Space in Hindi
+        return "अंतरिक्ष"; // Space in Hindi
       case "Chinese":
-        return "中國人"; // Space in Chinese
+        return "空间"; // Space in Chinese
       case "Spanish":
         return "Espacio"; // Space in Spanish
       case "French":

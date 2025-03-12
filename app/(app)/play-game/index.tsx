@@ -182,12 +182,13 @@ function PlayGameScreen() {
               }
             }, 3000);
           } else {
-            // No advert ready to show yet
-            redirectToNextScreenAfterAdmobInterstitial();
+            if (alphabet) {
+              redirectToNextScreenAfterAdmobInterstitial();
+            }
           }
         } else {
-          // setTimerCountdown(timerRef.current); //TODO
-          stopTimer();
+          setTimerCountdown(timerRef.current); //TODO
+          // stopTimer();
         }
       }
     }, 1000);
@@ -366,7 +367,6 @@ function PlayGameScreen() {
       .length;
   }, [spellItems]);
 
-  
   const validateCategoriesInputs = (inputValues: string) => {
     const inputSpell = inputValues;
     const spellCorrectionResult = check(inputSpell);
@@ -555,44 +555,43 @@ function PlayGameScreen() {
         </YStack>
 
         <XStack justifyContent="center">
-          <XStack
-            {...SHADOW.basicCard}
-            bg={"$white"}
-            borderRadius={100}
-            px={"$2"}
-            py={"$1"}
-            ml={"$4"}
-            my={"$2"}
-            alignItems="center"
-            justifyContent="center"
-          >
-            <Image
-              key={"timer"}
-              source={images.timer}
-              style={{ height: 18, width: 18 }}
-              alt={"timer"}
-            />
-            <YStack w={"$2"} />
-            <SizableText
-              size={"$hsm"}
-              color={timerCountdown < 5 ? "$red.600" : "$blueGray.500"}
-              fontWeight={"$semibold"}
-              textAlign="center"
+          {alphabet &&(
+            <XStack
+              {...SHADOW.basicCard}
+              bg={"$white"}
+              borderRadius={100}
+              px={"$2"}
+              py={"$1"}
+              ml={"$4"}
+              my={"$2"}
+              alignItems="center"
+              justifyContent="center"
             >
-              {formattedValue(timerCountdown)}
+              <Image
+                key={"timer"}
+                source={images.timer}
+                style={{ height: 18, width: 18 }}
+                alt={"timer"}
+              />
+              <YStack w={"$2"} />
               <SizableText
                 size={"$hsm"}
-                color={"$primary"}
-                fontWeight={"$bold900"}
+                color={timerCountdown < 5 ? "$red.600" : "$blueGray.500"}
+                fontWeight={"$semibold"}
                 textAlign="center"
               >
-                {` / ${
-                  formattedValue(parseInt(duration)) || formattedValue(180)
-                }`}
+                {formattedValue(timerCountdown)}
+                <SizableText
+                  size={"$hsm"}
+                  color={"$primary"}
+                  fontWeight={"$bold900"}
+                  textAlign="center"
+                >
+                  {` / ${formattedValue(parseInt(duration))}`}
+                </SizableText>
               </SizableText>
-            </SizableText>
-          </XStack>
-
+            </XStack>
+          )}
           <YStack flex={1} />
           {canShowHalfTimeIntervalWarning() && (
             <XStack
@@ -696,18 +695,7 @@ function PlayGameScreen() {
       </ResponsiveContent>
 
       <ResponsiveContent flex={1} justifyContent="flex-end">
-        {alphabet ? (
-          <OtpInput
-            ref={inputRef}
-            numberOfDigits={parseInt(wordLength)}
-            focusColor="black"
-            hideStick
-            onFilled={(text) => validateInputs(text)}
-            alphabet={alphabet}
-            autoFocus
-            item=""
-          />
-        ) : (
+        {category ? (
           <CategoryInput
             ref={inputRef}
             numberOfDigits={parseInt(currentWord)}
@@ -718,6 +706,17 @@ function PlayGameScreen() {
             alphabet=""
             onFilled={(text) => validateCategoriesInputs(text)} // Use the `text` in your parent function
             currentCategoryItem={currentCategoryWord}
+          />
+        ) : (
+          <OtpInput
+            ref={inputRef}
+            numberOfDigits={parseInt(wordLength)}
+            focusColor="black"
+            hideStick
+            onFilled={(text) => validateInputs(text)}
+            alphabet={alphabet}
+            autoFocus
+            item=""
           />
         )}
       </ResponsiveContent>
