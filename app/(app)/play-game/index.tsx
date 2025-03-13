@@ -555,7 +555,7 @@ function PlayGameScreen() {
         </YStack>
 
         <XStack justifyContent="center">
-          {alphabet &&(
+          {alphabet && (
             <XStack
               {...SHADOW.basicCard}
               bg={"$white"}
@@ -706,6 +706,7 @@ function PlayGameScreen() {
             alphabet=""
             onFilled={(text) => validateCategoriesInputs(text)} // Use the `text` in your parent function
             currentCategoryItem={currentCategoryWord}
+            redirectToNextScreenAfterAdmobInterstitial={redirectToNextScreenAfterAdmobInterstitial}
           />
         ) : (
           <OtpInput

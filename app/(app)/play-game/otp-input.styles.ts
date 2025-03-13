@@ -5,12 +5,18 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
   },
   inputsContainer: {
+    flex: 1,
+    justifyContent: "space-between",
+    marginHorizontal: 18,
+    marginBottom: 8,
+  },
+  otpinputsContainer: {
     flexDirection: "row",
     flex: 1,
     justifyContent: "space-between",
     marginHorizontal: 18,
-    marginBottom:8
-  },  
+    marginBottom: 8,
+  },
   codeContainer: {
     borderWidth: 1,
     borderRadius: 12,

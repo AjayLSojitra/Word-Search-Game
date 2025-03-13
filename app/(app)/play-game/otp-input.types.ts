@@ -15,6 +15,7 @@ export interface OtpInputProps {
   alphabet: string
   item:string
   currentCategoryItem?:any
+  redirectToNextScreenAfterAdmobInterstitial?:any
 }
 
 export interface OtpInputRef {

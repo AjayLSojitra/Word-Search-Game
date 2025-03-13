@@ -181,65 +181,88 @@ function ScoreCardScreen() {
                 {languageData.correct_words}
               </SizableText>
               <YStack h={"$3"} />
-              <SizableText
-                fontSize={"$hxs"}
-                color={"$primary"}
-                fontWeight={"$bold700"}
-                textAlign="center"
-              >
-                {languageData.congratulations}{" "}
-                <SizableText
-                  fontSize={"$hxs"}
-                  color={"$primary"}
-                  fontWeight={"$bold700"}
-                  textAlign="center"
-                >
-                  {" "}
-                  {wordLength}{" "}
-                </SizableText>
-                <SizableText
-                  fontSize={"$hxs"}
-                  color={"$primary"}
-                  fontWeight={"$bold700"}
-                  textAlign="center"
-                >
-                  {languageData.letter_words_starting_with}
-                </SizableText>
-                <SizableText
-                  fontSize={"$hxs"}
-                  color={"$primary"}
-                  fontWeight={"$bold700"}
-                  textAlign="center"
-                >
-                  {" "}
-                  {alphabet}{" "}
-                </SizableText>
-                <SizableText
-                  fontSize={"$hxs"}
-                  color={"$primary"}
-                  fontWeight={"$bold700"}
-                  textAlign="center"
-                >
-                  {languageData.in}
-                </SizableText>
-                <SizableText
-                  fontSize={"$hxs"}
-                  color={"$primary"}
-                  fontWeight={"$bold700"}
-                  textAlign="center"
-                >
-                  {" "}
-                  {duration}{" "}
-                </SizableText>
-                <SizableText
-                  fontSize={"$hxs"}
-                  color={"$primary"}
-                  fontWeight={"$bold700"}
-                  textAlign="center"
-                >
-                  {languageData.seconds}
-                </SizableText>
-              </SizableText>
+              <YStack>
+                {alphabet ? (
+                  <>
+                    <SizableText
+                      fontSize={"$hxs"}
+                      color={"$primary"}
+                      fontWeight={"$bold700"}
+                      textAlign="center"
+                    >
+                      {languageData.congratulations}{" "}
+                      <SizableText
+                        fontSize={"$hxs"}
+                        color={"$primary"}
+                        fontWeight={"$bold700"}
+                        textAlign="center"
+                      >
+                        {" "}
+                        {wordLength}{" "}
+                      </SizableText>
+                      <SizableText
+                        fontSize={"$hxs"}
+                        color={"$primary"}
+                        fontWeight={"$bold700"}
+                        textAlign="center"
+                      >
+                        {languageData.letter_words_starting_with}
+                      </SizableText>
+                      <SizableText
+                        fontSize={"$hxs"}
+                        color={"$primary"}
+                        fontWeight={"$bold700"}
+                        textAlign="center"
+                      >
+                        {" "}
+                        {alphabet}{" "}
+                      </SizableText>
+                      <SizableText
+                        fontSize={"$hxs"}
+                        color={"$primary"}
+                        fontWeight={"$bold700"}
+                        textAlign="center"
+                      >
+                        {languageData.in}
+                      </SizableText>
+                      <SizableText
+                        fontSize={"$hxs"}
+                        color={"$primary"}
+                        fontWeight={"$bold700"}
+                        textAlign="center"
+                      >
+                        {" "}
+                        {duration}{" "}
+                      </SizableText>
+                      <SizableText
+                        fontSize={"$hxs"}
+                        color={"$primary"}
+                        fontWeight={"$bold700"}
+                        textAlign="center"
+                      >
+                        {languageData.seconds}
+                      </SizableText>
+                    </SizableText>
+                  </>
+                ) : (
+                  <SizableText
+                    fontSize={"$hxs"}
+                    color={"$primary"}
+                    fontWeight={"$bold700"}
+                    textAlign="center"
+                  >
+                    {languageData.congratulations}{" "}
+                    <SizableText
+                    fontSize={"$hxs"}
+                    color={"$primary"}
+                    fontWeight={"$bold700"}
+                    textAlign="center"
+                  >
+                    {languageData.the_categorys_all_words}
+                  </SizableText>
+                  </SizableText>
+                )}
+              </YStack>
             </YStack>
             <YStack h={"$3"} />
             <SizableText

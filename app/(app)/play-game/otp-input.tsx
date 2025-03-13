@@ -172,7 +172,7 @@ export const OtpInput = forwardRef<OtpInputRef, OtpInputProps>((props, ref) => {
     <>
       <ResponsiveContent>
         <View style={[styles.container, containerStyle]}>
-          <View style={[styles.inputsContainer, inputsContainerStyle]}>
+          <View style={[styles.otpinputsContainer, inputsContainerStyle,]}> 
             {renderOtpInputs()}
           </View>
         </View>

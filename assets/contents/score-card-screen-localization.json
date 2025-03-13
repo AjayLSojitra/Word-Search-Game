@@ -10,7 +10,8 @@
     "congratulations": "Congratulations on completing the challenge of",
     "letter_words_starting_with": "-letter words starting with",
     "in": "in",
-    "seconds": "seconds!"
+    "seconds": "seconds!",
+    "the_categorys_all_words" : "the category's all words."
   },
   "Hindi": {
     "game_over": "खेल समाप्त",
@@ -23,7 +24,8 @@
     "congratulations": "चुनौती पूरी करने पर बधाई",
     "letter_words_starting_with": "-अक्षर शब्द जो से शुरू होते हैं",
     "in": "में",
-    "seconds": "सेकंड!"
+    "seconds": "सेकंड!",
+    "the_categorys_all_words": "श्रेणी के सभी शब्द."
   },
   "Chinese": {
     "game_over": "游戏结束",
@@ -36,7 +38,8 @@
     "congratulations": "恭喜完成挑战",
     "letter_words_starting_with": "以字母开头的词",
     "in": "在",
-    "seconds": "秒！"
+    "seconds": "秒！",
+    "the_categorys_all_words": "类别的所有单词."
   },
   "Spanish": {
     "game_over": "Juego Terminado",
@@ -49,7 +52,8 @@
     "congratulations": "Felicidades por completar el desafío de",
     "letter_words_starting_with": "palabras de letras que comienzan con",
     "in": "en",
-    "seconds": "segundos!"
+    "seconds": "segundos!",
+    "the_categorys_all_words": "todas las palabras de la categoría."
   },
   "Italian": {
     "game_over": "Gioco Finito",
@@ -62,7 +66,8 @@
     "congratulations": "Congratulazioni per aver completato la sfida di",
     "letter_words_starting_with": "parole di lettere che iniziano con",
     "in": "in",
-    "seconds": "secondi!"
+    "seconds": "secondi!",
+    "the_categorys_all_words": "tutte le parole della categoria."
   },
   "Portuguese": {
     "game_over": "Fim de Jogo",
@@ -75,7 +80,8 @@
     "congratulations": "Parabéns por completar o desafio de",
     "letter_words_starting_with": "palavras de letras que começam com",
     "in": "em",
-    "seconds": "segundos!"
+    "seconds": "segundos!",
+    "the_categorys_all_words": "todas as palavras da categoria."
   },
   "Russian": {
     "game_over": "Игра окончена",
@@ -88,7 +94,8 @@
     "congratulations": "Поздравляем с завершением задачи",
     "letter_words_starting_with": "слова с буквами, начинающиеся с",
     "in": "в",
-    "seconds": "секунд!"
+    "seconds": "секунд!",
+    "the_categorys_all_words": "все слова категории."
   },
   "French": {
     "game_over": "Jeu Terminé",
@@ -101,7 +108,8 @@
     "congratulations": "Félicitations pour avoir complété le défi de",
     "letter_words_starting_with": "mots de lettres commençant par",
     "in": "dans",
-    "seconds": "secondes!"
+    "seconds": "secondes!",
+    "the_categorys_all_words": "tous les mots de la catégorie."
   },
   "German": {
     "game_over": "Spiel Vorbei",
@@ -114,7 +122,8 @@
     "congratulations": "Herzlichen Glückwunsch zum Abschließen der Herausforderung von",
     "letter_words_starting_with": "Buchstabenwörter, die mit beginnen",
     "in": "in",
-    "seconds": "Sekunden!"
+    "seconds": "Sekunden!",
+    "the_categorys_all_words": "alle Wörter der Kategorie."
   },
   "Urdu": {
     "game_over": "گیم ختم",
@@ -127,6 +136,7 @@
     "congratulations": "چیلنج مکمل کرنے پر مبارک ہو",
     "letter_words_starting_with": "حروف والے الفاظ جو سے شروع ہوتے ہیں",
     "in": "میں",
-    "seconds": "سیکنڈ!"
+    "seconds": "سیکنڈ!",
+    "the_categorys_all_words": "زمرے کے تمام الفاظ"
   }
 }

@@ -5,7 +5,7 @@ import { styles } from "./otp-input.styles";
 import { VerticalStick } from "./vertical-stick";
 import { OtpInputProps, OtpInputRef } from "./otp-input.types";
 import useResponsiveWidth from "@modules/shared/hooks/useResponsiveWidth";
-import { SizableText, YStack } from "tamagui";
+import { SizableText, XStack, YStack } from "tamagui";
 import TouchableScale from "@design-system/components/shared/touchable-scale";
 import InputAccessoryViewiOS from "@modules/shared/components/input-accessory-view-details";
 import CustomKeyboard from "@modules/shared/components/custom-keyboard/CustomKeyboard";
@@ -21,16 +21,17 @@ export const CategoryInput = forwardRef<OtpInputRef, OtpInputProps>(
     } = useOtpInput(props);
     const {
       disabled,
-      numberOfDigits = 6,
+     
       hideStick,
       focusColor = "#A4D0A4",
       focusStickBlinkingDuration,
       secureTextEntry = false,
       theme = {},
-      alphabet,
+      
       item,
       currentCategoryItem,
       onFilled,
+      redirectToNextScreenAfterAdmobInterstitial
     } = props;
     const {
       containerStyle,
@@ -48,8 +49,10 @@ export const CategoryInput = forwardRef<OtpInputRef, OtpInputProps>(
       setValue: setTextWithRef,
     }));
     const selectedLanguage = global?.currentSelectedLanguage ?? "English";
-    const languageData = contents.CurrentLanguageCategoriesItem[selectedLanguage];
-    
+    const isEnglish = selectedLanguage === "English"; // Check for the language
+    const languageData =
+      contents.CurrentLanguageCategoriesItem[selectedLanguage];
+
     const selectedCategory = languageData[item];
     const [currentWordIndex, setCurrentWordIndex] = useState(0);
     const [currentWord, setCurrentWord] = useState(selectedCategory[0]);
@@ -67,7 +70,7 @@ export const CategoryInput = forwardRef<OtpInputRef, OtpInputProps>(
     );
     useEffect(() => {
       setCategoryWordLength(currentWord.length); // Pass the current word's length to the parent
-    
+
       // Only proceed if the length of the text matches the categoryWordLength
       if (text.length === categoryWordLength) {
         // Check if the text matches the current word (case-insensitive)
@@ -76,12 +79,9 @@ export const CategoryInput = forwardRef<OtpInputRef, OtpInputProps>(
           if (currentWordIndex < selectedCategory.length - 1) {
             setCurrentWordIndex((prevIndex) => prevIndex + 1);
           } else {
-            // If there's no next word, show a log
-            console.log("You have completed all words in the category!");
-            // Optionally, show an alert or message
-            alert("Congratulations! You've completed all the words in this category.");
+            redirectToNextScreenAfterAdmobInterstitial();
           }
-    
+
           handleTextChange(""); // Clear the input field for the next word
         }
       }
@@ -143,47 +143,99 @@ export const CategoryInput = forwardRef<OtpInputRef, OtpInputProps>(
       }
       handleTextChange(updatedText); // Update the text in the OTP input
     };
-    const renderOtpInputs = () => {
-      const isEnglish = selectedLanguage === "English"; // Check for the language
 
-      // If the language is "English", we show individual digits in one touchable scale
+    const renderOtpInputs = () => {
       if (isEnglish) {
-        return Array(currentWord.length)
-          .fill(0)
-          .map((_, index) => {
-            const char = text[index];
-            const isFocusedInput =
-              index === focusedInputIndex && !disabled && Boolean(hasCursor);
-            return (
-              <TouchableScale
-                key={`${char}-${index}`}
-                disabled={disabled}
-                onPress={handlePress}
-                style={generatePinCodeContainerStyle(isFocusedInput, char)}
-                testID="otp-input"
-              >
-                {isFocusedInput && !hideStick ? (
-                  <VerticalStick
-                    focusColor={focusColor}
-                    style={focusStickStyle}
-                    focusStickBlinkingDuration={focusStickBlinkingDuration}
-                  />
-                ) : (
-                  <SizableText
-                    size={currentWord.length > 6 ? "$hmd" : "$hlg"}
-                    lineHeight={currentWord.length > 6 ? 30 : 40}
-                    color={char ? "$primary" : "$blueGray.400"}
-                    fontWeight={"$bold900"}
+        return (
+          <>
+            {/* YStack displaying currentWord above OTP inputs */}
+            <YStack
+              flexDirection="row"
+              justifyContent="space-between"
+              marginBottom={14}
+            >
+              {currentWord.split("").map((char, index) => {
+                return (
+                  <View
+                    key={index}
+                    style={{
+                      borderWidth: 0,
+                      borderRadius: 8,
+                      backgroundColor: "white",
+                      height: 60,
+                      width: widthStyle,
+                      justifyContent: "center",
+                      alignItems: "center",
+                      marginBottom: 14,
+                    }}
                   >
-                    {char && secureTextEntry
-                      ? "•"
-                      : char ??
-                        (index === 0 ? currentWord[0].toUpperCase() : "-")}
-                  </SizableText>
-                )}
-              </TouchableScale>
-            );
-          });
+                    <SizableText
+                      size={currentWord.length > 6 ? "$hmd" : "$hlg"}
+                      lineHeight={currentWord.length > 6 ? 30 : 40}
+                      color={"#1c2e4a"}
+                      fontWeight={"$bold900"}
+                    >
+                      {char.toUpperCase()}
+                    </SizableText>
+                  </View>
+                );
+              })}
+            </YStack>
+
+            {/* OTP inputs for text entry */}
+            <YStack
+              flexDirection="row"
+              justifyContent="space-between"
+              marginBottom={14}
+            >
+              {Array(currentWord.length)
+                .fill(0)
+                .map((_, index) => {
+                  const char = text[index];
+                  const isFocusedInput =
+                    index === focusedInputIndex &&
+                    !disabled &&
+                    Boolean(hasCursor);
+                  return (
+                    <TouchableScale
+                      key={`${char}-${index}`}
+                      disabled={disabled}
+                      onPress={handlePress}
+                      style={generatePinCodeContainerStyle(
+                        isFocusedInput,
+                        char
+                      )}
+                      testID="otp-input"
+                    >
+                      {isFocusedInput && !hideStick ? (
+                        <VerticalStick
+                          focusColor={focusColor}
+                          style={focusStickStyle}
+                          focusStickBlinkingDuration={
+                            focusStickBlinkingDuration
+                          }
+                        />
+                      ) : (
+                        <SizableText
+                          size={currentWord.length > 6 ? "$hmd" : "$hlg"}
+                          lineHeight={currentWord.length > 6 ? 30 : 40}
+                          color={char ? "$primary" : "$blueGray.400"}
+                          fontWeight={"$bold900"}
+                        >
+                          {char && secureTextEntry
+                            ? "•"
+                            : char ??
+                              (index === 0
+                                ? currentWord[0].toUpperCase()
+                                : "-")}
+                        </SizableText>
+                      )}
+                    </TouchableScale>
+                  );
+                })}
+            </YStack>
+          </>
+        );
       } else {
         const otpString = text
           .split("")
@@ -194,32 +246,61 @@ export const CategoryInput = forwardRef<OtpInputRef, OtpInputProps>(
           .join("");
 
         return (
-          <View
-            style={{ justifyContent: "center", alignItems: "center", flex: 1 }}
-          >
-            <TouchableScale
-              key="single-touchable"
-              onPress={handlePress}
-              style={[generatePinCodeContainerStyle(true, otpString)]} // Adjust the width here
-              testID="otp-input"
+          <>
+            <View
+              style={{
+                justifyContent: "center",
+                alignItems: "center",
+                marginBottom: 14,
+              }}
             >
-              <SizableText
-                size={currentWord.length > 6 ? "$hmd" : "$hlg"}
-                lineHeight={currentWord.length > 6 ? 30 : 42}
-                color={text ? "$primary" : "$blueGray.400"}
-                fontWeight={"$bold900"}
+              <View
+                style={{
+                  borderWidth: 0,
+                  borderRadius: 8,
+                  backgroundColor: "white",
+                  height: 60,
+                  width: widthStyle,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginBottom: 14,
+                }}
               >
-                {text[0] ? text[0] : currentWord[0].toUpperCase()}
-                {text
-                  .slice(1)
-                  .split("")
-                  .map((char, index) =>
-                    char && secureTextEntry ? "•" : char ?? "-"
-                  )
-                  .join("")}
-              </SizableText>
-            </TouchableScale>
-          </View>
+                <SizableText
+                  size={currentWord.length > 6 ? "$hmd" : "$hlg"}
+                  lineHeight={currentWord.length > 6 ? 30 : 42}
+                  color={"#1c2e4a"}
+                  fontWeight={"$bold900"}
+                >
+                  {currentWord.toUpperCase()}
+                </SizableText>
+              </View>
+            </View>
+            <View style={{ justifyContent: "center", alignItems: "center" }}>
+              <TouchableScale
+                key="single-touchable"
+                onPress={handlePress}
+                style={[generatePinCodeContainerStyle(true, otpString)]} // Adjust the width here
+                testID="otp-input"
+              >
+                <SizableText
+                  size={currentWord.length > 6 ? "$hmd" : "$hlg"}
+                  lineHeight={currentWord.length > 6 ? 30 : 42}
+                  color={text ? "$primary" : "$blueGray.400"}
+                  fontWeight={"$bold900"}
+                >
+                  {text[0] ? text[0] : currentWord[0].toUpperCase()}
+                  {text
+                    .slice(1)
+                    .split("")
+                    .map((char, index) =>
+                      char && secureTextEntry ? "•" : char ?? "-"
+                    )
+                    .join("")}
+                </SizableText>
+              </TouchableScale>
+            </View>
+          </>
         );
       }
     };
@@ -227,20 +308,6 @@ export const CategoryInput = forwardRef<OtpInputRef, OtpInputProps>(
     return (
       <>
         <ResponsiveContent>
-          <YStack alignItems="center">
-            <SizableText
-              size="$lg"
-              lineHeight={40}
-              color="#1c2e4a"
-              fontWeight="$bold900"
-              marginBottom={30}
-              paddingHorizontal={20}
-              backgroundColor={"white"}
-              borderRadius={50}
-            >
-              {currentWord.toUpperCase()}
-            </SizableText>
-          </YStack>
           <View style={[styles.container, containerStyle]}>
             <View style={[styles.inputsContainer, inputsContainerStyle]}>
               {renderOtpInputs()}
