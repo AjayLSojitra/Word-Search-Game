@@ -7,7 +7,6 @@ import ResponsiveContent from "@modules/shared/responsive-content";
 import AdmobBanner from "@modules/shared/components/ads/admob-banner";
 import { TestIds, useInterstitialAd } from "react-native-google-mobile-ads";
 import {
-  canShowAdmobInteratitial,
   staticInterstitialAd,
 } from "@modules/shared/components/helpers";
 import { useEffect } from "react";
