@@ -103,7 +103,7 @@ function SplashScreen() {
       global.rewardInterstitialAd = rewardInterstitialAd;
       global.serverConfigEnable = serverConfigEnable;
       global.defaultLanguage = defaultLanguage;
-      global.showAds = false; //TODO
+      global.showAds = showAds; 
       global.privacy_policy = privacy_policy;
       global.show_review_popup = show_review_popup;
 

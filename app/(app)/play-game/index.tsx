@@ -171,7 +171,7 @@ function PlayGameScreen() {
         if (timerRef.current < 0) {
           //Time is over
           clearInterval(timerId);
-
+          if (alphabet) {
           //Show Interstitial Ad
           if (isLoaded && global?.showAds) {
             setShowAdsConfirmationPopup(true);
@@ -182,13 +182,11 @@ function PlayGameScreen() {
               }
             }, 3000);
           } else {
-            if (alphabet) {
               redirectToNextScreenAfterAdmobInterstitial();
             }
           }
         } else {
-          setTimerCountdown(timerRef.current); //TODO
-          // stopTimer();
+          setTimerCountdown(timerRef.current); 
         }
       }
     }, 1000);

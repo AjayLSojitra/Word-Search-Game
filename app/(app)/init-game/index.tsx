@@ -44,6 +44,7 @@ import {
 } from "@modules/shared/components/helpers";
 import contents from "@assets/contents/contents";
 import { DeviceType, deviceType } from "expo-device";
+import AdmobBanner from "@modules/shared/components/ads/admob-banner";
 
 const BlurView = Animated.createAnimatedComponent(_BlurView);
 
@@ -162,7 +163,11 @@ function InitGameScreen() {
         rightElement={
           <TouchableScale
             onPress={() => {
-              router.push("./help");
+              if (isLoaded && canShowAdmobInteratitial()) {
+                show();
+              } else {
+                router.push("./help");
+              }
             }}
           >
             <YStack
@@ -551,6 +556,7 @@ function InitGameScreen() {
           <YStack h={"$4"} />
         </YStack>
       </ResponsiveContent>
+      {!isShowing && <AdmobBanner />}
       <YStack h={insets.bottom} />
     </YStack>
   );

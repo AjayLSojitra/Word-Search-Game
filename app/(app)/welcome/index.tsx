@@ -70,7 +70,9 @@ function WelcomeScreen() {
       ? TestIds.INTERSTITIAL_VIDEO
       : global?.interstitialAd ?? staticInterstitialAd
   );
-  const redirectTo = useRef<"LEVEL-SELECTION-SCREEN" | "SETTING-SCREEN" | "CATEGORY-SCREEN">();
+  const redirectTo = useRef<
+    "LEVEL-SELECTION-SCREEN" | "SETTING-SCREEN" | "CATEGORY-SCREEN"
+  >();
 
   useEffect(() => {
     OneSignal.Notifications.requestPermission(true);
@@ -321,28 +323,33 @@ function WelcomeScreen() {
             height={56}
             linearGradientProps={{ colors: ["#1c2e4a", "#1c2e4a"] }}
             onPress={() => {
-              const minWordLength = 3;
-              const maxWordLength = 8;
-              const randomLength =
-                Math.floor(
-                  Math.random() * (maxWordLength - minWordLength + 1)
-                ) + minWordLength;
-              setRandomWordLength(randomLength);
-              const dur = getDurationAccordingToRandomWordLength(randomLength);
-              setDuration(dur);
-
-              if (global?.showAds && isLoadedRewarded) {
-                setShowAdsConfirmationPopup(true);
+              if (isLoaded && canShowAdmobInteratitial()) {
+                show();
               } else {
-                const alphabetList = alphabets();
-                const randomAlphabetIndex = Math.floor(
-                  Math.random() * alphabetList.length
-                );
-                const randomAlphabet = alphabetList[randomAlphabetIndex];
+                const minWordLength = 3;
+                const maxWordLength = 8;
+                const randomLength =
+                  Math.floor(
+                    Math.random() * (maxWordLength - minWordLength + 1)
+                  ) + minWordLength;
+                setRandomWordLength(randomLength);
+                const dur =
+                  getDurationAccordingToRandomWordLength(randomLength);
+                setDuration(dur);
 
-                router.push(
-                  `./play-game?alphabet=${randomAlphabet}&&wordLength=${randomLength}&&duration=${dur}&&isForTraining=Yes`
-                );
+                if (global?.showAds && isLoadedRewarded) {
+                  setShowAdsConfirmationPopup(true);
+                } else {
+                  const alphabetList = alphabets();
+                  const randomAlphabetIndex = Math.floor(
+                    Math.random() * alphabetList.length
+                  );
+                  const randomAlphabet = alphabetList[randomAlphabetIndex];
+
+                  router.push(
+                    `./play-game?alphabet=${randomAlphabet}&&wordLength=${randomLength}&&duration=${dur}&&isForTraining=Yes`
+                  );
+                }
               }
             }}
           >
