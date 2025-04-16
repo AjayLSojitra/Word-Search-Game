@@ -36,7 +36,6 @@ iOS
     GoogleService-Info.beta.plist
     GoogleService-Info.dev.plist
     GoogleService-Info.prod.plist
-    GoogleService-Info.storybook.plist
     GoogleService-Info.test.plist
 
 Android
@@ -44,7 +43,6 @@ Android
     google-services.beta.json
     google-services.dev.json
     google-services.prod.json
-    google-services.storybook.json
     google-services.test.json
 
 import { LogBox } from 'react-native'; LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message LogBox.ignoreAllLogs();//Ignore all log notifications
@@ -60,8 +58,8 @@ Expo
 
 For Anonymous firebase authentication follow below steps:
 
-  ✔  Enabled Anonymous provider in Authentication section.
-  ✔  Firebase rules will be: allow read, write: if request.auth.uid != null;
+✔ Enabled Anonymous provider in Authentication section.
+✔ Firebase rules will be: allow read, write: if request.auth.uid != null;
 
 Onesignal:
 

@@ -12,30 +12,6 @@
       },
       "channel": "development-simulator"
     },
-    "storybook-simulator": {
-      "developmentClient": true,
-      "distribution": "internal",
-      "env": {
-        "APP_VARIANT": "storybook"
-      },
-      "ios": {
-        "simulator": true
-      },
-      "android": {
-        "gradleCommand": ":app:assembleDebug"
-      },
-      "channel": "storybook-simulator"
-    },
-    "storybook": {
-      "distribution": "internal",
-      "env": {
-        "APP_VARIANT": "storybook"
-      },
-      "ios": {
-        "resourceClass": "m-medium"
-      },
-      "channel": "storybook"
-    },
     "development": {
       "distribution": "internal",
       "android": {
