@@ -66,16 +66,13 @@
           "android": {
             "compileSdkVersion": 34,
             "kotlinVersion": "1.6.21"
-          },
-          "ios": {
-            "deploymentTarget": "14.0"
           }
         }
       ],
       [
         "onesignal-expo-plugin",
         {
-          "mode": "development"
+          "mode": "production"
         }
       ]
     ],
