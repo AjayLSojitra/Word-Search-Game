@@ -25,7 +25,6 @@ import SpellInputCard from "./spell-input-card";
 import LocalStorage from "@utils/local-storage";
 import { HIT_SLOP } from "@utils/theme";
 import ResponsiveContent from "@modules/shared/responsive-content";
-import { OtpInput } from "./otp-input";
 import { OtpInputRef } from "./otp-input.types";
 import AdmobBanner from "@modules/shared/components/ads/admob-banner";
 import { TestIds, useInterstitialAd } from "react-native-google-mobile-ads";
@@ -33,7 +32,8 @@ import { staticInterstitialAd } from "@modules/shared/components/helpers";
 import AdsNotifyDialog from "@modules/shared/components/confirmation-dialog/ads-notify-dialog";
 import useKeyboardAnimatedHeight from "@modules/shared/hooks/use-keyboard-animated-height";
 import contents from "@assets/contents/contents";
-import { CategoryInput } from "./category-input";
+import CategoryInput from "./category-input";
+import OtpInput from "./otp-input";
 
 type RenderItem = ListRenderItem<SpellInputs>;
 

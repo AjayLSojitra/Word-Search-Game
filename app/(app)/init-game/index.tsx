@@ -23,9 +23,7 @@ import Animated, {
   useAnimatedStyle,
 } from "react-native-reanimated";
 import { withAnchorPoint } from "@utils/anchor-point";
-import { SBItem } from "./SBItem";
 import * as Haptics from "expo-haptics";
-import { parallaxLayout } from "./parallax";
 import { BlurView as _BlurView } from "expo-blur";
 import BasicButton from "@design-system/components/buttons/basic-button";
 import {
@@ -45,6 +43,8 @@ import {
 import contents from "@assets/contents/contents";
 import { DeviceType, deviceType } from "expo-device";
 import AdmobBanner from "@modules/shared/components/ads/admob-banner";
+import SBItem from "./SBItem";
+import parallaxLayout from "./parallax";
 
 const BlurView = Animated.createAnimatedComponent(_BlurView);
 
@@ -261,7 +261,7 @@ function InitGameScreen() {
 
                 return {
                   ...withAnchorPoint(
-                    transform as TransformsStyle,
+                    transform as unknown as TransformsStyle,
                     { x: 0.5, y: 0.5 },
                     {
                       width: baseOptions.width,
