@@ -1,8 +1,8 @@
 import { useRef, useState } from "react";
 import { Keyboard, TextInput } from "react-native";
-import { OtpInputProps } from "./otp-input.types";
+import OtpInputProps from "./otp-input.types";
 
-export const useOtpInput = ({
+const useOtpInput = ({
   onTextChange,
   onFilled,
   numberOfDigits = 6,
@@ -70,3 +70,5 @@ export const useOtpInput = ({
     forms: { setText, setTextWithRef },
   };
 };
+
+export default useOtpInput;

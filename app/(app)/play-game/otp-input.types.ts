@@ -1,6 +1,6 @@
 import { ColorValue, TextInputProps, TextStyle, ViewStyle } from "react-native";
 
-export interface OtpInputProps {
+interface OtpInputProps {
   numberOfDigits?: number;
   autoFocus?: boolean;
   focusColor?: ColorValue;
@@ -12,11 +12,13 @@ export interface OtpInputProps {
   theme?: Theme;
   disabled?: boolean;
   textInputProps?: TextInputProps;
-  alphabet: string
-  item:string
-  currentCategoryItem?:any
-  redirectToNextScreenAfterAdmobInterstitial?:any
+  alphabet: string;
+  item: string;
+  currentCategoryItem?: any;
+  redirectToNextScreenAfterAdmobInterstitial?: any;
 }
+
+export default OtpInputProps;
 
 export interface OtpInputRef {
   clear: () => void;

@@ -1,17 +1,17 @@
 import { forwardRef, useImperativeHandle } from "react";
 import { Platform, View, ViewStyle } from "react-native";
-import { useOtpInput } from "./use-otp-input";
-import { styles } from "./otp-input.styles";
-import { VerticalStick } from "./vertical-stick";
-import { OtpInputProps, OtpInputRef } from "./otp-input.types";
+import OtpInputProps, { OtpInputRef } from "./otp-input.types";
 import useResponsiveWidth from "@modules/shared/hooks/useResponsiveWidth";
 import { SizableText, YStack } from "tamagui";
 import TouchableScale from "@design-system/components/shared/touchable-scale";
 import InputAccessoryViewiOS from "@modules/shared/components/input-accessory-view-details";
 import CustomKeyboard from "@modules/shared/components/custom-keyboard/CustomKeyboard";
 import ResponsiveContent from "@modules/shared/responsive-content";
+import styles from "./otp-input.styles";
+import useOtpInput from "./use-otp-input";
+import VerticalStick from "./vertical-stick";
 
-export const OtpInput = forwardRef<OtpInputRef, OtpInputProps>((props, ref) => {
+const OtpInput = forwardRef<OtpInputRef, OtpInputProps>((props, ref) => {
   const {
     models: { text, focusedInputIndex, hasCursor },
     actions: { clear, handlePress, handleTextChange, focus },
@@ -172,7 +172,7 @@ export const OtpInput = forwardRef<OtpInputRef, OtpInputProps>((props, ref) => {
     <>
       <ResponsiveContent>
         <View style={[styles.container, containerStyle]}>
-          <View style={[styles.otpinputsContainer, inputsContainerStyle,]}> 
+          <View style={[styles.otpinputsContainer, inputsContainerStyle]}>
             {renderOtpInputs()}
           </View>
         </View>
@@ -185,3 +185,5 @@ export const OtpInput = forwardRef<OtpInputRef, OtpInputProps>((props, ref) => {
     </>
   );
 });
+
+export default OtpInput;
