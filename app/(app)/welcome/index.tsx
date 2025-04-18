@@ -235,7 +235,7 @@ function WelcomeScreen() {
         <YStack flex={1} justifyContent="center">
           <Image
             key={"appIcon"}
-            source={images.appIcon}
+            source={images.icon}
             style={{ height: 200, width: 200, alignSelf: "center" }}
             alt={"appIcon"}
           />

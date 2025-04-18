@@ -278,7 +278,7 @@ function SettingsScreen() {
                     <>
                       <XStack
                         p={isPhoneDevice ? "$3" : "$5"}
-                        backgroundColor={isSelected ? "#F7418F" : "white"}
+                        backgroundColor={isSelected ? "#05958f" : "white"}
                         justifyContent="center"
                         alignItems="center"
                         alignSelf="center"
@@ -295,7 +295,7 @@ function SettingsScreen() {
                           {item.name} {/* Display the language name */}
                         </SizableText>
                       </XStack>
-                      <YStack h={index === 2 ? 0.5 : 0.5} bg={"black"} />
+                      <YStack h={0.5} bg={"black"} />
                     </>
                   );
                 }}

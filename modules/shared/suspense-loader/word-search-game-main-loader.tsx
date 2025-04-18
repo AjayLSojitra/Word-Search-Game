@@ -3,21 +3,19 @@ import { XStack } from "tamagui";
 import lotties from "@assets/lotties/lotties";
 import LottieView from "lottie-react-native";
 
-type VerbalFluencyGameMainLoaderProps = {
-  size?: number,
-  my?: string | 0
-}
+type WordSearchGameMainLoaderProps = {
+  size?: number;
+  my?: string | 0;
+};
 
-function VerbalFluencyGameMainLoader(props: Readonly<VerbalFluencyGameMainLoaderProps>) {
+function WordSearchGameMainLoader(
+  props: Readonly<WordSearchGameMainLoaderProps>
+) {
   const { size = 48, my = "$10" } = props;
   const animation = useRef(null);
 
   return (
-    <XStack
-      alignContent="center"
-      justifyContent="center"
-      my={my}
-    >
+    <XStack alignContent="center" justifyContent="center" my={my}>
       <LottieView
         autoPlay
         ref={animation}
@@ -25,10 +23,10 @@ function VerbalFluencyGameMainLoader(props: Readonly<VerbalFluencyGameMainLoader
           width: size,
           height: size,
         }}
-        source={lotties.verbalFleuncyLoader}
+        source={lotties.wordSearchGameLoader}
       />
     </XStack>
   );
 }
 
-export default VerbalFluencyGameMainLoader;
+export default WordSearchGameMainLoader;

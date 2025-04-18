@@ -3,7 +3,7 @@ import { YStack } from "tamagui";
 import lotties from "@assets/lotties/lotties";
 import LottieWrapper from "../components/lottie-wrapper";
 
-function VerbalFluencyGameAnimation({ size }: { readonly size: number }) {
+function WordSearchGameAnimation({ size }: { readonly size: number }) {
   return (
     <YStack
       flex={1}
@@ -16,18 +16,18 @@ function VerbalFluencyGameAnimation({ size }: { readonly size: number }) {
           options: {
             loop: true,
             autoplay: true,
-            animationData: lotties.verbalFleuncyLoader,
+            animationData: lotties.wordSearchGameLoader,
           },
           height: size,
           width: size,
         }}
         width={size}
         height={size}
-        source={lotties.verbalFleuncyLoader}
+        source={lotties.wordSearchGameLoader}
         loop={true}
       />
     </YStack>
   );
 }
 
-export default VerbalFluencyGameAnimation;
+export default WordSearchGameAnimation;

@@ -63,14 +63,14 @@ function CountDownScreen() {
           options: {
             loop: false,
             autoplay: true,
-            animationData: lotties.countdown1,
+            animationData: lotties.countdown,
           },
           height: width,
           width: height,
         }}
         width={width}
         height={height}
-        source={lotties.countdown1}
+        source={lotties.countdown}
         loop={false}
         onAnimationLoadeda={() => {}}
         onAnimationFinisha={() => {

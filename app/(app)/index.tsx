@@ -1,4 +1,4 @@
-import { YStack } from "tamagui";
+import { SizableText, YStack } from "tamagui";
 import { Image, Platform } from "react-native";
 import images from "@assets/images/images";
 import { useEffect, useRef } from "react";
@@ -12,16 +12,28 @@ import {
   staticInterstitialAd,
   staticInterstitialAdIntervalClicks,
   staticInterstitialAdIntervalSeconds,
+  staticPoweredBy,
   staticPrivacyPolicy,
   staticRewardInterstitialAd,
 } from "@modules/shared/components/helpers";
-import { initializeApp } from "firebase/app";
 import { getFirestore, collection, onSnapshot } from "firebase/firestore";
 import { AppManifest } from "../../app-manifest";
-import { CATEGORIES_KEY, LANGUAGE_KEY } from "@modules/shared/components/constants";
+import {
+  CATEGORIES_KEY,
+  LANGUAGE_KEY,
+} from "@modules/shared/components/constants";
 import LocalStorage from "@utils/local-storage";
 import contents from "@assets/contents/contents";
 import { triggerEvent } from "@modules/shared/components/use-triggered-event";
+import { DeviceType, deviceType } from "expo-device";
+import { initializeApp } from "firebase/app";
+import {
+  getAuth,
+  setPersistence,
+  signInAnonymously,
+  getReactNativePersistence,
+} from "firebase/auth";
+import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage";
 
 function SplashScreen() {
   const router = useRouter();
@@ -52,13 +64,26 @@ function SplashScreen() {
     fetchStaticCategoriesOnFallback();
   });
 
-  function loadFirebaseApp() {
+  async function loadFirebaseApp() {
     // Initialize Firebase
     const firebaseConfig = AppManifest.extra.firebaseWeb;
     const app = initializeApp(firebaseConfig);
+
+    //Authentication
+    try {
+      const auth = getAuth(app);
+      await setPersistence(
+        auth,
+        getReactNativePersistence(ReactNativeAsyncStorage)
+      );
+      await signInAnonymously(auth);
+    } catch (error) {
+      console.log(error);
+    }
+
     // Initialize Cloud Firestore and get a reference to the service
     const db = getFirestore(app);
-    const colRef = collection(db, "verbal_fluency_game_configuration");
+    const colRef = collection(db, "word-search-game-config");
     const isAndroid = Platform.OS === "android";
 
     onSnapshot(colRef, (snapshot) => {
@@ -103,7 +128,7 @@ function SplashScreen() {
       global.rewardInterstitialAd = rewardInterstitialAd;
       global.serverConfigEnable = serverConfigEnable;
       global.defaultLanguage = defaultLanguage;
-      global.showAds = showAds; 
+      global.showAds = showAds;
       global.privacy_policy = privacy_policy;
       global.show_review_popup = show_review_popup;
 
@@ -128,6 +153,8 @@ function SplashScreen() {
     }
   };
 
+  const isPhoneDevice = deviceType === DeviceType.PHONE;
+
   return (
     <YStack
       flex={1}
@@ -136,11 +163,27 @@ function SplashScreen() {
       justifyContent="center"
     >
       <Image
-        key={"letsPlayPrimary"}
-        source={images.appIcon}
-        style={{ height: 200, width: 200 }}
-        alt={"letsPlayPrimary"}
+        key={"icon"}
+        source={images.icon}
+        style={{
+          height: isPhoneDevice ? 200 : 300,
+          width: isPhoneDevice ? 200 : 300,
+          resizeMode: "center",
+        }}
+        alt={"icon"}
       />
+
+      <YStack zIndex={1} pos="absolute" bottom={"$4"}>
+        <SizableText
+          fontSize={isPhoneDevice ? "$hxs" : "$hmd"}
+          lineHeight={isPhoneDevice ? 22 : 30}
+          color={"$black"}
+          fontWeight={"700"}
+          textAlign="center"
+        >
+          {`Powered by ${global?.poweredBy ?? staticPoweredBy}`}
+        </SizableText>
+      </YStack>
     </YStack>
   );
 }

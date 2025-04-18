@@ -486,7 +486,7 @@ const defaultTokens = {
     "yellow.800": "#854d0e",
     "yellow.900": "#713f12",
     primary: "#05958f",
-    secondPrimaryColor: "#000000",
+    secondPrimaryColor: "#1c2e4a",
     borderColor: "#E3F1E9",
     disableColor: "#B3B3B3",
     orangeColor: "#F5A520",

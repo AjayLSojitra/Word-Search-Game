@@ -27,7 +27,7 @@ export async function openBrowser(
 export async function shareMyApp() {
   try {
     Share.share({
-      message: `Download "First or Worst" now and start sharing your memorable firsts and hilarious worsts with everyone! Perfect for parties, family gatherings, or just a fun night in. Let’s make memories together!
+      message: `Download "Word Search Game" now!
       \nGoogle Play Store link: https://play.google.com/store/apps/details?id=${
         global?.androidPackageName ?? staticAndroidPackageName
       }
@@ -60,8 +60,6 @@ export async function rateMyApp() {
   }
 }
 
-
-
 //STATIC ADS IDS
 const isAndroid = Platform.OS === "android";
 export const staticAppOpenAd = isAndroid
@@ -82,12 +80,12 @@ export const staticDefaultLanguage = "English";
 export const staticSupportEmail = "srkwebstudio@gmail.com";
 export const staticPoweredBy = "SRK Webstudio";
 export const staticPrivacyPolicy =
-  "http://as2infotech.infinityfreeapp.com/privacy-policy-verbal-fluency.html";
+  "https://doc-hosting.flycricket.io/srkwebstudio-privacy-policy/64f68df3-4304-4de0-84b6-8b293a40f23b/privacy";
 export const appStoreLink =
-  "https://apps.apple.com/app/verbal-fluency-game/id6480371490";
+  "https://apps.apple.com/app/word-search-game/id0123456789";
 export const staticAndroidPackageName =
   "com.shreeramkrishna.wordsearch.spelling.checker";
-export const APPLE_STORE_ID = "id6480371490";
+export const APPLE_STORE_ID = "id0123456789";
 
 export const canShowAdmobInteratitial = () => {
   if (global?.showAds) {

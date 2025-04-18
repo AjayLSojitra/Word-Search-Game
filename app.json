@@ -1,6 +1,6 @@
 {
   "expo": {
-    "scheme": "Word Search Game",
+    "scheme": "wordsearchgame",
     "extra": {
       "eas": {
         "projectId": "19e89d36-1cfe-4df8-90fd-f2fa2569ece3"
@@ -18,7 +18,7 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#30AF82"
+      "backgroundColor": "#05958f"
     },
     "updates": {
       "fallbackToCacheTimeout": 0,
@@ -32,14 +32,14 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.shreeramkrishna.wordsearch.spelling.checker",
       "infoPlist": {
-        "NSLocationWhenInUseUsageDescription": "VerbalFluencyGame does not access your location. This permission is included to meet App Store requirements, but the app does not utilize location services for any functionality.",
-        "NSMicrophoneUsageDescription": "VerbalFluencyGame does not access your microphone or any sensitive user data. This permission is included by default and is not used by the app. Your privacy and security are important to us."
+        "NSLocationWhenInUseUsageDescription": "WordSearchGame does not access your location. This permission is included to meet App Store requirements, but the app does not utilize location services for any functionality.",
+        "NSMicrophoneUsageDescription": "WordSearchGame does not access your microphone or any sensitive user data. This permission is included by default and is not used by the app. Your privacy and security are important to us."
       }
     },
     "android": {
       "package": "com.shreeramkrishna.wordsearch.spelling.checker",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#ffffff"
       }
     },

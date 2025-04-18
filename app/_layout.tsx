@@ -7,10 +7,7 @@ import {
 import { NativeBaseProvider } from "native-base";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { RecoilRoot } from "recoil";
-import {
-  AnalyticsProvider,
-  useAnalytics,
-} from "@modules/analytics/analytics";
+import { AnalyticsProvider, useAnalytics } from "@modules/analytics/analytics";
 import theme, { config } from "@utils/theme";
 import WebSplash from "../modules/shared/components/web-splash";
 import React, { useEffect, useState } from "react";
@@ -80,7 +77,6 @@ export default function Layout() {
       <TamaguiProvider config={themeConfig}>
         <Theme name={"light"}>
           <NativeBaseProvider theme={theme} config={config}>
-
             <RecoilRoot>
               <FontLoader>
                 <OneSignalProvider>
@@ -101,7 +97,7 @@ export default function Layout() {
                                         screenOptions={{
                                           headerShown: false,
                                           gestureEnabled: false,
-                                          animation: "ios",
+                                          animation: "ios_from_right",
                                         }}
                                       />
                                       <ConfirmationDialog />

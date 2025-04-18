@@ -5,25 +5,13 @@
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "paths": {
-      "@design-system/*": [
-        "./design-system/*"
-      ],
-      "@assets/*": [
-        "./assets/*"
-      ],
-      "@modules/*": [
-        "./modules/*"
-      ],
-      "@utils/*": [
-        "./utils/*"
-      ],
-      "@events/*": [
-        "./events/*"
-      ]
+      "@design-system/*": ["./design-system/*"],
+      "@assets/*": ["./assets/*"],
+      "@modules/*": ["./modules/*"],
+      "@utils/*": ["./utils/*"],
+      "@events/*": ["./events/*"],
+      "@firebase/auth": ["./node_modules/@firebase/auth/dist/index.rn.d.ts"]
     }
   },
-  "include": [
-    "**/*.ts",
-    "**/*.tsx"
-  ]
+  "include": ["**/*.ts", "**/*.tsx"]
 }

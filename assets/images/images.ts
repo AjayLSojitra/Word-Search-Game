@@ -1,6 +1,5 @@
 const images = {
   backArrow: require("./back-arrow.png"),
-  appIcon: require("./app-icon.png"),
   premium: require("./premium.png"),
   help: require("./help.png"),
   random: require("./random.png"),
@@ -20,7 +19,7 @@ const images = {
   soundOff: require("./sound-off.png"),
   soundOnBlack: require("./sound-on-black.png"),
   soundOnWhite: require("./sound-on-white.png"),
-  icon: require("./icon.png"),
+  icon: require("../icon.png"),
   easy: require("./easy.png"),
   hard: require("./hard.png"),
   letsPlayPrimary: require("./lets-play-primary.png"),
@@ -34,7 +33,7 @@ const images = {
   mood5: require("./mood-5.png"),
   feedback: require("./feedback.png"),
   language: require("./language.png"),
-  categories : require("./menu.png")
+  categories: require("./menu.png"),
 };
 
 export default images;
