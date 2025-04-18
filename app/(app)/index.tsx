@@ -28,10 +28,9 @@ import { triggerEvent } from "@modules/shared/components/use-triggered-event";
 import { DeviceType, deviceType } from "expo-device";
 import { initializeApp } from "firebase/app";
 import {
-  getAuth,
-  setPersistence,
   signInAnonymously,
   getReactNativePersistence,
+  initializeAuth,
 } from "firebase/auth";
 import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -71,11 +70,9 @@ function SplashScreen() {
 
     //Authentication
     try {
-      const auth = getAuth(app);
-      await setPersistence(
-        auth,
-        getReactNativePersistence(ReactNativeAsyncStorage)
-      );
+      const auth = initializeAuth(app, {
+        persistence: getReactNativePersistence(ReactNativeAsyncStorage),
+      });
       await signInAnonymously(auth);
     } catch (error) {
       console.log(error);
