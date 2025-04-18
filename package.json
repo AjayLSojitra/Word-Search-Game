@@ -86,7 +86,7 @@
     "react-native-device-info": "^10.13.1",
     "react-native-gesture-handler": "~2.20.2",
     "react-native-get-random-values": "~1.11.0",
-    "react-native-google-mobile-ads": "^13.2.1",
+    "react-native-google-mobile-ads": "^15.1.0",
     "react-native-in-app-review": "^4.3.3",
     "react-native-modal": "^13.0.1",
     "react-native-onesignal": "^5.1.0",

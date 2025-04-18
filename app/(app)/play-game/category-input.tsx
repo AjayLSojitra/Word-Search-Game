@@ -20,13 +20,11 @@ const CategoryInput = forwardRef<OtpInputRef, OtpInputProps>((props, ref) => {
   } = useOtpInput(props);
   const {
     disabled,
-
     hideStick,
     focusColor = "#A4D0A4",
     focusStickBlinkingDuration,
     secureTextEntry = false,
     theme = {},
-
     item,
     currentCategoryItem,
     onFilled,
