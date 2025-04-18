@@ -59,7 +59,14 @@
         }
       ],
       "expo-tracking-transparency",
-      ["expo-build-properties", {}],
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "kotlinVersion": "1.9.25"
+          }
+        }
+      ],
       [
         "onesignal-expo-plugin",
         {
