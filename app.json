@@ -49,6 +49,7 @@
     },
     "plugins": [
       "@react-native-firebase/app",
+      "@react-native-firebase/crashlytics",
       "./plugins/withAndroidVerifiedLinksWorkaround",
       [
         "expo-build-properties",
@@ -59,14 +60,6 @@
         }
       ],
       "expo-tracking-transparency",
-      [
-        "expo-build-properties",
-        {
-          "android": {
-            "kotlinVersion": "1.9.25"
-          }
-        }
-      ],
       [
         "onesignal-expo-plugin",
         {
