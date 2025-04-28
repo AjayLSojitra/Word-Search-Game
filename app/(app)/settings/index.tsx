@@ -9,8 +9,6 @@ import DeviceInfo from "react-native-device-info";
 import LocalStorage from "@utils/local-storage";
 import { useFocusEffect, useRouter } from "expo-router";
 import ResponsiveContent from "@modules/shared/responsive-content";
-import AdmobBanner from "@modules/shared/components/ads/admob-banner";
-
 import {
   canShowAdmobInteratitial,
   languages,
@@ -136,9 +134,6 @@ function SettingsScreen() {
                 () => {
                   toggleSound();
                   toggleSoundSwitch();
-                  if (isLoaded && canShowAdmobInteratitial()) {
-                    showInterstitial();
-                  }
                 }
               );
             }}
@@ -150,6 +145,7 @@ function SettingsScreen() {
                 style={{
                   height: iconSize,
                   width: iconSize,
+                  tintColor: "#1c2e4a",
                 }}
                 alt={"soundOnWhite"}
               />
@@ -157,7 +153,7 @@ function SettingsScreen() {
               <SizableText
                 fontSize={isPhoneDevice ? "$hsm" : "$2xl"}
                 lineHeight={isPhoneDevice ? 22 : 34}
-                color={"$white"}
+                color={"$secondPrimaryColor"}
                 fontWeight={"700"}
               >
                 {languageData.sound}
@@ -174,9 +170,6 @@ function SettingsScreen() {
                     () => {
                       toggleSound();
                       toggleSoundSwitch();
-                      if (isLoaded && canShowAdmobInteratitial()) {
-                        showInterstitial();
-                      }
                     }
                   );
                 }}
@@ -192,7 +185,7 @@ function SettingsScreen() {
               style={{
                 height: iconSize,
                 width: iconSize,
-                tintColor: "#FFFFFF",
+                tintColor: "#1c2e4a",
               }}
               alt={"language"}
             />
@@ -200,7 +193,7 @@ function SettingsScreen() {
             <SizableText
               fontSize={isPhoneDevice ? "$hsm" : "$2xl"}
               lineHeight={isPhoneDevice ? 22 : 34}
-              color={"$white"}
+              color={"$secondPrimaryColor"}
               fontWeight={"700"}
             >
               {languageData.language_selection}
@@ -210,7 +203,7 @@ function SettingsScreen() {
             <YStack
               flex={1}
               height={isPhoneDevice ? 34 : 51}
-              backgroundColor={"black"}
+              backgroundColor={"$secondPrimaryColor"}
               borderRadius={isPhoneDevice ? 8 : 12}
               alignItems="center"
               justifyContent="center"
@@ -254,7 +247,6 @@ function SettingsScreen() {
                       >
                         {(selectedItem && selectedItem.name) ||
                           "Select Language"}
-                        {/* Display the language name */}
                       </SizableText>
                       <YStack w={"$3"} />
                       <Image
@@ -278,7 +270,7 @@ function SettingsScreen() {
                     <>
                       <XStack
                         p={isPhoneDevice ? "$3" : "$5"}
-                        backgroundColor={isSelected ? "#05958f" : "white"}
+                        backgroundColor={isSelected ? "#05958f" : "#1c2e4a"}
                         justifyContent="center"
                         alignItems="center"
                         alignSelf="center"
@@ -287,21 +279,21 @@ function SettingsScreen() {
                           flex={1}
                           fontSize={isPhoneDevice ? "$md" : "$2xl"}
                           lineHeight={isPhoneDevice ? 22 : 34}
-                          color={"$black"}
+                          color={isSelected ? "#1c2e4a" : "$white"}
                           fontWeight={"$semibold"}
                           numberOfLines={1}
                           textAlign="center"
                         >
-                          {item.name} {/* Display the language name */}
+                          {item.name}
                         </SizableText>
                       </XStack>
-                      <YStack h={0.5} bg={"black"} />
+                      <YStack h={0.5} bg={"$white"} />
                     </>
                   );
                 }}
                 showsVerticalScrollIndicator={false}
                 dropdownStyle={{
-                  backgroundColor: "#FFFFFF",
+                  backgroundColor: "#1c2e4a",
                   borderRadius: 8,
                 }}
               />
@@ -320,14 +312,18 @@ function SettingsScreen() {
               <Image
                 key={"privacyPolicy"}
                 source={images.privacyPolicy}
-                style={{ height: iconSize, width: iconSize }}
+                style={{
+                  height: iconSize,
+                  width: iconSize,
+                  tintColor: "#1c2e4a",
+                }}
                 alt={"privacyPolicy"}
               />
               <YStack w={isPhoneDevice ? "$2" : "$3"} />
               <SizableText
                 fontSize={isPhoneDevice ? "$hsm" : "$2xl"}
                 lineHeight={isPhoneDevice ? 22 : 34}
-                color={"$white"}
+                color={"$secondPrimaryColor"}
                 fontWeight={"700"}
               >
                 {languageData.privacy_policy}
@@ -344,14 +340,18 @@ function SettingsScreen() {
               <Image
                 key={"share"}
                 source={images.share}
-                style={{ height: iconSize, width: iconSize }}
+                style={{
+                  height: iconSize,
+                  width: iconSize,
+                  tintColor: "#1c2e4a",
+                }}
                 alt={"share"}
               />
               <YStack w={isPhoneDevice ? "$2" : "$3"} />
               <SizableText
                 fontSize={isPhoneDevice ? "$hsm" : "$2xl"}
                 lineHeight={isPhoneDevice ? 22 : 34}
-                color={"$white"}
+                color={"$secondPrimaryColor"}
                 fontWeight={"700"}
               >
                 {languageData.share_game}
@@ -368,14 +368,18 @@ function SettingsScreen() {
               <Image
                 key={"rating"}
                 source={images.rating}
-                style={{ height: iconSize, width: iconSize }}
+                style={{
+                  height: iconSize,
+                  width: iconSize,
+                  tintColor: "#1c2e4a",
+                }}
                 alt={"rating"}
               />
               <YStack w={isPhoneDevice ? "$2" : "$3"} />
               <SizableText
                 fontSize={isPhoneDevice ? "$hsm" : "$2xl"}
                 lineHeight={isPhoneDevice ? 22 : 34}
-                color={"$white"}
+                color={"$secondPrimaryColor"}
                 fontWeight={"700"}
               >
                 {languageData.rate_us}
@@ -392,14 +396,18 @@ function SettingsScreen() {
               <Image
                 key={"contactUs"}
                 source={images.contactUs}
-                style={{ height: iconSize, width: iconSize }}
+                style={{
+                  height: iconSize,
+                  width: iconSize,
+                  tintColor: "#1c2e4a",
+                }}
                 alt={"contactUs"}
               />
               <YStack w={isPhoneDevice ? "$2" : "$3"} />
               <SizableText
                 fontSize={isPhoneDevice ? "$hsm" : "$2xl"}
                 lineHeight={isPhoneDevice ? 22 : 34}
-                color={"$white"}
+                color={"$secondPrimaryColor"}
                 fontWeight={"700"}
               >
                 {languageData.contact_us}
@@ -407,7 +415,7 @@ function SettingsScreen() {
               <SizableText
                 fontSize={isPhoneDevice ? "$xs" : "$lg"}
                 lineHeight={isPhoneDevice ? 18 : 26}
-                color={"$white"}
+                color={"$secondPrimaryColor"}
                 fontWeight={"$medium"}
                 numberOfLines={1}
                 adjustsFontSizeToFit
@@ -426,14 +434,18 @@ function SettingsScreen() {
               <Image
                 key={"contactUs"}
                 source={images.feedback}
-                style={{ height: iconSize, width: iconSize }}
+                style={{
+                  height: iconSize,
+                  width: iconSize,
+                  tintColor: "#1c2e4a",
+                }}
                 alt={"contactUs"}
               />
               <YStack w={isPhoneDevice ? "$2" : "$3"} />
               <SizableText
                 fontSize={isPhoneDevice ? "$hsm" : "$2xl"}
                 lineHeight={isPhoneDevice ? 22 : 34}
-                color={"$white"}
+                color={"$secondPrimaryColor"}
                 fontWeight={"700"}
               >
                 {languageData.send_feedback}
@@ -448,13 +460,12 @@ function SettingsScreen() {
           textAlign="center"
           fontSize={isPhoneDevice ? "$hsm" : "$2xl"}
           lineHeight={isPhoneDevice ? 22 : 34}
-          color={"$black"}
+          color={"$secondPrimaryColor"}
           fontWeight={"700"}
         >
           {`Version: ${DeviceInfo.getBuildNumber()} (${DeviceInfo.getVersion()})`}
         </SizableText>
       </ResponsiveContent>
-      {global?.showAdsFromFirebase === true && <AdmobBanner />}
       <YStack h={insets.bottom} />
     </YStack>
   );

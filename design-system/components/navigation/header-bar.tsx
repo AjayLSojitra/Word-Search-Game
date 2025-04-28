@@ -22,7 +22,7 @@ export type HeaderBarProps = {
   customTitle?: JSX.Element;
 };
 
-function HeaderBar(props: HeaderBarProps) {
+function HeaderBar(props: Readonly<HeaderBarProps>) {
   const {
     title,
     titleLeftIcon,
@@ -43,13 +43,14 @@ function HeaderBar(props: HeaderBarProps) {
   const renderCross = cross ? (
     <TouchableScale onPress={goBack}>
       <YStack
-        height={24}
-        width={24}
-        p={4}
-        alignItems="center"
+        height={28}
+        width={44}
+        borderRadius={4}
+        bg={"$secondPrimaryColor"}
         justifyContent="center"
+        alignItems="center"
       >
-        <Close height={18} width={18} fill={"blueGray.700"} />
+        <Close height={28} width={28} fill={"#FFFFFF"} />
       </YStack>
     </TouchableScale>
   ) : (
@@ -68,7 +69,7 @@ function HeaderBar(props: HeaderBarProps) {
         <Image
           key={"backArrow"}
           source={images.backArrow}
-          style={{ height: 18, width: 18 }}
+          style={{ height: 18, width: 18, tintColor: "#1c2e4a" }}
           alt={"back arrow"}
         />
       </YStack>
@@ -80,7 +81,7 @@ function HeaderBar(props: HeaderBarProps) {
   return (
     <XStack alignItems={profileElement ? "flex-start" : "center"}>
       <YStack minWidth={40} alignItems="flex-start">
-        {leftElement ? leftElement : renderBackOrCross}
+        {leftElement || renderBackOrCross}
       </YStack>
       <YStack flex={1} alignItems="center" mt={profileElement ? "$-2" : 0}>
         {profileElement}
@@ -91,8 +92,8 @@ function HeaderBar(props: HeaderBarProps) {
           ) : (
             <SizableText
               fontSize={titleSize}
-              fontWeight={"$semibold"}
-              color={"$white"}
+              fontWeight={"$bold900"}
+              color={"$secondPrimaryColor"}
               numberOfLines={titleNumberOfLines}
               ellipsizeMode={titleEllipsizeMode}
             >
@@ -101,7 +102,7 @@ function HeaderBar(props: HeaderBarProps) {
           )}
         </XStack>
         <XStack alignItems="center">
-          {subTitleLeftIcon ? subTitleLeftIcon : <></>}
+          {subTitleLeftIcon || <></>}
           {subTitle && subTitleLeftIcon && <YStack w={"$1"} />}
           {subTitle ? (
             <SizableText
@@ -118,7 +119,7 @@ function HeaderBar(props: HeaderBarProps) {
         </XStack>
       </YStack>
       <YStack minWidth={40} alignItems="flex-end">
-        {rightElement ? rightElement : <></>}
+        {rightElement || <></>}
       </YStack>
     </XStack>
   );

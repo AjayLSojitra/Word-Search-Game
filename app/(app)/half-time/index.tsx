@@ -13,24 +13,25 @@ import images from "@assets/images/images";
 import LocalStorage from "@utils/local-storage";
 import useResponsiveWidth from "@modules/shared/hooks/useResponsiveWidth";
 import ResponsiveContent from "@modules/shared/responsive-content";
-import AdmobBanner from "@modules/shared/components/ads/admob-banner";
-import { BannerAdSize, TestIds, useInterstitialAd } from "react-native-google-mobile-ads";
+import { TestIds, useInterstitialAd } from "react-native-google-mobile-ads";
 import { staticInterstitialAd } from "@modules/shared/components/helpers";
 
 function HalfTimeScreen() {
   const {
     isForTraining = "No",
-  }:
-    {
-      isForTraining?: string
-    }
-    = useGlobalSearchParams();
+  }: {
+    isForTraining?: string;
+  } = useGlobalSearchParams();
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const [sound, setSound] = useState<Audio.Sound>();
   const isSoundEnabled = useRef(true);
   const responsiveWidth = useResponsiveWidth();
-  const { isLoaded, isClosed, load, show, isShowing } = useInterstitialAd(__DEV__ ? TestIds.INTERSTITIAL_VIDEO : (global?.interstitialAd ?? staticInterstitialAd));
+  const { isLoaded, isClosed, load, show } = useInterstitialAd(
+    __DEV__
+      ? TestIds.INTERSTITIAL_VIDEO
+      : global?.interstitialAd ?? staticInterstitialAd
+  );
 
   useEffect(() => {
     load();
@@ -39,28 +40,26 @@ function HalfTimeScreen() {
   useEffect(() => {
     if (isClosed) {
       load();
-      
+
       // Action after the ad is closed
       setTimeout(() => {
-        redirectToNextScreenAfterAdmobInterstitial()
+        redirectToNextScreenAfterAdmobInterstitial();
       }, 500);
     }
   }, [isClosed]);
 
   const redirectToNextScreenAfterAdmobInterstitial = () => {
-    router.back()
-  }
+    router.back();
+  };
 
   useFocusEffect(
     useCallback(() => {
-      LocalStorage.getItemDefault("SOUND_KEY").then(
-        (val) => {
-          isSoundEnabled.current = val == null || val === "Yes"
-          if (val == null || val === "Yes") {
-            playHalfTimeIntervalSound()
-          }
+      LocalStorage.getItemDefault("SOUND_KEY").then((val) => {
+        isSoundEnabled.current = val == null || val === "Yes";
+        if (val == null || val === "Yes") {
+          playHalfTimeIntervalSound();
         }
-      );
+      });
     }, [])
   );
 
@@ -75,18 +74,14 @@ function HalfTimeScreen() {
   useEffect(() => {
     return sound
       ? () => {
-        sound.unloadAsync();
-      }
+          sound.unloadAsync();
+        }
       : undefined;
   }, [sound]);
 
   return (
     <YStack flex={1} backgroundColor={"$black"}>
-      <ScrollHeader
-        title=""
-        backgroundColor={"$black"}
-        back={false}
-      />
+      <ScrollHeader title="" backgroundColor={"$black"} back={false} />
 
       <ResponsiveContent flex={1}>
         <SizableText
@@ -122,7 +117,7 @@ function HalfTimeScreen() {
                 show();
               } else {
                 // No advert ready to show yet
-                redirectToNextScreenAfterAdmobInterstitial()
+                redirectToNextScreenAfterAdmobInterstitial();
               }
             }}
           >
@@ -151,16 +146,17 @@ function HalfTimeScreen() {
                 textTransform="uppercase"
                 adjustsFontSizeToFit
               >
-                {`Watch video & resume  ${isForTraining === "Yes" ? "training" : "game"}`}
+                {`Watch video & resume  ${
+                  isForTraining === "Yes" ? "training" : "game"
+                }`}
               </SizableText>
             </XStack>
           </BasicButton>
         </YStack>
       </ResponsiveContent>
-      {!isShowing && (<AdmobBanner bannerSize={BannerAdSize.ANCHORED_ADAPTIVE_BANNER} />)}
       <YStack h={insets.bottom} />
     </YStack>
-  )
+  );
 }
 
 export default HalfTimeScreen;

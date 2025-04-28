@@ -1,7 +1,7 @@
-import { SizableText, XStack, YStack } from "tamagui";
+import { SizableText, YStack } from "tamagui";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import BasicButton from "@design-system/components/buttons/basic-button";
-import { Image, Platform } from "react-native";
+import { Image } from "react-native";
 import images from "@assets/images/images";
 import AdsConfirmationDialog from "@modules/shared/components/confirmation-dialog/ads-confirmation-dialog";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -22,18 +22,20 @@ import {
   staticInterstitialAd,
   staticRewardInterstitialAd,
 } from "@modules/shared/components/helpers";
-import AdmobBanner from "@modules/shared/components/ads/admob-banner";
 import InAppReview from "react-native-in-app-review";
 import { OneSignal } from "react-native-onesignal";
 import { DeviceType, deviceType } from "expo-device";
 import useTriggeredEvent from "@modules/shared/components/use-triggered-event";
 import contents from "@assets/contents/contents";
 import useResponsiveWidth from "@modules/shared/hooks/useResponsiveWidth";
+import AdsNotifyDialog from "@modules/shared/components/confirmation-dialog/ads-notify-dialog";
 
 function WelcomeScreen() {
   const isPhoneDevice = deviceType === DeviceType.PHONE;
   const insets = useSafeAreaInsets();
   const [showAdsConfirmationPopup, setShowAdsConfirmationPopup] =
+    useState(false);
+  const [showRewardsAdsConfirmationPopup, setShowRewardsAdsConfirmationPopup] =
     useState(false);
 
   const languageData =
@@ -60,12 +62,13 @@ function WelcomeScreen() {
     isClosed: isClosedRewarded,
     load: loadRewarded,
     show: showRewarded,
+    error: errorRewarded,
   } = useRewardedAd(
     __DEV__
       ? TestIds.REWARDED
       : global?.rewardInterstitialAd ?? staticRewardInterstitialAd
   );
-  const { isLoaded, isClosed, load, show, isShowing } = useInterstitialAd(
+  const { isLoaded, isClosed, load, show, error } = useInterstitialAd(
     __DEV__
       ? TestIds.INTERSTITIAL_VIDEO
       : global?.interstitialAd ?? staticInterstitialAd
@@ -77,6 +80,12 @@ function WelcomeScreen() {
   useEffect(() => {
     OneSignal.Notifications.requestPermission(true);
   }, []);
+
+  useEffect(() => {
+    if (errorRewarded) {
+      setShowRewardsAdsConfirmationPopup(false);
+    }
+  }, [errorRewarded]);
 
   useEffect(() => {
     if (global?.show_review_popup) {
@@ -111,6 +120,7 @@ function WelcomeScreen() {
       loadRewardedAd();
 
       // Action after the ad is closed
+      setShowRewardsAdsConfirmationPopup(false);
       redirectToPlayGameScreen();
     }
   }, [isClosedRewarded]);
@@ -120,13 +130,27 @@ function WelcomeScreen() {
   }, [load]);
 
   useEffect(() => {
+    if (error) {
+      setShowAdsConfirmationPopup(false);
+    }
+  }, [error]);
+
+  useEffect(() => {
     if (isClosed) {
       load();
 
       // Action after the ad is closed
+      setShowAdsConfirmationPopup(false);
       redirectToNextScreenAfterAdmobInterstitial();
     }
   }, [isClosed]);
+
+  const showInterstitial = () => {
+    setShowAdsConfirmationPopup(true);
+    setTimeout(() => {
+      show();
+    }, 2000);
+  };
 
   const redirectToNextScreenAfterAdmobInterstitial = () => {
     if (redirectTo.current === "LEVEL-SELECTION-SCREEN") {
@@ -180,6 +204,31 @@ function WelcomeScreen() {
     );
   };
 
+  const onPressTrainYourMind = () => {
+    const minWordLength = 3;
+    const maxWordLength = 8;
+    const randomLength =
+      Math.floor(Math.random() * (maxWordLength - minWordLength + 1)) +
+      minWordLength;
+    setRandomWordLength(randomLength);
+    const dur = getDurationAccordingToRandomWordLength(randomLength);
+    setDuration(dur);
+
+    if (global?.showAds && isLoadedRewarded) {
+      setShowRewardsAdsConfirmationPopup(true);
+    } else {
+      const alphabetList = alphabets();
+      const randomAlphabetIndex = Math.floor(
+        Math.random() * alphabetList.length
+      );
+      const randomAlphabet = alphabetList[randomAlphabetIndex];
+
+      router.push(
+        `./play-game?alphabet=${randomAlphabet}&&wordLength=${randomLength}&&duration=${dur}&&isForTraining=Yes`
+      );
+    }
+  };
+
   return (
     <YStack flex={1} bg={"$primary"}>
       <ScrollHeader
@@ -196,12 +245,7 @@ function WelcomeScreen() {
             hitSlop={HIT_SLOP}
             onPress={() => {
               redirectTo.current = "SETTING-SCREEN";
-              if (isLoaded && canShowAdmobInteratitial()) {
-                show();
-              } else {
-                // No advert ready to show yet
-                redirectToNextScreenAfterAdmobInterstitial();
-              }
+              redirectToNextScreenAfterAdmobInterstitial();
             }}
           >
             <Image
@@ -227,9 +271,13 @@ function WelcomeScreen() {
               }
             }}
             onNegativePress={() => {}}
-            showDialog={showAdsConfirmationPopup}
-            setChangeShowDialogStatus={setShowAdsConfirmationPopup}
+            showDialog={showRewardsAdsConfirmationPopup}
+            setChangeShowDialogStatus={setShowRewardsAdsConfirmationPopup}
             content={`Watch a video to unlock this feature for ${duration} seconds!`}
+          />
+          <AdsNotifyDialog
+            showDialog={showAdsConfirmationPopup}
+            content={`Ad is loading...`}
           />
         </YStack>
         <YStack flex={1} justifyContent="center">
@@ -247,7 +295,7 @@ function WelcomeScreen() {
             onPress={() => {
               redirectTo.current = "LEVEL-SELECTION-SCREEN";
               if (isLoaded && canShowAdmobInteratitial()) {
-                show();
+                showInterstitial();
               } else {
                 // No advert ready to show yet
                 redirectToNextScreenAfterAdmobInterstitial();
@@ -286,7 +334,7 @@ function WelcomeScreen() {
             onPress={() => {
               redirectTo.current = "CATEGORY-SCREEN";
               if (isLoaded && canShowAdmobInteratitial()) {
-                show();
+                showInterstitial();
               } else {
                 // No advert ready to show yet
                 redirectToNextScreenAfterAdmobInterstitial();
@@ -322,36 +370,7 @@ function WelcomeScreen() {
           <BasicButton
             height={56}
             linearGradientProps={{ colors: ["#1c2e4a", "#1c2e4a"] }}
-            onPress={() => {
-              if (isLoaded && canShowAdmobInteratitial()) {
-                show();
-              } else {
-                const minWordLength = 3;
-                const maxWordLength = 8;
-                const randomLength =
-                  Math.floor(
-                    Math.random() * (maxWordLength - minWordLength + 1)
-                  ) + minWordLength;
-                setRandomWordLength(randomLength);
-                const dur =
-                  getDurationAccordingToRandomWordLength(randomLength);
-                setDuration(dur);
-
-                if (global?.showAds && isLoadedRewarded) {
-                  setShowAdsConfirmationPopup(true);
-                } else {
-                  const alphabetList = alphabets();
-                  const randomAlphabetIndex = Math.floor(
-                    Math.random() * alphabetList.length
-                  );
-                  const randomAlphabet = alphabetList[randomAlphabetIndex];
-
-                  router.push(
-                    `./play-game?alphabet=${randomAlphabet}&&wordLength=${randomLength}&&duration=${dur}&&isForTraining=Yes`
-                  );
-                }
-              }
-            }}
+            onPress={onPressTrainYourMind}
           >
             <YStack width={responsiveWidth - 60}>
               <Image
@@ -379,12 +398,6 @@ function WelcomeScreen() {
           </BasicButton>
         </YStack>
       </ResponsiveContent>
-
-      {Platform.OS === "android" && !isShowing && global?.showAds && (
-        <YStack justifyContent="flex-end">
-          <AdmobBanner />
-        </YStack>
-      )}
       <YStack h={insets.bottom} />
     </YStack>
   );

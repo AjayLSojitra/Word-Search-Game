@@ -1,6 +1,5 @@
 const images = {
   correct: require("./correct.mp3"),
-  countdown: require("./countdown.mp3"),
   gaveOver: require("./game-over.mp3"),
   optionChange: require("./option-change.mp3"),
   wrong: require("./wrong.mp3"),

@@ -1,10 +1,10 @@
 import React, { useCallback } from "react";
-import { OpaqueColorValue, Platform, StatusBar } from "react-native";
+import { OpaqueColorValue } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { ColorTokens, YStack } from "tamagui";
 import HeaderBar, { HeaderBarProps } from "./header-bar";
 import { useRouter } from "expo-router";
-import DeviceInfo from 'react-native-device-info';
+import DeviceInfo from "react-native-device-info";
 
 export type ScrollHeaderProps = HeaderBarProps & {
   backgroundColor?: ColorTokens | OpaqueColorValue | string;
@@ -13,8 +13,7 @@ export type ScrollHeaderProps = HeaderBarProps & {
 function ScrollHeader(props: ScrollHeaderProps) {
   const { backgroundColor = "$white", ...headerBarProps } = props;
   const insets = useSafeAreaInsets();
-  const statusBarHeight =
-    Platform.OS === "android" ? StatusBar.currentHeight ?? 0 : insets.top;
+  const statusBarHeight = insets.top;
 
   const router = useRouter();
 
@@ -25,7 +24,7 @@ function ScrollHeader(props: ScrollHeaderProps) {
       } else {
         router.replace("/");
       }
-    } catch { }
+    } catch {}
   }, []);
 
   return (

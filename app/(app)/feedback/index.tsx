@@ -10,7 +10,6 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import ScrollHeader from "@design-system/components/navigation/scroll-header";
 import BasicButton from "@design-system/components/buttons/basic-button";
 import ResponsiveContent from "@modules/shared/responsive-content";
-import AdmobBanner from "@modules/shared/components/ads/admob-banner";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import FormInput from "@modules/shared/components/form-input/form-input";
@@ -25,8 +24,6 @@ import { Image, ImageProps, Platform } from "react-native";
 import images from "@assets/images/images";
 import TouchableScale from "@design-system/components/shared/touchable-scale";
 import { router } from "expo-router";
-import useKeyboardAnimatedHeight from "@modules/shared/hooks/use-keyboard-animated-height";
-import Animated, { useAnimatedStyle } from "react-native-reanimated";
 import InputAccessoryViewiOS from "@modules/shared/components/input-accessory-view-details";
 import { DeviceType, deviceType } from "expo-device";
 import contents from "@assets/contents/contents";
@@ -62,11 +59,6 @@ function AddContentsScreen() {
     defaultValues: { feedback: "" },
   });
 
-  const keyboardAnimatedHeight = useKeyboardAnimatedHeight();
-  const keyboardAnimatedStyle = useAnimatedStyle(() => ({
-    height: keyboardAnimatedHeight.value,
-  }));
-
   return (
     <YStack flex={1} bg={"$primary"}>
       <ScrollHeader
@@ -76,11 +68,11 @@ function AddContentsScreen() {
       <ResponsiveContent flex={1}>
         <YStack h={isPhoneDevice ? "$4" : "$6"} />
         <SizableText
+          px={"$4"}
           fontSize={isPhoneDevice ? "$md" : "$2xl"}
           lineHeight={isPhoneDevice ? 22 : 34}
           color={"$secondPrimaryColor"}
           fontWeight={"$semibold"}
-          textAlign="center"
         >
           {languageData.your_review}
         </SizableText>
@@ -262,10 +254,6 @@ function AddContentsScreen() {
           </BasicButton>
         </YStack>
       </ResponsiveContent>
-      <YStack alignItems="center">
-        <AdmobBanner />
-        <Animated.View style={keyboardAnimatedStyle} />
-      </YStack>
       <YStack h={insets.bottom} />
       {Platform.OS === "ios" && <InputAccessoryViewiOS title={"Done"} />}
     </YStack>

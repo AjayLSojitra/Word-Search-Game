@@ -1,17 +1,19 @@
-import { SizableText, YStack } from "tamagui";
+import { YStack } from "tamagui";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import ScrollHeader from "@design-system/components/navigation/scroll-header";
 import { useRouter } from "expo-router";
 import { FlatList } from "react-native";
 import ResponsiveContent from "@modules/shared/responsive-content";
-import AdmobBanner from "@modules/shared/components/ads/admob-banner";
 import { TestIds, useInterstitialAd } from "react-native-google-mobile-ads";
 import {
+  canShowAdmobInteratitial,
+  catrgoriesIcons,
   staticInterstitialAd,
 } from "@modules/shared/components/helpers";
-import { useEffect } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import contents from "@assets/contents/contents";
-import TouchableScale from "@design-system/components/shared/touchable-scale";
+import AdsNotifyDialog from "@modules/shared/components/confirmation-dialog/ads-notify-dialog";
+import CategoryItem from "./category-item";
 
 function CategoriesScreen() {
   const languageData =
@@ -19,7 +21,8 @@ function CategoriesScreen() {
 
   const insets = useSafeAreaInsets();
   const router = useRouter();
-  const { isLoaded, isClosed, load, show, isShowing } = useInterstitialAd(
+  const redirectTo = useRef<"PLAY-GAME" | "IGNORE">();
+  const { isLoaded, isClosed, load, show, error } = useInterstitialAd(
     __DEV__
       ? TestIds.INTERSTITIAL_VIDEO
       : global?.interstitialAd ?? staticInterstitialAd
@@ -30,46 +33,75 @@ function CategoriesScreen() {
   }, [load]);
 
   useEffect(() => {
+    if (error) {
+      setShowAdsConfirmationPopup(false);
+    }
+  }, [error]);
+
+  useEffect(() => {
     if (isClosed) {
       load();
 
       // Action after the ad is closed
+      setShowAdsConfirmationPopup(false);
       redirectToNextScreenAfterAdmobInterstitial();
     }
   }, [isClosed]);
 
-  const redirectToNextScreenAfterAdmobInterstitial = () => {};
+  const [showAdsConfirmationPopup, setShowAdsConfirmationPopup] =
+    useState(false);
+  const showInterstitial = () => {
+    setShowAdsConfirmationPopup(true);
+    setTimeout(() => {
+      show();
+    }, 2000);
+  };
 
-  const renderItem = ({ item }) => (
-    <TouchableScale
-      onPress={() => {
-        router.push(`./countdown?item=${item}`);
-      }}
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        margin: 10,
-        backgroundColor: "white",
-        padding: 20,
-        borderRadius: 10,
-      }}
-    >
-      <SizableText
-        fontSize={16}
-        fontWeight={"600"}
-        color={"#1c2e4a"}
-        numberOfLines={1}
-        adjustsFontSizeToFit
-      >
-        {item}
-      </SizableText>
-    </TouchableScale>
+  const selectedCategory = useRef<any>();
+
+  const redirectToNextScreenAfterAdmobInterstitial = () => {
+    if (redirectTo.current === "PLAY-GAME") {
+      router.push(`./play-game?category=${selectedCategory.current}`);
+    }
+  };
+
+  const renderItem = useCallback(
+    ({ item, index }) => {
+      return (
+        <CategoryItem
+          category={item}
+          icon={catrgoriesIcons[index]}
+          onPress={() => {
+            selectedCategory.current = item;
+            redirectTo.current = "PLAY-GAME";
+            if (isLoaded && canShowAdmobInteratitial()) {
+              showInterstitial();
+            } else {
+              // No advert ready to show yet
+              redirectToNextScreenAfterAdmobInterstitial();
+            }
+          }}
+        />
+      );
+    },
+    [
+      selectedCategory.current,
+      redirectTo.current,
+      isLoaded,
+      canShowAdmobInteratitial(),
+    ]
   );
 
-  const keyExtractor = (item, index) => index.toString();
+  const keyExtractor = useCallback(
+    (item, index) => (item ?? "") + (index ?? 0),
+    []
+  );
 
-  const filteredData = Object.entries(languageData)
+  const renderFooter = useCallback(() => {
+    return <YStack h={insets.bottom} />;
+  }, [insets.bottom]);
+
+  const categories = Object.entries(languageData)
     .filter(([key]) => key !== "Choose_Category")
     .map(([key, value]) => value);
 
@@ -80,19 +112,25 @@ function CategoriesScreen() {
         backgroundColor={"$primary"}
       />
       <ResponsiveContent flex={1}>
-        <YStack flex={1} mx={"$3"} justifyContent="center">
+        <YStack alignItems="center" justifyContent="center">
+          <AdsNotifyDialog
+            showDialog={showAdsConfirmationPopup}
+            content={`Ad is loading...`}
+          />
+        </YStack>
+        <YStack flex={1} mx={"$2"} justifyContent="center">
           <FlatList
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}
-            data={filteredData} // Use the category values from languageData
+            data={categories}
             renderItem={renderItem}
-            keyExtractor={keyExtractor} // Ensure each item has a unique key
-            numColumns={2} // Display in 2 columns
+            keyExtractor={keyExtractor}
+            ListFooterComponent={renderFooter}
+            horizontal={false}
+            numColumns={2}
           />
         </YStack>
       </ResponsiveContent>
-      {!isShowing && <AdmobBanner />}
-      <YStack h={insets.bottom} />
     </YStack>
   );
 }

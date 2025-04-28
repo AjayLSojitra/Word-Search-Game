@@ -1,3 +1,21 @@
+import BeautyPersonalCareIcon from "@assets/svgs/beauty-personal-care-icon";
+import BooksStationaryIcon from "@assets/svgs/books-stationary-icon";
+import ClothingAccessoriesIcon from "@assets/svgs/clothing-accessories-icon";
+import CookingApplicanesIcon from "@assets/svgs/cooking-appliances-icon";
+import ElectronicsIcon from "@assets/svgs/electronics-icon";
+import FirstAidItemsIcon from "@assets/svgs/first-aid-items-icon";
+import FruitsIcon from "@assets/svgs/fruits-icon";
+import HealthFitnessIcon from "@assets/svgs/health-fitness-icon";
+import HomeDecorIcon from "@assets/svgs/home-decor-icon";
+import HouseholdItemsIcon from "@assets/svgs/household-items-icon";
+import MusicalInstrumentsIcon from "@assets/svgs/musical-instruments-icon";
+import OfficeSuppliesIcon from "@assets/svgs/office-supplies-icon";
+import PetsSuppliesIcon from "@assets/svgs/pets-supplies-icon";
+import SnacksIcon from "@assets/svgs/snacks-icon";
+import SportsIcon from "@assets/svgs/sports-icon";
+import ToysGamesIcon from "@assets/svgs/toys-games-icon";
+import VegatablesIcon from "@assets/svgs/vegetables-icon";
+import VehiclesIcon from "@assets/svgs/vehicles-icon";
 import * as WebBrowser from "expo-web-browser";
 import { Linking, Platform, Share } from "react-native";
 
@@ -116,4 +134,25 @@ export const languages = [
   { name: "French" },
   { name: "German" },
   { name: "Urdu" },
+];
+
+export const catrgoriesIcons = [
+  VehiclesIcon,
+  FruitsIcon,
+  SnacksIcon,
+  VegatablesIcon,
+  HouseholdItemsIcon,
+  SportsIcon,
+  FirstAidItemsIcon,
+  MusicalInstrumentsIcon,
+  BooksStationaryIcon,
+  CookingApplicanesIcon,
+  ClothingAccessoriesIcon,
+  ElectronicsIcon,
+  HomeDecorIcon,
+  HealthFitnessIcon,
+  BeautyPersonalCareIcon,
+  ToysGamesIcon,
+  OfficeSuppliesIcon,
+  PetsSuppliesIcon,
 ];

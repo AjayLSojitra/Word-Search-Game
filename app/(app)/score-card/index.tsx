@@ -15,7 +15,6 @@ import BasicButton from "@design-system/components/buttons/basic-button";
 import LocalStorage from "@utils/local-storage";
 import ResponsiveContent from "@modules/shared/responsive-content";
 import AdmobBanner from "@modules/shared/components/ads/admob-banner";
-import { BannerAdSize } from "react-native-google-mobile-ads";
 import contents from "@assets/contents/contents";
 
 function ScoreCardScreen() {
@@ -253,13 +252,13 @@ function ScoreCardScreen() {
                   >
                     {languageData.congratulations}{" "}
                     <SizableText
-                    fontSize={"$hxs"}
-                    color={"$primary"}
-                    fontWeight={"$bold700"}
-                    textAlign="center"
-                  >
-                    {languageData.the_categorys_all_words}
-                  </SizableText>
+                      fontSize={"$hxs"}
+                      color={"$primary"}
+                      fontWeight={"$bold700"}
+                      textAlign="center"
+                    >
+                      {languageData.the_categorys_all_words}
+                    </SizableText>
                   </SizableText>
                 )}
               </YStack>
@@ -390,7 +389,6 @@ function ScoreCardScreen() {
                   />
                   <YStack w={"$2"} />
                   <SizableText
-                    mb={-5}
                     fontSize={"$hxs"}
                     color={"$black"}
                     fontWeight={"700"}
@@ -418,7 +416,6 @@ function ScoreCardScreen() {
                   />
                   <YStack w={"$2"} />
                   <SizableText
-                    mb={-5}
                     fontSize={"$hxs"}
                     color={"$black"}
                     fontWeight={"700"}
@@ -432,7 +429,7 @@ function ScoreCardScreen() {
           </YStack>
         </YStack>
       </ResponsiveContent>
-      <AdmobBanner bannerSize={BannerAdSize.ANCHORED_ADAPTIVE_BANNER} />
+      <AdmobBanner />
       <YStack h={insets.bottom} />
     </YStack>
   );

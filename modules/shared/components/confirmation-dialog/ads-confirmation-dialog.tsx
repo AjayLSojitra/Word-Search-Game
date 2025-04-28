@@ -8,14 +8,20 @@ import lotties from "@assets/lotties/lotties";
 import LottieWrapper from "../lottie-wrapper";
 
 type AdsConfirmationDialogProps = {
-  onPositivePress?: () => void
-  onNegativePress?: () => void
-  showDialog: boolean,
-  setChangeShowDialogStatus?: (value: boolean) => void
+  onPositivePress?: () => void;
+  onNegativePress?: () => void;
+  showDialog: boolean;
+  setChangeShowDialogStatus?: (value: boolean) => void;
   content: string;
-}
+};
 function AdsConfirmationDialog(props: Readonly<AdsConfirmationDialogProps>) {
-  const { onPositivePress, onNegativePress, showDialog = false, setChangeShowDialogStatus, content } = props;
+  const {
+    onPositivePress,
+    onNegativePress,
+    showDialog = false,
+    setChangeShowDialogStatus,
+    content,
+  } = props;
   const responsiveWidth = useResponsiveWidth();
 
   return (
@@ -27,10 +33,7 @@ function AdsConfirmationDialog(props: Readonly<AdsConfirmationDialogProps>) {
         setChangeShowDialogStatus(!showDialog);
       }}
     >
-      <YStack
-        backgroundColor={"#rgba(33, 33, 33, 0.25)"}
-        flex={1}
-      >
+      <YStack backgroundColor={"#rgba(33, 33, 33, 0.25)"} flex={1}>
         <ResponsiveContent
           alignItems="center"
           justifyContent="center"
@@ -54,10 +57,7 @@ function AdsConfirmationDialog(props: Readonly<AdsConfirmationDialogProps>) {
             >
               {content}
             </SizableText>
-            <XStack
-              alignContent="center"
-              justifyContent="center"
-            >
+            <XStack alignContent="center" justifyContent="center">
               <LottieWrapper
                 webProps={{
                   options: {
@@ -77,12 +77,12 @@ function AdsConfirmationDialog(props: Readonly<AdsConfirmationDialogProps>) {
             <XStack>
               <BasicButton
                 hideShadow
-                width={(responsiveWidth / 2) - 50}
+                width={responsiveWidth / 2 - 50}
                 height={46}
                 linearGradientProps={{ colors: ["#000000", "#000000"] }}
                 onPress={() => {
-                  setChangeShowDialogStatus(!showDialog)
-                  onNegativePress()
+                  setChangeShowDialogStatus(!showDialog);
+                  onNegativePress();
                 }}
               >
                 <SizableText
@@ -97,12 +97,11 @@ function AdsConfirmationDialog(props: Readonly<AdsConfirmationDialogProps>) {
               <YStack w={"$3"} />
               <BasicButton
                 hideShadow
-                width={(responsiveWidth / 2) - 50}
+                width={responsiveWidth / 2 - 50}
                 height={46}
                 linearGradientProps={{ colors: ["#05958f", "#05958f"] }}
                 onPress={() => {
-                  setChangeShowDialogStatus(!showDialog)
-                  onPositivePress()
+                  onPositivePress();
                 }}
               >
                 <SizableText
@@ -119,7 +118,7 @@ function AdsConfirmationDialog(props: Readonly<AdsConfirmationDialogProps>) {
         </ResponsiveContent>
       </YStack>
     </Modal>
-  )
+  );
 }
 
 export default AdsConfirmationDialog;

@@ -42,9 +42,9 @@ import {
 } from "@modules/shared/components/helpers";
 import contents from "@assets/contents/contents";
 import { DeviceType, deviceType } from "expo-device";
-import AdmobBanner from "@modules/shared/components/ads/admob-banner";
 import SBItem from "./SBItem";
 import parallaxLayout from "./parallax";
+import AdsNotifyDialog from "@modules/shared/components/confirmation-dialog/ads-notify-dialog";
 
 const BlurView = Animated.createAnimatedComponent(_BlurView);
 
@@ -81,32 +81,49 @@ function InitGameScreen() {
   const durations = level === "EASY" ? easyDuration : hardDuration;
   const wordLengths = level === "EASY" ? easyWordLengths : hardWordLengths;
 
-  const { isLoaded, isClosed, load, show, isShowing } = useInterstitialAd(
+  const { isLoaded, isClosed, load, show, error } = useInterstitialAd(
     __DEV__
       ? TestIds.INTERSTITIAL_VIDEO
       : global?.interstitialAd ?? staticInterstitialAd
   );
   const redirectTo = useRef<"PLAY-GAME" | "IGNORE">();
 
+  const [showAdsConfirmationPopup, setShowAdsConfirmationPopup] =
+    useState(false);
+
   useEffect(() => {
     load();
   }, [load]);
+
+  useEffect(() => {
+    if (error) {
+      setShowAdsConfirmationPopup(false);
+    }
+  }, [error]);
 
   useEffect(() => {
     if (isClosed) {
       load();
 
       // Action after the ad is closed
-      if (redirectTo.current === "PLAY-GAME") {
-        redirectToNextScreenAfterAdmobInterstitial();
-      }
+      setShowAdsConfirmationPopup(false);
+      redirectToNextScreenAfterAdmobInterstitial();
     }
   }, [isClosed]);
 
+  const showInterstitial = () => {
+    setShowAdsConfirmationPopup(true);
+    setTimeout(() => {
+      show();
+    }, 2000);
+  };
+
   const redirectToNextScreenAfterAdmobInterstitial = () => {
-    router.push(
-      `./countdown?alphabet=${currentAlphabets[selectedAlphabetIndex]}&&wordLength=${wordLengths[selectedWordLengthIndex]}&&duration=${durations[selectedDurationIndex]}`
-    );
+    if (redirectTo.current === "PLAY-GAME") {
+      router.push(
+        `./play-game?alphabet=${currentAlphabets[selectedAlphabetIndex]}&&wordLength=${wordLengths[selectedWordLengthIndex]}&&duration=${durations[selectedDurationIndex]}`
+      );
+    }
   };
 
   const isSoundEnabled = useRef(true);
@@ -163,11 +180,7 @@ function InitGameScreen() {
         rightElement={
           <TouchableScale
             onPress={() => {
-              if (isLoaded && canShowAdmobInteratitial()) {
-                show();
-              } else {
-                router.push("./help");
-              }
+              router.push("./help");
             }}
           >
             <YStack
@@ -180,7 +193,7 @@ function InitGameScreen() {
               <Image
                 key={"help"}
                 source={images.help}
-                style={{ height: 18, width: 18 }}
+                style={{ height: 18, width: 18, tintColor: "#1c2e4a" }}
                 alt={"help"}
               />
             </YStack>
@@ -189,6 +202,12 @@ function InitGameScreen() {
       />
 
       <ResponsiveContent flex={1}>
+        <YStack alignItems="center" justifyContent="center">
+          <AdsNotifyDialog
+            showDialog={showAdsConfirmationPopup}
+            content={`Ad is loading...`}
+          />
+        </YStack>
         <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
           <YStack alignItems="center">
             <Carousel
@@ -287,9 +306,6 @@ function InitGameScreen() {
                       animated: true,
                     });
                     redirectTo.current = "IGNORE";
-                    if (isLoaded && canShowAdmobInteratitial()) {
-                      show();
-                    }
                   }}
                 />
               )}
@@ -300,7 +316,7 @@ function InitGameScreen() {
                 generateRandomNumber();
                 redirectTo.current = "IGNORE";
                 if (isLoaded && canShowAdmobInteratitial()) {
-                  show();
+                  showInterstitial();
                 }
               }}
             >
@@ -377,9 +393,6 @@ function InitGameScreen() {
               onSnapToItem={(index) => {
                 setSelectedDurationIndex(index);
                 redirectTo.current = "IGNORE";
-                if (isLoaded && canShowAdmobInteratitial()) {
-                  show();
-                }
               }}
               onProgressChange={(
                 offsetProgress: number,
@@ -459,9 +472,6 @@ function InitGameScreen() {
               onSnapToItem={(index) => {
                 setSelectedWordLengthIndex(index);
                 redirectTo.current = "IGNORE";
-                if (isLoaded && canShowAdmobInteratitial()) {
-                  show();
-                }
               }}
               onProgressChange={(
                 offsetProgress: number,
@@ -521,7 +531,7 @@ function InitGameScreen() {
             onPress={() => {
               redirectTo.current = "PLAY-GAME";
               if (isLoaded && canShowAdmobInteratitial()) {
-                show();
+                showInterstitial();
               } else {
                 // No advert ready to show yet
                 redirectToNextScreenAfterAdmobInterstitial();
@@ -556,7 +566,6 @@ function InitGameScreen() {
           <YStack h={"$4"} />
         </YStack>
       </ResponsiveContent>
-      {!isShowing && <AdmobBanner />}
       <YStack h={insets.bottom} />
     </YStack>
   );

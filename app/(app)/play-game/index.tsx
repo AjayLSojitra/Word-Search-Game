@@ -26,11 +26,9 @@ import LocalStorage from "@utils/local-storage";
 import { HIT_SLOP } from "@utils/theme";
 import ResponsiveContent from "@modules/shared/responsive-content";
 import { OtpInputRef } from "./otp-input.types";
-import AdmobBanner from "@modules/shared/components/ads/admob-banner";
 import { TestIds, useInterstitialAd } from "react-native-google-mobile-ads";
 import { staticInterstitialAd } from "@modules/shared/components/helpers";
 import AdsNotifyDialog from "@modules/shared/components/confirmation-dialog/ads-notify-dialog";
-import useKeyboardAnimatedHeight from "@modules/shared/hooks/use-keyboard-animated-height";
 import contents from "@assets/contents/contents";
 import CategoryInput from "./category-input";
 import OtpInput from "./otp-input";
@@ -101,12 +99,11 @@ function PlayGameScreen() {
       : undefined;
   }, [sound]);
 
-  const { isLoaded, isClosed, load, show, error, isShowing } =
-    useInterstitialAd(
-      __DEV__
-        ? TestIds.INTERSTITIAL_VIDEO
-        : global?.interstitialAd ?? staticInterstitialAd
-    );
+  const { isLoaded, isClosed, load, show, error } = useInterstitialAd(
+    __DEV__
+      ? TestIds.INTERSTITIAL_VIDEO
+      : global?.interstitialAd ?? staticInterstitialAd
+  );
   const isInterstitialShowed = useRef<boolean>(false);
 
   useEffect(() => {
@@ -144,63 +141,66 @@ function PlayGameScreen() {
   const [timerCountdown, setTimerCountdown] = useState<number>(
     parseInt(duration ?? "0")
   );
-  const [startTimerInterval, setStartTimerInterval] = useState<boolean>(true);
+  const [startTimerInterval, setStartTimerInterval] = useState<boolean>(false);
   const timerRef = useRef(timerCountdown);
   const intervalCompleted = useRef(false);
   const minDurationForHalfTime = 30;
 
-  let timerId;
+  const timerId = useRef(null);
   useEffect(() => {
-    timerId = setInterval(() => {
-      if (
-        parseInt(duration ?? "0") > minDurationForHalfTime &&
-        timerRef.current === parseInt(duration ?? "0") / 2 &&
-        !intervalCompleted.current
-      ) {
-        //Half Time Interval
-        stopTimer();
-        router.push(`./half-time?isForTraining=${isForTraining}`);
-      } else {
-        intervalCompleted.current = false;
-        timerRef.current -= 1;
-
-        if (timerRef.current === 4) {
-          //Play countdown timer
-          playTimerOverWarningCountdownSound();
-        }
-        if (timerRef.current < 0) {
-          //Time is over
-          clearInterval(timerId);
-          if (alphabet) {
-          //Show Interstitial Ad
-          if (isLoaded && global?.showAds) {
-            setShowAdsConfirmationPopup(true);
-            setTimeout(() => {
-              if (!isInterstitialShowed.current) {
-                isInterstitialShowed.current = true;
-                show();
-              }
-            }, 3000);
-          } else {
-              redirectToNextScreenAfterAdmobInterstitial();
-            }
-          }
+    if (startTimerInterval) {
+      timerId.current = setInterval(() => {
+        if (
+          parseInt(duration ?? "0") > minDurationForHalfTime &&
+          timerRef.current === parseInt(duration ?? "0") / 2 &&
+          intervalCompleted.current === false
+        ) {
+          //Half Time Interval
+          intervalCompleted.current = true;
+          stopTimer();
+          router.push(`./half-time?isForTraining=${isForTraining}`);
         } else {
-          setTimerCountdown(timerRef.current); 
+          intervalCompleted.current = false;
+          timerRef.current -= 1;
+
+          if (timerRef.current === 4) {
+            //Play countdown timer
+            playTimerOverWarningCountdownSound();
+          }
+          if (timerRef.current < 0) {
+            //Time is over
+            toggleTimer();
+            if (alphabet) {
+              //Show Interstitial Ad
+              if (isLoaded && global?.showAds) {
+                setShowAdsConfirmationPopup(true);
+                setTimeout(() => {
+                  if (!isInterstitialShowed.current) {
+                    isInterstitialShowed.current = true;
+                    show();
+                  }
+                }, 3000);
+              } else {
+                redirectToNextScreenAfterAdmobInterstitial();
+              }
+            }
+          } else {
+            setTimerCountdown(timerRef.current);
+          }
         }
-      }
-    }, 1000);
+      }, 1000);
+    }
     return () => {
-      clearInterval(timerId);
+      clearInterval(timerId.current);
     };
   }, [startTimerInterval, intervalCompleted.current, timerRef.current]);
 
-  const startTimer = () => {
+  const toggleTimer = () => {
     setStartTimerInterval(!startTimerInterval);
   };
 
   const stopTimer = () => {
-    clearInterval(timerId);
+    toggleTimer();
   };
 
   const formattedValue = (value: number) => {
@@ -219,7 +219,7 @@ function PlayGameScreen() {
     );
   };
 
-  //For Play Half Time Inerval Warning Sound
+  //For Play Half Time Interval Warning Sound
   useEffect(() => {
     if (
       parseInt(duration ?? "0") > minDurationForHalfTime &&
@@ -252,8 +252,7 @@ function PlayGameScreen() {
   const navigation = useNavigation();
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
-      intervalCompleted.current = true;
-      startTimer();
+      toggleTimer();
       inputRef.current.focus();
     });
 
@@ -471,19 +470,21 @@ function PlayGameScreen() {
   const [showAdsConfirmationPopup, setShowAdsConfirmationPopup] =
     useState(false);
 
-  const keyboardAnimatedHeight = useKeyboardAnimatedHeight();
-  const keyboardAnimatedStyle = useAnimatedStyle(() => ({
-    height: keyboardAnimatedHeight.value,
-  }));
+  const getTitle = () => {
+    if (category !== "") {
+      return category;
+    }
+    return isForTraining === "Yes"
+      ? languageData.train_your_mind
+      : languageData.play_game;
+  };
 
   return (
     <YStack flex={1} backgroundColor={"$primary"}>
       <ScrollHeader
-        title={
-          isForTraining === "Yes"
-            ? languageData.train_your_mind
-            : languageData.play_game
-        }
+        title={getTitle()}
+        back={category === ""}
+        cross={category !== ""}
         backgroundColor={"$primary"}
         rightElement={
           <XStack alignItems="center">
@@ -492,6 +493,7 @@ function PlayGameScreen() {
                 style={{ marginRight: 8 }}
                 hitSlop={HIT_SLOP}
                 onPress={() => {
+                  intervalCompleted.current = true;
                   stopTimer();
                   router.push("./help?isForTraining=Yes");
                 }}
@@ -505,7 +507,7 @@ function PlayGameScreen() {
                   <Image
                     key={"help"}
                     source={images.help}
-                    style={{ height: 18, width: 18 }}
+                    style={{ height: 18, width: 18, tintColor: "#1c2e4a" }}
                     alt={"help"}
                   />
                 </YStack>
@@ -535,7 +537,7 @@ function PlayGameScreen() {
                   source={
                     isSoundSwitchEnabled ? images.soundOnWhite : images.soundOff
                   }
-                  style={{ height: 24, width: 24 }}
+                  style={{ height: 24, width: 24, tintColor: "#1c2e4a" }}
                   alt={"sound"}
                 />
               </YStack>
@@ -704,7 +706,9 @@ function PlayGameScreen() {
             alphabet=""
             onFilled={(text) => validateCategoriesInputs(text)} // Use the `text` in your parent function
             currentCategoryItem={currentCategoryWord}
-            redirectToNextScreenAfterAdmobInterstitial={redirectToNextScreenAfterAdmobInterstitial}
+            redirectToNextScreenAfterAdmobInterstitial={
+              redirectToNextScreenAfterAdmobInterstitial
+            }
           />
         ) : (
           <OtpInput
@@ -719,14 +723,6 @@ function PlayGameScreen() {
           />
         )}
       </ResponsiveContent>
-      <YStack alignItems="center">
-        {!isShowing && (
-          <>
-            <AdmobBanner />
-            <Animated.View style={keyboardAnimatedStyle} />
-          </>
-        )}
-      </YStack>
       <YStack h={insets.bottom} />
     </YStack>
   );

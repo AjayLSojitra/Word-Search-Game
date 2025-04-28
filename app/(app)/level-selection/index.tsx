@@ -6,14 +6,14 @@ import BasicButton from "@design-system/components/buttons/basic-button";
 import images from "@assets/images/images";
 import { Image } from "react-native";
 import ResponsiveContent from "@modules/shared/responsive-content";
-import AdmobBanner from "@modules/shared/components/ads/admob-banner";
 import { TestIds, useInterstitialAd } from "react-native-google-mobile-ads";
 import {
   canShowAdmobInteratitial,
   staticInterstitialAd,
 } from "@modules/shared/components/helpers";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import contents from "@assets/contents/contents";
+import AdsNotifyDialog from "@modules/shared/components/confirmation-dialog/ads-notify-dialog";
 
 function LevelSelectionScreen() {
   const languageData =
@@ -22,7 +22,7 @@ function LevelSelectionScreen() {
     ];
   const insets = useSafeAreaInsets();
   const router = useRouter();
-  const { isLoaded, isClosed, load, show, isShowing } = useInterstitialAd(
+  const { isLoaded, isClosed, load, show, error } = useInterstitialAd(
     __DEV__
       ? TestIds.INTERSTITIAL_VIDEO
       : global?.interstitialAd ?? staticInterstitialAd
@@ -33,6 +33,9 @@ function LevelSelectionScreen() {
     router.push(`./init-game?level=${level}`);
   };
 
+  const [showAdsConfirmationPopup, setShowAdsConfirmationPopup] =
+    useState(false);
+
   useEffect(() => {
     load();
   }, [load]);
@@ -42,9 +45,23 @@ function LevelSelectionScreen() {
       load();
 
       // Action after the ad is closed
+      setShowAdsConfirmationPopup(false);
       redirectToNextScreenAfterAdmobInterstitial();
     }
   }, [isClosed]);
+
+  useEffect(() => {
+    if (error) {
+      setShowAdsConfirmationPopup(false);
+    }
+  }, [error]);
+
+  const showInterstitial = () => {
+    setShowAdsConfirmationPopup(true);
+    setTimeout(() => {
+      show();
+    }, 2000);
+  };
 
   const redirectToNextScreenAfterAdmobInterstitial = () => {
     if (redirectTo.current === "EASY") {
@@ -58,8 +75,17 @@ function LevelSelectionScreen() {
 
   return (
     <YStack flex={1} bg={"$primary"}>
-      <ScrollHeader title={languageData.choose_level} backgroundColor={"$primary"} />
+      <ScrollHeader
+        title={languageData.choose_level}
+        backgroundColor={"$primary"}
+      />
       <ResponsiveContent flex={1}>
+        <YStack alignItems="center" justifyContent="center">
+          <AdsNotifyDialog
+            showDialog={showAdsConfirmationPopup}
+            content={`Ad is loading...`}
+          />
+        </YStack>
         <YStack flex={1} mx={"$6"} justifyContent="center">
           <BasicButton
             height={56}
@@ -67,7 +93,7 @@ function LevelSelectionScreen() {
             onPress={() => {
               redirectTo.current = "EASY";
               if (isLoaded && canShowAdmobInteratitial()) {
-                show();
+                showInterstitial();
               } else {
                 // No advert ready to show yet
                 redirectToNextScreenAfterAdmobInterstitial();
@@ -98,7 +124,7 @@ function LevelSelectionScreen() {
             onPress={() => {
               redirectTo.current = "HARD";
               if (isLoaded && canShowAdmobInteratitial()) {
-                show();
+                showInterstitial();
               } else {
                 // No advert ready to show yet
                 redirectToNextScreenAfterAdmobInterstitial();
@@ -124,7 +150,6 @@ function LevelSelectionScreen() {
           </BasicButton>
         </YStack>
       </ResponsiveContent>
-      {!isShowing && <AdmobBanner />}
       <YStack h={insets.bottom} />
     </YStack>
   );

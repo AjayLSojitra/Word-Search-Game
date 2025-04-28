@@ -6,8 +6,6 @@ import BasicButton from "@design-system/components/buttons/basic-button";
 import { Image } from "react-native";
 import images from "@assets/images/images";
 import ResponsiveContent from "@modules/shared/responsive-content";
-import AdmobBanner from "@modules/shared/components/ads/admob-banner";
-import { BannerAdSize } from "react-native-google-mobile-ads";
 import contents from "@assets/contents/contents";
 
 function TimeOverScreen() {
@@ -15,14 +13,12 @@ function TimeOverScreen() {
     correctWord = "0",
     wrongWord = "0",
     repeatWord = "0",
-  }:
-    {
-      correctWord?: string
-      wrongWord?: string
-      repeatWord?: string
-    }
-    = useGlobalSearchParams();
-    const languageData =
+  }: {
+    correctWord?: string;
+    wrongWord?: string;
+    repeatWord?: string;
+  } = useGlobalSearchParams();
+  const languageData =
     contents.timeOverScreenSelectedLanguage?.[
       global?.currentSelectedLanguage ?? "English"
     ];
@@ -31,15 +27,11 @@ function TimeOverScreen() {
 
   const formattedValue = (value: number) => {
     return value > 9 ? value : `0` + value;
-  }
+  };
 
   return (
     <YStack flex={1} bg={"$black"}>
-      <ScrollHeader
-        title=""
-        backgroundColor={"$black"}
-        back={false}
-      />
+      <ScrollHeader title="" backgroundColor={"$black"} back={false} />
 
       <ResponsiveContent flex={1}>
         <SizableText
@@ -137,7 +129,7 @@ function TimeOverScreen() {
             height={46}
             linearGradientProps={{ colors: ["#ffffff", "#ffffff"] }}
             onPress={() => {
-              router.back()
+              router.back();
             }}
           >
             <XStack alignItems="center" justifyContent="center">
@@ -149,7 +141,6 @@ function TimeOverScreen() {
               />
               <YStack w={"$2"} />
               <SizableText
-                mb={-5}
                 fontSize={"$hxs"}
                 color={"$black"}
                 fontWeight={"700"}
@@ -162,10 +153,9 @@ function TimeOverScreen() {
           </BasicButton>
         </YStack>
       </ResponsiveContent>
-      <AdmobBanner bannerSize={BannerAdSize.ANCHORED_ADAPTIVE_BANNER} />
       <YStack h={insets.bottom} />
     </YStack>
-  )
+  );
 }
 
 export default TimeOverScreen;
