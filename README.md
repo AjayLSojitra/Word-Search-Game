@@ -14,7 +14,7 @@ Word Search Game
 - Enhance How to Play screen design.
 ✔ Feedback screen design manage minor only.
 ✔ Remove unnecessary banner ads.
-- Add App Open ad.
+✔ Add App Open ad.
 ✔ Rewarded Ads issue on iOS.
 - Init game design modification. Because it's look like same we have on Verbal Fluency Game.
 - Add Copy option after user typed the required character on output.

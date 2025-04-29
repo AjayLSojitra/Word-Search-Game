@@ -22,6 +22,7 @@ import { toastConfig } from "../utils/toast-handler";
 import AdmobProvider from "@modules/app/admob-provider";
 import OneSignalProvider from "@modules/app/onesignal-provider";
 import { requestTrackingPermissionsAsync } from "expo-tracking-transparency";
+import { useAppOpenAd } from "@modules/shared/components/use-app-open-ad";
 
 export const unstable_settings = {
   // Ensure any route can link back to `/`
@@ -61,6 +62,8 @@ function RoutingInstrumentation() {
 }
 
 export default function Layout() {
+  useAppOpenAd();
+
   useEffect(() => {
     (async () => {
       setTimeout(async () => {
