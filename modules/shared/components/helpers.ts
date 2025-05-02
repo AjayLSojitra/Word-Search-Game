@@ -100,10 +100,10 @@ export const staticPoweredBy = "SRK Webstudio";
 export const staticPrivacyPolicy =
   "https://doc-hosting.flycricket.io/srkwebstudio-privacy-policy/64f68df3-4304-4de0-84b6-8b293a40f23b/privacy";
 export const appStoreLink =
-  "https://apps.apple.com/app/word-search-game/id0123456789";
+  "https://apps.apple.com/app/word-search-game/id6745386392";
 export const staticAndroidPackageName =
   "com.shreeramkrishna.wordsearch.spelling.checker";
-export const APPLE_STORE_ID = "id0123456789";
+export const APPLE_STORE_ID = "id6745386392";
 
 export const canShowAdmobInteratitial = () => {
   if (global?.showAds) {

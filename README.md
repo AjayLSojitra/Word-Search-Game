@@ -8,7 +8,7 @@ Word Search Game
 ✔ Enhance the label in Welcome screen on CTAs.
 ✔ Add Image in Category list screen along with category name.
 - Add Ads-free subscription - Revenuecat config.
-- AppStore configurations
+✔ AppStore configurations
 - Add Share and Rate option on home screen.
 - Add How to Play screen on Settings.
 - Enhance How to Play screen design.
@@ -198,7 +198,7 @@ To make build: Local for test without server:
 
 App ID Prefix 7369W8W466 (Team ID)
 
-Apple ID 6740090791
+Apple ID 6745386392
 
     iOS
         Steps Create new app on app store:

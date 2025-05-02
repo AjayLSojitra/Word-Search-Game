@@ -215,7 +215,7 @@ function InitGameScreen() {
               {...baseOptions}
               loop
               style={{
-                height: isTablet() ? 150 : 100,
+                height: isTablet() ? 165 : 100,
                 width: responsiveWidth,
                 justifyContent: "center",
                 alignItems: "center",
@@ -337,7 +337,6 @@ function InitGameScreen() {
                 />
                 <YStack w={"$2"} />
                 <SizableText
-                  pt={2}
                   fontSize={"$xs"}
                   fontWeight={"$semibold"}
                   color={"$white"}
