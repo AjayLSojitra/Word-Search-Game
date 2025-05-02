@@ -34,6 +34,7 @@ const images = {
   feedback: require("./feedback.png"),
   language: require("./language.png"),
   categories: require("./menu.png"),
+  copy: require("./copy.png"),
 };
 
 export default images;

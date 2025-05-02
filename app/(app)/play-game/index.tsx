@@ -32,6 +32,8 @@ import AdsNotifyDialog from "@modules/shared/components/confirmation-dialog/ads-
 import contents from "@assets/contents/contents";
 import CategoryInput from "./category-input";
 import OtpInput from "./otp-input";
+import * as Clipboard from "expo-clipboard";
+import { showNormalToast } from "@utils/toast-handler";
 
 type RenderItem = ListRenderItem<SpellInputs>;
 
@@ -270,7 +272,12 @@ function PlayGameScreen() {
   };
 
   const renderItem: RenderItem = useCallback((item) => {
-    return <SpellInputCard item={item?.item} />;
+    return (
+      <SpellInputCard
+        item={item?.item}
+        onPress={() => copyToClipboard(item?.item?.inputValue ?? "")}
+      />
+    );
   }, []);
 
   const renderSeparator = useCallback(() => {
@@ -417,7 +424,7 @@ function PlayGameScreen() {
         return;
       }
 
-      // //check for correct spelling (If wrong Red color else if correct then Green Color)
+      // check for correct spelling (If wrong Red color else if correct then Green Color)
       const spellCorrectionResult = check(inputSpell);
       if (spellCorrectionResult.length === 0) {
         //Check for Duplication (If found duplication Yellow color)
@@ -477,6 +484,11 @@ function PlayGameScreen() {
     return isForTraining === "Yes"
       ? languageData.train_your_mind
       : languageData.play_game;
+  };
+
+  const copyToClipboard = async (text: string) => {
+    await Clipboard.setStringAsync(text);
+    showNormalToast(`${text} copied to clipboard!`);
   };
 
   return (

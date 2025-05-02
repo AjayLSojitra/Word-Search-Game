@@ -4,33 +4,33 @@ import { SpellInputs } from "../../../modals/spell-inputs.model";
 import { SHADOW } from "@design-system/utils/constants";
 import images from "@assets/images/images";
 import { Image } from "react-native";
+import TouchableScale from "@design-system/components/shared/touchable-scale";
 
 function SpellInputCard({
   item,
+  onPress,
 }: Readonly<{
   item: SpellInputs;
+  onPress: () => void;
 }>) {
-
   const getBGColor = () => {
     if (item?.status === "DUPLICATE") {
-      return "$yellow.500"
+      return "$yellow.500";
     }
 
-
     if (item?.status === "CORRECT") {
-      return "$green.500"
+      return "$green.500";
     }
 
     if (item?.status === "WRONG") {
-      return "$red.500"
+      return "$red.500";
     }
-  }
+  };
 
   const getStatusImage = () => {
     if (item?.status === "DUPLICATE") {
       return images.repeat;
     }
-
 
     if (item?.status === "CORRECT") {
       return images.correct;
@@ -39,7 +39,7 @@ function SpellInputCard({
     if (item?.status === "WRONG") {
       return images.wrong;
     }
-  }
+  };
 
   return (
     <YStack
@@ -56,22 +56,31 @@ function SpellInputCard({
       borderWidth={1}
       {...SHADOW.basicCard}
     >
-      <XStack alignItems="center">
-        <Image
-          key={"help"}
-          source={getStatusImage()}
-          style={{ height: 12, width: 12 }}
-          alt={"help"}
-        />
-        <YStack w={"$1"} />
-        <SizableText
-          fontSize={"$xs"}
-          color={item?.status === "CORRECT" ? "$white" : "$white"}
-          fontWeight={"700"}
-        >
-          {item?.inputValue}
-        </SizableText>
-      </XStack>
+      <TouchableScale onPress={onPress}>
+        <XStack alignItems="center">
+          <Image
+            key={"help"}
+            source={getStatusImage()}
+            style={{ height: 12, width: 12 }}
+            alt={"help"}
+          />
+          <YStack w={"$1"} />
+          <SizableText
+            fontSize={"$xs"}
+            color={item?.status === "CORRECT" ? "$white" : "$white"}
+            fontWeight={"700"}
+          >
+            {item?.inputValue}
+          </SizableText>
+          <YStack w={"$1"} />
+          <Image
+            key={"copy"}
+            source={images.copy}
+            style={{ height: 12, width: 12, tintColor: "#ffffff" }}
+            alt={"copy"}
+          />
+        </XStack>
+      </TouchableScale>
     </YStack>
   );
 }
