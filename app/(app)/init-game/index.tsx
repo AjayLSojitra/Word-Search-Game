@@ -337,7 +337,8 @@ function InitGameScreen() {
                 />
                 <YStack w={"$2"} />
                 <SizableText
-                  fontSize={"$xs"}
+                  fontSize={isPhoneDevice ? "$xs" : "$lg"}
+                  lineHeight={isPhoneDevice ? 20 : 26}
                   fontWeight={"$semibold"}
                   color={"$white"}
                   textAlign="center"
@@ -582,6 +583,7 @@ const CustomItem: React.FC<ItemProps> = ({
   onPress,
   animationValue,
 }) => {
+  const isPhoneDevice = deviceType === DeviceType.PHONE;
   const maskStyle = useAnimatedStyle(() => {
     const opacity = interpolate(animationValue.value, [-1, 0, 1], [1, 0, 1]);
 
@@ -612,7 +614,8 @@ const CustomItem: React.FC<ItemProps> = ({
 
         <SizableText
           mt={-10}
-          fontSize={"$xs"}
+          fontSize={isPhoneDevice ? "$xs" : "$lg"}
+          lineHeight={isPhoneDevice ? 20 : 26}
           fontWeight={"$semibold"}
           color={"$white"}
           textAlign="center"

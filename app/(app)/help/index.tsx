@@ -4,11 +4,13 @@ import ScrollHeader from "@design-system/components/navigation/scroll-header";
 import { ScrollView } from "react-native";
 import { useGlobalSearchParams } from "expo-router";
 import ResponsiveContent from "@modules/shared/responsive-content";
+import { DeviceType, deviceType } from "expo-device";
 
 function HelpScreen() {
   const { isForTraining = "No" }: { isForTraining?: string } =
     useGlobalSearchParams();
   const insets = useSafeAreaInsets();
+  const isPhoneDevice = deviceType === DeviceType.PHONE;
 
   return (
     <YStack flex={1} backgroundColor={"$primary"}>
@@ -19,13 +21,17 @@ function HelpScreen() {
 
       <ResponsiveContent flex={1}>
         <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
-          <YStack mx={"$4"} mb={"$4"}>
+          <YStack
+            mx={isPhoneDevice ? "$4" : 0}
+            mt={isPhoneDevice ? "$4" : "$6"}
+          >
             {isForTraining === "Yes" ? (
               <>
                 <SizableText
-                  fontSize={"$hxs"}
-                  fontWeight={"$medium"}
-                  color={"$white"}
+                  fontSize={isPhoneDevice ? "$xs" : "$lg"}
+                  lineHeight={isPhoneDevice ? 20 : 26}
+                  fontWeight={"$normal"}
+                  color={"$secondPrimaryColor"}
                 >
                   {`When you choose to train your mind, a random character from the alphabet will be selected, and a random word length between 3 to 8 will also be chosen. You will see the randomly selected character displayed in the first input box.
 
@@ -37,15 +43,17 @@ After typing a word, it undergoes automatic verification. Genuine words appear i
             ) : (
               <>
                 <SizableText
-                  fontSize={"$hxs"}
-                  fontWeight={"$bold900"}
-                  color={"$white"}
+                  fontSize={isPhoneDevice ? "$hxs" : "$hmd"}
+                  lineHeight={isPhoneDevice ? 24 : 30}
+                  fontWeight={"$bold700"}
+                  color={"$secondPrimaryColor"}
                 >
-                  Level Selection : {` `}
+                  Level Selection : {`\n`}
                   <SizableText
-                    fontSize={"$xs"}
+                    fontSize={isPhoneDevice ? "$xs" : "$lg"}
+                    lineHeight={isPhoneDevice ? 20 : 26}
                     fontWeight={"$normal"}
-                    color={"$white"}
+                    color={"$secondPrimaryColor"}
                   >
                     Choose your preferred difficulty level before starting the
                     game. Whether you're a beginner or an expert, there's a
@@ -53,17 +61,19 @@ After typing a word, it undergoes automatic verification. Genuine words appear i
                   </SizableText>
                 </SizableText>
 
-                <YStack h={"$3"} />
+                <YStack h={isPhoneDevice ? "$4" : "$6"} />
                 <SizableText
-                  fontSize={"$hxs"}
-                  fontWeight={"$bold900"}
-                  color={"$white"}
+                  fontSize={isPhoneDevice ? "$hxs" : "$hmd"}
+                  lineHeight={isPhoneDevice ? 24 : 30}
+                  fontWeight={"$bold700"}
+                  color={"$secondPrimaryColor"}
                 >
-                  Pick a Letter : {` `}
+                  Pick a Letter : {`\n`}
                   <SizableText
-                    fontSize={"$xs"}
+                    fontSize={isPhoneDevice ? "$xs" : "$lg"}
+                    lineHeight={isPhoneDevice ? 20 : 26}
                     fontWeight={"$normal"}
-                    color={"$white"}
+                    color={"$secondPrimaryColor"}
                   >
                     Swipe through the alphabet to select your desired letter or
                     option for the ‘Pick Random' button. Keep in mind that some
@@ -71,34 +81,38 @@ After typing a word, it undergoes automatic verification. Genuine words appear i
                   </SizableText>
                 </SizableText>
 
-                <YStack h={"$3"} />
+                <YStack h={isPhoneDevice ? "$4" : "$6"} />
                 <SizableText
-                  fontSize={"$hxs"}
-                  fontWeight={"$bold900"}
-                  color={"$white"}
+                  fontSize={isPhoneDevice ? "$hxs" : "$hmd"}
+                  lineHeight={isPhoneDevice ? 24 : 30}
+                  fontWeight={"$bold700"}
+                  color={"$secondPrimaryColor"}
                 >
-                  Setting Game Parameters : {` `}
+                  Setting Game Parameters : {`\n`}
                   <SizableText
-                    fontSize={"$xs"}
+                    fontSize={isPhoneDevice ? "$xs" : "$lg"}
+                    lineHeight={isPhoneDevice ? 20 : 26}
                     fontWeight={"$normal"}
-                    color={"$white"}
+                    color={"$secondPrimaryColor"}
                   >
                     Pick your time duration and pick word length before
                     initiating the game.
                   </SizableText>
                 </SizableText>
 
-                <YStack h={"$3"} />
+                <YStack h={isPhoneDevice ? "$4" : "$6"} />
                 <SizableText
-                  fontSize={"$hxs"}
-                  fontWeight={"$bold900"}
-                  color={"$white"}
+                  fontSize={isPhoneDevice ? "$hxs" : "$hmd"}
+                  lineHeight={isPhoneDevice ? 24 : 30}
+                  fontWeight={"$bold700"}
+                  color={"$secondPrimaryColor"}
                 >
-                  Gameplay : {` `}
+                  Gameplay : {`\n`}
                   <SizableText
-                    fontSize={"$xs"}
+                    fontSize={isPhoneDevice ? "$xs" : "$lg"}
+                    lineHeight={isPhoneDevice ? 20 : 26}
                     fontWeight={"$normal"}
-                    color={"$white"}
+                    color={"$secondPrimaryColor"}
                   >
                     Swiftly input words commencing with the chosen letter.
                     Remember, all words must match the length selected in the
@@ -106,17 +120,19 @@ After typing a word, it undergoes automatic verification. Genuine words appear i
                   </SizableText>
                 </SizableText>
 
-                <YStack h={"$3"} />
+                <YStack h={isPhoneDevice ? "$4" : "$6"} />
                 <SizableText
-                  fontSize={"$hxs"}
-                  fontWeight={"$bold900"}
-                  color={"$white"}
+                  fontSize={isPhoneDevice ? "$hxs" : "$hmd"}
+                  lineHeight={isPhoneDevice ? 24 : 30}
+                  fontWeight={"$bold700"}
+                  color={"$secondPrimaryColor"}
                 >
-                  Word Validation : {` `}
+                  Word Validation : {`\n`}
                   <SizableText
-                    fontSize={"$xs"}
+                    fontSize={isPhoneDevice ? "$xs" : "$lg"}
+                    lineHeight={isPhoneDevice ? 20 : 26}
                     fontWeight={"$normal"}
-                    color={"$white"}
+                    color={"$secondPrimaryColor"}
                   >
                     Once a word is typed, it undergoes automatic verification.
                     Genuine words appear in green and contribute to your score,
@@ -126,17 +142,19 @@ After typing a word, it undergoes automatic verification. Genuine words appear i
                   </SizableText>
                 </SizableText>
 
-                <YStack h={"$3"} />
+                <YStack h={isPhoneDevice ? "$4" : "$6"} />
                 <SizableText
-                  fontSize={"$hxs"}
-                  fontWeight={"$bold900"}
-                  color={"$white"}
+                  fontSize={isPhoneDevice ? "$hxs" : "$hmd"}
+                  lineHeight={isPhoneDevice ? 24 : 30}
+                  fontWeight={"$bold700"}
+                  color={"$secondPrimaryColor"}
                 >
-                  End of Game : {` `}
+                  End of Game : {`\n`}
                   <SizableText
-                    fontSize={"$xs"}
+                    fontSize={isPhoneDevice ? "$xs" : "$lg"}
+                    lineHeight={isPhoneDevice ? 20 : 26}
                     fontWeight={"$normal"}
-                    color={"$white"}
+                    color={"$secondPrimaryColor"}
                   >
                     Upon completion of the game, your score will be revealed,
                     allowing you to assess your performance. You can share your
@@ -145,17 +163,19 @@ After typing a word, it undergoes automatic verification. Genuine words appear i
                   </SizableText>
                 </SizableText>
 
-                <YStack h={"$3"} />
+                <YStack h={isPhoneDevice ? "$4" : "$6"} />
                 <SizableText
-                  fontSize={"$hxs"}
-                  fontWeight={"$bold900"}
-                  color={"$white"}
+                  fontSize={isPhoneDevice ? "$hxs" : "$hmd"}
+                  lineHeight={isPhoneDevice ? 24 : 30}
+                  fontWeight={"$bold700"}
+                  color={"$secondPrimaryColor"}
                 >
-                  Cross-Device Compatibility : {` `}
+                  Cross-Device Compatibility : {`\n`}
                   <SizableText
-                    fontSize={"$xs"}
+                    fontSize={isPhoneDevice ? "$xs" : "$lg"}
+                    lineHeight={isPhoneDevice ? 20 : 26}
                     fontWeight={"$normal"}
-                    color={"$white"}
+                    color={"$secondPrimaryColor"}
                   >
                     Experience seamless gameplay across all your Android and iOS
                     devices, including smartphones and tablets. Enjoy
@@ -163,12 +183,13 @@ After typing a word, it undergoes automatic verification. Genuine words appear i
                     offline.'
                   </SizableText>
                 </SizableText>
+                <YStack h={isPhoneDevice ? "$4" : "$6"} />
+                <YStack h={insets.bottom} />
               </>
             )}
           </YStack>
         </ScrollView>
       </ResponsiveContent>
-      <YStack h={insets.bottom} />
     </YStack>
   );
 }

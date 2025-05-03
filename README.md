@@ -8,20 +8,20 @@ Word Search Game
 ✔ Enhance the label in Welcome screen on CTAs.
 ✔ Add Image in Category list screen along with category name.
 ✔ Revenuecat config.
-- Add Ads-free subscription.
+✔ Add Ads-free subscription.
 ✔ AppStore configurations
 ✔ Add Share and Rate option on home screen.
-- Add How to Play screen on Settings.
-- Enhance How to Play screen design.
+✔ Add How to Play screen on Settings.
+✔ Enhance How to Play screen design.
 ✔ Feedback screen design manage minor only.
 ✔ Remove unnecessary banner ads.
 ✔ Add App Open ad.
 ✔ Rewarded Ads issue on iOS.
-- Init game design modification. Because it's look like same we have on Verbal Fluency Game.
 ✔ Add Copy option after user typed the required character on output.
 ✔ Add done or Over option on Play Game screen if we went through Category choose. Because they were no other option to Game Over except back button.
 ✔ Share option is taking too much time on the Game over screen - so need to check it.
-- Settings screen language selection not applying immediately.
+✔ Settings screen language selection not applying immediately.
+- Init game design modification. Because it's look like same we have on Verbal Fluency Game.
 
 Initial project setup
 

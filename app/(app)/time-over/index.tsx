@@ -7,6 +7,7 @@ import { Image } from "react-native";
 import images from "@assets/images/images";
 import ResponsiveContent from "@modules/shared/responsive-content";
 import contents from "@assets/contents/contents";
+import { DeviceType, deviceType } from "expo-device";
 
 function TimeOverScreen() {
   const {
@@ -24,6 +25,7 @@ function TimeOverScreen() {
     ];
   const insets = useSafeAreaInsets();
   const router = useRouter();
+  const isPhoneDevice = deviceType === DeviceType.PHONE;
 
   const formattedValue = (value: number) => {
     return value > 9 ? value : `0` + value;
@@ -62,7 +64,8 @@ function TimeOverScreen() {
           <XStack alignItems="center">
             <YStack>
               <SizableText
-                fontSize={"$hxs"}
+                fontSize={isPhoneDevice ? "$hxs" : "$hmd"}
+                lineHeight={isPhoneDevice ? 24 : 30}
                 color={"$white"}
                 fontWeight={"$normal"}
                 textAlign="center"
@@ -84,7 +87,8 @@ function TimeOverScreen() {
           <XStack alignItems="center" mx={"$4"}>
             <YStack>
               <SizableText
-                fontSize={"$hxs"}
+                fontSize={isPhoneDevice ? "$hxs" : "$hmd"}
+                lineHeight={isPhoneDevice ? 24 : 30}
                 color={"$white"}
                 fontWeight={"$normal"}
                 textAlign="center"
@@ -104,7 +108,8 @@ function TimeOverScreen() {
             <YStack flex={1} />
             <YStack>
               <SizableText
-                fontSize={"$hxs"}
+                fontSize={isPhoneDevice ? "$hxs" : "$hmd"}
+                lineHeight={isPhoneDevice ? 24 : 30}
                 color={"$white"}
                 fontWeight={"$normal"}
                 textAlign="center"
@@ -141,7 +146,8 @@ function TimeOverScreen() {
               />
               <YStack w={"$2"} />
               <SizableText
-                fontSize={"$hxs"}
+                fontSize={isPhoneDevice ? "$hxs" : "$hmd"}
+                lineHeight={isPhoneDevice ? 24 : 30}
                 color={"$black"}
                 fontWeight={"700"}
                 textAlign="center"

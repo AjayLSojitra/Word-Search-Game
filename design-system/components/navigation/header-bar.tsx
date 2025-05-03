@@ -4,6 +4,7 @@ import TouchableScale from "@design-system/components/shared/touchable-scale";
 import Close from "@assets/svgs/close";
 import images from "@assets/images/images";
 import { Image } from "react-native";
+import { DeviceType, deviceType } from "expo-device";
 
 export type HeaderBarProps = {
   title?: string;
@@ -39,6 +40,8 @@ function HeaderBar(props: Readonly<HeaderBarProps>) {
     titleNumberOfLines,
     titleEllipsizeMode,
   } = props;
+
+  const isPhoneDevice = deviceType === DeviceType.PHONE;
 
   const renderCross = cross ? (
     <TouchableScale onPress={goBack}>
@@ -106,10 +109,10 @@ function HeaderBar(props: Readonly<HeaderBarProps>) {
           {subTitle && subTitleLeftIcon && <YStack w={"$1"} />}
           {subTitle ? (
             <SizableText
-              fontSize={"$xs"}
+              fontSize={isPhoneDevice ? "$xs" : "$lg"}
+              lineHeight={isPhoneDevice ? 20 : 26}
               fontWeight={"$medium"}
               color={"$blueGray.500"}
-              lineHeight={18}
             >
               {subTitle}
             </SizableText>

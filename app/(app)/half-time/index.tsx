@@ -15,6 +15,7 @@ import useResponsiveWidth from "@modules/shared/hooks/useResponsiveWidth";
 import ResponsiveContent from "@modules/shared/responsive-content";
 import { TestIds, useInterstitialAd } from "react-native-google-mobile-ads";
 import { staticInterstitialAd } from "@modules/shared/components/helpers";
+import { deviceType, DeviceType } from "expo-device";
 
 function HalfTimeScreen() {
   const {
@@ -24,6 +25,7 @@ function HalfTimeScreen() {
   } = useGlobalSearchParams();
   const insets = useSafeAreaInsets();
   const router = useRouter();
+  const isPhoneDevice = deviceType === DeviceType.PHONE;
   const [sound, setSound] = useState<Audio.Sound>();
   const isSoundEnabled = useRef(true);
   const responsiveWidth = useResponsiveWidth();
@@ -139,7 +141,8 @@ function HalfTimeScreen() {
               />
               <YStack w={"$1"} />
               <SizableText
-                fontSize={"$hxs"}
+                fontSize={isPhoneDevice ? "$hxs" : "$hmd"}
+                lineHeight={isPhoneDevice ? 24 : 30}
                 color={"$black"}
                 fontWeight={"700"}
                 textAlign="center"

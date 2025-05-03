@@ -34,6 +34,7 @@ import CategoryInput from "./category-input";
 import OtpInput from "./otp-input";
 import * as Clipboard from "expo-clipboard";
 import { showNormalToast } from "@utils/toast-handler";
+import { deviceType, DeviceType } from "expo-device";
 
 type RenderItem = ListRenderItem<SpellInputs>;
 
@@ -58,6 +59,7 @@ function PlayGameScreen() {
     ];
   const insets = useSafeAreaInsets();
   const router = useRouter();
+  const isPhoneDevice = deviceType === DeviceType.PHONE;
   const scrollViewRef = useRef<any>(null);
   const currentLanguage = global?.currentSelectedLanguage ?? "English";
   const words = alphabet
@@ -618,7 +620,8 @@ function PlayGameScreen() {
             >
               <Animated.View style={animatedStyle}>
                 <SizableText
-                  size={"$xs"}
+                  fontSize={isPhoneDevice ? "$xs" : "$lg"}
+                  lineHeight={isPhoneDevice ? 20 : 26}
                   color={"$white"}
                   fontWeight={"$semibold"}
                   textAlign="center"
@@ -673,7 +676,8 @@ function PlayGameScreen() {
             <YStack h={"$4"} />
             <SizableText
               mx={"$4"}
-              size={"$hxs"}
+              fontSize={isPhoneDevice ? "$hxs" : "$hmd"}
+              lineHeight={isPhoneDevice ? 24 : 30}
               color={"$white"}
               fontWeight={"$medium"}
               textAlign="center"
