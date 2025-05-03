@@ -35,6 +35,7 @@ const images = {
   language: require("./language.png"),
   categories: require("./menu.png"),
   copy: require("./copy.png"),
+  adsFree: require("./ads-free.png"),
 };
 
 export default images;

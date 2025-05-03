@@ -5,7 +5,9 @@
       "eas": {
         "projectId": "19e89d36-1cfe-4df8-90fd-f2fa2569ece3"
       },
-      "oneSignalAppId": "65166109-1d68-4abe-982e-488a3aff9f40"
+      "oneSignalAppId": "65166109-1d68-4abe-982e-488a3aff9f40",
+      "revenueCatAppleId": "appl_kSmxEkPBORAhrFOrzizZRAbtGzd",
+      "revenueCatGoogleId": "goog_ThNwmAIcpEpTgyADIWjkNyzNpwc"
     },
     "name": "Word Search Game",
     "slug": "word-search-game-app",

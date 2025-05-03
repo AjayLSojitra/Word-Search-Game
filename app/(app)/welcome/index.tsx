@@ -1,11 +1,11 @@
-import { SizableText, YStack } from "tamagui";
+import { SizableText, XStack, YStack } from "tamagui";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import BasicButton from "@design-system/components/buttons/basic-button";
 import { Image } from "react-native";
 import images from "@assets/images/images";
 import AdsConfirmationDialog from "@modules/shared/components/confirmation-dialog/ads-confirmation-dialog";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useRouter } from "expo-router";
+import { useFocusEffect, useRouter } from "expo-router";
 import ResponsiveContent from "@modules/shared/components/responsive-content";
 import ErrorBoundary from "@modules/shared/components/error-boundary";
 import { alphabets } from "@utils/helper";
@@ -19,6 +19,8 @@ import {
 } from "react-native-google-mobile-ads";
 import {
   canShowAdmobInteratitial,
+  rateMyApp,
+  shareMyApp,
   staticInterstitialAd,
   staticRewardInterstitialAd,
 } from "@modules/shared/components/helpers";
@@ -29,9 +31,14 @@ import useTriggeredEvent from "@modules/shared/components/use-triggered-event";
 import contents from "@assets/contents/contents";
 import useResponsiveWidth from "@modules/shared/hooks/useResponsiveWidth";
 import AdsNotifyDialog from "@modules/shared/components/confirmation-dialog/ads-notify-dialog";
+import useSubscriptionData, {
+  presentPaywall,
+} from "@modules/shared/hooks/use-subscription-data";
 
 function WelcomeScreen() {
   const isPhoneDevice = deviceType === DeviceType.PHONE;
+  const iconSize = isPhoneDevice ? 24 : 36;
+  const { premium, refresh } = useSubscriptionData();
   const insets = useSafeAreaInsets();
   const [showAdsConfirmationPopup, setShowAdsConfirmationPopup] =
     useState(false);
@@ -53,6 +60,13 @@ function WelcomeScreen() {
     },
     [selectedLanguageRefreshKey]
   );
+
+  useFocusEffect(
+    useCallback(() => {
+      refresh();
+    }, [])
+  );
+
   const responsiveWidth = useResponsiveWidth();
   const router = useRouter();
   const [randomWordLength, setRandomWordLength] = useState<number>();
@@ -234,27 +248,140 @@ function WelcomeScreen() {
       <ScrollHeader
         backgroundColor={"$primary"}
         back={false}
-        rightElement={
-          <TouchableScale
-            style={{
-              paddingHorizontal: isPhoneDevice ? 8 : 12,
-              paddingVertical: isPhoneDevice ? 8 : 12,
-              backgroundColor: "#1c2e4a",
-              borderRadius: isPhoneDevice ? 8 : 12,
-            }}
-            hitSlop={HIT_SLOP}
-            onPress={() => {
-              redirectTo.current = "SETTING-SCREEN";
-              redirectToNextScreenAfterAdmobInterstitial();
-            }}
+        customTitle={
+          <XStack
+            width={responsiveWidth / 2 - (isPhoneDevice ? 48 : 72)}
+            justifyContent="center"
           >
-            <Image
-              key={"settings"}
-              source={images.settings}
-              style={{ height: 24, width: 24, alignSelf: "center" }}
-              alt={"settings"}
-            />
-          </TouchableScale>
+            <TouchableScale
+              style={{
+                paddingHorizontal: isPhoneDevice ? 8 : 12,
+                paddingVertical: isPhoneDevice ? 8 : 12,
+                backgroundColor: "#1c2e4a",
+                borderRadius: isPhoneDevice ? 12 : 18,
+              }}
+              hitSlop={HIT_SLOP}
+              onPress={() => {
+                shareMyApp();
+              }}
+            >
+              <YStack
+                alignItems="center"
+                justifyContent="center"
+                height={isPhoneDevice ? 24 : 36}
+                width={isPhoneDevice ? 24 : 36}
+              >
+                <Image
+                  key={"share"}
+                  source={images.share}
+                  style={{
+                    height: isPhoneDevice ? 20 : 30,
+                    width: isPhoneDevice ? 20 : 30,
+                    alignSelf: "center",
+                    tintColor: "#FFFFFF",
+                  }}
+                  alt={"share"}
+                />
+              </YStack>
+            </TouchableScale>
+            {premium === false && <YStack flex={1} />}
+            {premium === true ? (
+              <></>
+            ) : (
+              <TouchableScale
+                style={{
+                  backgroundColor: "#1c2e4a",
+                  borderRadius: isPhoneDevice ? 8 : 12,
+                }}
+                hitSlop={HIT_SLOP}
+                onPress={() => {
+                  presentPaywall();
+                }}
+              >
+                <Image
+                  key={"adsFree"}
+                  source={images.adsFree}
+                  style={{
+                    height: iconSize + (isPhoneDevice ? 16 : 24),
+                    width: iconSize + (isPhoneDevice ? 16 : 24),
+                    alignSelf: "center",
+                    tintColor: "#FFFFFF",
+                  }}
+                  alt={"Ads Free"}
+                />
+              </TouchableScale>
+            )}
+          </XStack>
+        }
+        rightElement={
+          <XStack>
+            <TouchableScale
+              style={{
+                paddingHorizontal: isPhoneDevice ? 8 : 12,
+                paddingVertical: isPhoneDevice ? 8 : 12,
+                backgroundColor: "#1c2e4a",
+                borderRadius: isPhoneDevice ? 8 : 12,
+              }}
+              hitSlop={HIT_SLOP}
+              onPress={() => {
+                redirectTo.current = "SETTING-SCREEN";
+                if (isLoaded && canShowAdmobInteratitial()) {
+                  showInterstitial();
+                } else {
+                  // No advert ready to show yet
+                  redirectToNextScreenAfterAdmobInterstitial();
+                }
+              }}
+            >
+              <Image
+                key={"settings"}
+                source={images.settings}
+                style={{
+                  height: isPhoneDevice ? 24 : 36,
+                  width: isPhoneDevice ? 24 : 36,
+                  alignSelf: "center",
+                }}
+                alt={"settings"}
+              />
+            </TouchableScale>
+            <YStack w={isPhoneDevice ? 12 : 18} />
+          </XStack>
+        }
+        leftElement={
+          <XStack>
+            <YStack w={isPhoneDevice ? 12 : 18} />
+            <TouchableScale
+              style={{
+                paddingHorizontal: isPhoneDevice ? 8 : 12,
+                paddingVertical: isPhoneDevice ? 8 : 12,
+                backgroundColor: "#1c2e4a",
+                borderRadius: isPhoneDevice ? 12 : 18,
+              }}
+              hitSlop={HIT_SLOP}
+              onPress={() => {
+                rateMyApp();
+              }}
+            >
+              <YStack
+                alignItems="center"
+                justifyContent="center"
+                height={iconSize}
+                width={iconSize}
+              >
+                <Image
+                  key={"rating"}
+                  source={images.rating}
+                  style={{
+                    height: iconSize,
+                    width: iconSize,
+                    alignSelf: "center",
+                    tintColor: "#FFFFFF",
+                  }}
+                  alt={"rating"}
+                />
+              </YStack>
+            </TouchableScale>
+          </XStack>
         }
       />
 

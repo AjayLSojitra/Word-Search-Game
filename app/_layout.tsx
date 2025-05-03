@@ -23,6 +23,15 @@ import AdmobProvider from "@modules/app/admob-provider";
 import OneSignalProvider from "@modules/app/onesignal-provider";
 import { requestTrackingPermissionsAsync } from "expo-tracking-transparency";
 import { useAppOpenAd } from "@modules/shared/components/use-app-open-ad";
+import Purchases from "react-native-purchases";
+import Constants from "expo-constants";
+
+const API_KEY =
+  Platform.OS === "ios"
+    ? Constants.expoConfig.extra.revenueCatAppleId
+    : Constants.expoConfig.extra.revenueCatGoogleId;
+
+Purchases.configure({ apiKey: API_KEY });
 
 export const unstable_settings = {
   // Ensure any route can link back to `/`
