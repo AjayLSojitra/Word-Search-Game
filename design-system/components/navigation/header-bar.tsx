@@ -95,7 +95,7 @@ function HeaderBar(props: Readonly<HeaderBarProps>) {
           ) : (
             <SizableText
               fontSize={titleSize}
-              fontWeight={"$bold900"}
+              fontWeight={"$bold700"}
               color={"$secondPrimaryColor"}
               numberOfLines={titleNumberOfLines}
               ellipsizeMode={titleEllipsizeMode}

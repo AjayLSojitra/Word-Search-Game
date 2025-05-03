@@ -210,6 +210,167 @@ function InitGameScreen() {
         </YStack>
         <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
           <YStack alignItems="center">
+            <YStack h={"$6"} />
+            <SizableText
+              fontSize={"$xl"}
+              fontWeight={"$semibold"}
+              color={"$secondPrimaryColor"}
+              textAlign="center"
+              lineHeight={30}
+            >
+              {languageData.pick_duration}
+            </SizableText>
+            <Carousel
+              ref={durationCarouselRef}
+              loop
+              autoPlay={false}
+              snapEnabled={true}
+              pagingEnabled={false}
+              style={{
+                width: responsiveWidth / 1.5,
+                height: 140,
+                marginTop: -25,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              defaultIndex={0}
+              width={responsiveWidth / 3.5}
+              data={durations}
+              renderItem={({ item, index, animationValue }) => {
+                return (
+                  <CustomItem
+                    key={index}
+                    value={item}
+                    label={languageData.seconds}
+                    animationValue={animationValue}
+                    onPress={() => {
+                      durationCarouselRef.current.scrollTo({
+                        index: index,
+                        animated: true,
+                      });
+                    }}
+                  />
+                );
+              }}
+              onSnapToItem={(index) => {
+                setSelectedDurationIndex(index);
+                redirectTo.current = "IGNORE";
+              }}
+              onProgressChange={(
+                offsetProgress: number,
+                absouluteProgress: number
+              ) => {
+                if (
+                  absouluteProgress - previousProgress.current >= 1 ||
+                  previousProgress.current - absouluteProgress >= 1
+                ) {
+                  previousProgress.current = absouluteProgress;
+                  if (Platform.OS !== "web") {
+                    Haptics.selectionAsync();
+                  }
+                }
+              }}
+              customAnimation={
+                parallaxLayout(
+                  {
+                    size: responsiveWidth / (level === "EASY" ? 3.5 : 3.2),
+                    vertical: false,
+                  },
+                  {
+                    parallaxScrollingScale: 1,
+                    parallaxAdjacentItemScale: 0.5,
+                    parallaxScrollingOffset: 40,
+                  }
+                ) as any
+              }
+              scrollAnimationDuration={500}
+              modeConfig={{
+                parallaxScrollingScale: 0.9,
+                parallaxScrollingOffset: 50,
+              }}
+            />
+
+            <SizableText
+              fontSize={"$xl"}
+              fontWeight={"$semibold"}
+              color={"$secondPrimaryColor"}
+              textAlign="center"
+              lineHeight={30}
+            >
+              {languageData.pick_length}
+            </SizableText>
+            <Carousel
+              ref={wordLengthCarouselRef}
+              loop
+              autoPlay={false}
+              snapEnabled={true}
+              pagingEnabled={false}
+              defaultIndex={0}
+              style={{
+                width: responsiveWidth / 1.5,
+                height: 140,
+                marginTop: -25,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              width={responsiveWidth / 3.5}
+              data={wordLengths}
+              renderItem={({ item, index, animationValue }) => {
+                return (
+                  <CustomItem
+                    key={index}
+                    value={item}
+                    label={languageData.letters}
+                    animationValue={animationValue}
+                    onPress={() => {
+                      wordLengthCarouselRef.current.scrollTo({
+                        index: index,
+                        animated: true,
+                      });
+                    }}
+                  />
+                );
+              }}
+              onSnapToItem={(index) => {
+                setSelectedWordLengthIndex(index);
+                redirectTo.current = "IGNORE";
+              }}
+              onProgressChange={(
+                offsetProgress: number,
+                absouluteProgress: number
+              ) => {
+                if (
+                  absouluteProgress - previousProgress.current >= 1 ||
+                  previousProgress.current - absouluteProgress >= 1
+                ) {
+                  previousProgress.current = absouluteProgress;
+                  if (Platform.OS !== "web") {
+                    Haptics.selectionAsync();
+                  }
+                }
+              }}
+              customAnimation={
+                parallaxLayout(
+                  {
+                    size: responsiveWidth / 3.5,
+                    vertical: false,
+                  },
+                  {
+                    parallaxScrollingScale: 1,
+                    parallaxAdjacentItemScale: 0.5,
+                    parallaxScrollingOffset: 40,
+                  }
+                ) as any
+              }
+              scrollAnimationDuration={500}
+              modeConfig={{
+                parallaxScrollingScale: 0.9,
+                parallaxScrollingOffset: 50,
+              }}
+            />
+
+            <YStack h={"$4"} />
+
             <Carousel
               ref={alphabetCarouselRef}
               {...baseOptions}
@@ -347,184 +508,24 @@ function InitGameScreen() {
                 </SizableText>
               </XStack>
             </TouchableScale>
-
-            <YStack h={"$8"} />
-            <SizableText
-              fontSize={"$xl"}
-              fontWeight={"$semibold"}
-              color={"$white"}
-              textAlign="center"
-              lineHeight={30}
-            >
-              {languageData.pick_duration}
-            </SizableText>
-            <Carousel
-              ref={durationCarouselRef}
-              loop
-              autoPlay={false}
-              snapEnabled={true}
-              pagingEnabled={false}
-              style={{
-                width: responsiveWidth / 1.5,
-                height: 140,
-                marginTop: -25,
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-              defaultIndex={0}
-              width={responsiveWidth / 3.5}
-              data={durations}
-              renderItem={({ item, index, animationValue }) => {
-                return (
-                  <CustomItem
-                    key={index}
-                    value={item}
-                    label={languageData.seconds}
-                    animationValue={animationValue}
-                    onPress={() => {
-                      durationCarouselRef.current.scrollTo({
-                        index: index,
-                        animated: true,
-                      });
-                    }}
-                  />
-                );
-              }}
-              onSnapToItem={(index) => {
-                setSelectedDurationIndex(index);
-                redirectTo.current = "IGNORE";
-              }}
-              onProgressChange={(
-                offsetProgress: number,
-                absouluteProgress: number
-              ) => {
-                if (
-                  absouluteProgress - previousProgress.current >= 1 ||
-                  previousProgress.current - absouluteProgress >= 1
-                ) {
-                  previousProgress.current = absouluteProgress;
-                  if (Platform.OS !== "web") {
-                    Haptics.selectionAsync();
-                  }
-                }
-              }}
-              customAnimation={
-                parallaxLayout(
-                  {
-                    size: responsiveWidth / (level === "EASY" ? 3.5 : 3.2),
-                    vertical: false,
-                  },
-                  {
-                    parallaxScrollingScale: 1,
-                    parallaxAdjacentItemScale: 0.5,
-                    parallaxScrollingOffset: 40,
-                  }
-                ) as any
-              }
-              scrollAnimationDuration={500}
-              modeConfig={{
-                parallaxScrollingScale: 0.9,
-                parallaxScrollingOffset: 50,
-              }}
-            />
-
-            <SizableText
-              fontSize={"$xl"}
-              fontWeight={"$semibold"}
-              color={"$white"}
-              textAlign="center"
-              lineHeight={30}
-            >
-              {languageData.pick_length}
-            </SizableText>
-            <Carousel
-              ref={wordLengthCarouselRef}
-              loop
-              autoPlay={false}
-              snapEnabled={true}
-              pagingEnabled={false}
-              defaultIndex={0}
-              style={{
-                width: responsiveWidth / 1.5,
-                height: 140,
-                marginTop: -25,
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-              width={responsiveWidth / 3.5}
-              data={wordLengths}
-              renderItem={({ item, index, animationValue }) => {
-                return (
-                  <CustomItem
-                    key={index}
-                    value={item}
-                    label={languageData.letters}
-                    animationValue={animationValue}
-                    onPress={() => {
-                      wordLengthCarouselRef.current.scrollTo({
-                        index: index,
-                        animated: true,
-                      });
-                    }}
-                  />
-                );
-              }}
-              onSnapToItem={(index) => {
-                setSelectedWordLengthIndex(index);
-                redirectTo.current = "IGNORE";
-              }}
-              onProgressChange={(
-                offsetProgress: number,
-                absouluteProgress: number
-              ) => {
-                if (
-                  absouluteProgress - previousProgress.current >= 1 ||
-                  previousProgress.current - absouluteProgress >= 1
-                ) {
-                  previousProgress.current = absouluteProgress;
-                  if (Platform.OS !== "web") {
-                    Haptics.selectionAsync();
-                  }
-                }
-              }}
-              customAnimation={
-                parallaxLayout(
-                  {
-                    size: responsiveWidth / 3.5,
-                    vertical: false,
-                  },
-                  {
-                    parallaxScrollingScale: 1,
-                    parallaxAdjacentItemScale: 0.5,
-                    parallaxScrollingOffset: 40,
-                  }
-                ) as any
-              }
-              scrollAnimationDuration={500}
-              modeConfig={{
-                parallaxScrollingScale: 0.9,
-                parallaxScrollingOffset: 50,
-              }}
-            />
-
-            <SizableText
-              mx={"$4"}
-              mb={"$4"}
-              fontSize={"$sm"}
-              fontWeight={"$semibold"}
-              color={"$white"}
-              textAlign="center"
-            >
-              {languageData.challenge_yourself}{" "}
-              {wordLengths[selectedWordLengthIndex]}
-              {languageData.letter_words_starting_with}{" "}
-              {currentAlphabets[selectedAlphabetIndex]} {languageData.in}{" "}
-              {durations[selectedDurationIndex]} {languageData.seconds}
-            </SizableText>
           </YStack>
         </ScrollView>
 
         <YStack mx={"$4"}>
+          <SizableText
+            mx={"$4"}
+            mb={"$4"}
+            fontSize={"$sm"}
+            fontWeight={"$semibold"}
+            color={"$secondPrimaryColor"}
+            textAlign="center"
+          >
+            {languageData.challenge_yourself}{" "}
+            {wordLengths[selectedWordLengthIndex]}
+            {languageData.letter_words_starting_with}{" "}
+            {currentAlphabets[selectedAlphabetIndex]} {languageData.in}{" "}
+            {durations[selectedDurationIndex]} {languageData.seconds}
+          </SizableText>
           <BasicButton
             height={56}
             linearGradientProps={{ colors: ["#1c2e4a", "#1c2e4a"] }}
@@ -538,7 +539,7 @@ function InitGameScreen() {
               }
             }}
           >
-            <YStack width={responsiveWidth - 60}>
+            <YStack width={responsiveWidth - 60} justifyContent="center">
               <Image
                 key={"letsPlayPrimary"}
                 source={images.letsPlayPrimary}
@@ -605,7 +606,7 @@ const CustomItem: React.FC<ItemProps> = ({
         <SizableText
           fontSize={"$5xl"}
           fontWeight={"$semibold"}
-          color={"$white"}
+          color={"$secondPrimaryColor"}
           textAlign="center"
           lineHeight={55}
         >
@@ -617,7 +618,7 @@ const CustomItem: React.FC<ItemProps> = ({
           fontSize={isPhoneDevice ? "$xs" : "$lg"}
           lineHeight={isPhoneDevice ? 20 : 26}
           fontWeight={"$semibold"}
-          color={"$white"}
+          color={"$secondPrimaryColor"}
           textAlign="center"
         >
           {label}

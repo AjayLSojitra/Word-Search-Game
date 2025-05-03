@@ -21,7 +21,8 @@ Word Search Game
 ✔ Add done or Over option on Play Game screen if we went through Category choose. Because they were no other option to Game Over except back button.
 ✔ Share option is taking too much time on the Game over screen - so need to check it.
 ✔ Settings screen language selection not applying immediately.
-- Init game design modification. Because it's look like same we have on Verbal Fluency Game.
+✔ Init game design modification. Because it's look like same we have on Verbal Fluency Game.
+- Manage responsivness.
 
 Initial project setup
 
