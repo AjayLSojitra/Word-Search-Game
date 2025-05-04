@@ -6,10 +6,11 @@ import { SizableText, YStack } from "tamagui";
 import TouchableScale from "@design-system/components/shared/touchable-scale";
 import InputAccessoryViewiOS from "@modules/shared/components/input-accessory-view-details";
 import CustomKeyboard from "@modules/shared/components/custom-keyboard/CustomKeyboard";
-import ResponsiveContent from "@modules/shared/responsive-content";
 import styles from "./otp-input.styles";
 import useOtpInput from "./use-otp-input";
 import VerticalStick from "./vertical-stick";
+import ResponsiveContent from "@modules/shared/responsive-content";
+import { DeviceType, deviceType } from "expo-device";
 
 const OtpInput = forwardRef<OtpInputRef, OtpInputProps>((props, ref) => {
   const {
@@ -37,6 +38,7 @@ const OtpInput = forwardRef<OtpInputRef, OtpInputProps>((props, ref) => {
     disabledPinCodeContainerStyle,
   } = theme;
   const responsiveWidth = useResponsiveWidth();
+  const isPhoneDevice = deviceType === DeviceType.PHONE;
   useImperativeHandle(ref, () => ({ clear, focus, setValue: setTextWithRef }));
   const selectedLanguage = global?.currentSelectedLanguage ?? "English";
   const widthStyle =
@@ -52,7 +54,7 @@ const OtpInput = forwardRef<OtpInputRef, OtpInputProps>((props, ref) => {
         borderWidth: 0,
         borderRadius: 8,
         backgroundColor: "#1c2e4a",
-        height: 60,
+        height: isPhoneDevice ? 60 : 90,
         width: widthStyle,
         justifyContent: "center",
         alignItems: "center",
@@ -88,6 +90,22 @@ const OtpInput = forwardRef<OtpInputRef, OtpInputProps>((props, ref) => {
     }
     handleTextChange(updatedText); // Update the text in the OTP input
   };
+
+  const getFontWidth = () => {
+    if (isPhoneDevice) {
+      return numberOfDigits > 6 ? "$hmd" : "$hlg";
+    }
+
+    return numberOfDigits > 6 ? "$hlg" : "$4xl";
+  };
+
+  const getFontLineHeight = () => {
+    if (isPhoneDevice) {
+      return numberOfDigits > 6 ? 30 : 40;
+    }
+    return numberOfDigits > 6 ? 40 : 48;
+  };
+
   const renderOtpInputs = () => {
     const isEnglish = selectedLanguage === "English"; // Check for the language
 
@@ -115,8 +133,8 @@ const OtpInput = forwardRef<OtpInputRef, OtpInputProps>((props, ref) => {
                 />
               ) : (
                 <SizableText
-                  size={numberOfDigits > 6 ? "$hmd" : "$hlg"}
-                  lineHeight={numberOfDigits > 6 ? 30 : 40}
+                  size={getFontWidth()}
+                  lineHeight={getFontLineHeight()}
                   color={char ? "$primary" : "$blueGray.400"}
                   fontWeight={"$bold900"}
                 >
@@ -148,8 +166,8 @@ const OtpInput = forwardRef<OtpInputRef, OtpInputProps>((props, ref) => {
             testID="otp-input"
           >
             <SizableText
-              size={numberOfDigits > 6 ? "$hmd" : "$hlg"}
-              lineHeight={numberOfDigits > 6 ? 30 : 42}
+              size={getFontWidth()}
+              lineHeight={getFontLineHeight()}
               color={text ? "$primary" : "$blueGray.400"}
               fontWeight={"$bold900"}
             >
@@ -170,16 +188,18 @@ const OtpInput = forwardRef<OtpInputRef, OtpInputProps>((props, ref) => {
 
   return (
     <>
-      <ResponsiveContent>
-        <View style={[styles.container, containerStyle]}>
-          <View style={[styles.otpinputsContainer, inputsContainerStyle]}>
-            {renderOtpInputs()}
+      <YStack>
+        <ResponsiveContent>
+          <View style={[styles.container, containerStyle]}>
+            <View style={[styles.otpinputsContainer, inputsContainerStyle]}>
+              {renderOtpInputs()}
+            </View>
           </View>
-        </View>
-        <YStack marginTop={16}>
+        </ResponsiveContent>
+        <YStack marginTop={isPhoneDevice ? 16 : 24}>
           <CustomKeyboard onKeyPress={handleKeyPress} />
         </YStack>
-      </ResponsiveContent>
+      </YStack>
 
       {Platform.OS === "ios" && <InputAccessoryViewiOS title={"Done"} />}
     </>

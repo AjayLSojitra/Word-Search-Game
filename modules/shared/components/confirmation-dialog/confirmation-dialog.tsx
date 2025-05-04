@@ -7,10 +7,12 @@ import PrimaryButton from "@design-system/components/buttons/primary-button";
 import SecondaryButton from "@design-system/components/buttons/secondary-button";
 import Modal from "react-native-modal";
 import Checkbox from "../checkbox";
+import { DeviceType, deviceType } from "expo-device";
 
 function ConfirmationDialog() {
   const { isOpen, close, confirmationDialogState } = useConfirmationDialog();
   const [isEnabled, setIsEnabled] = useState(false);
+  const isPhoneDevice = deviceType === DeviceType.PHONE;
 
   return (
     <Modal
@@ -41,7 +43,8 @@ function ConfirmationDialog() {
             <YStack height={"$2"} />
             <SizableText
               color={"$blueGray.800"}
-              fontSize={"$hsm"}
+              fontSize={isPhoneDevice ? "$hsm" : "$2xl"}
+              lineHeight={isPhoneDevice ? 22 : 34}
               fontWeight={"$semibold"}
               textAlign={"center"}
             >

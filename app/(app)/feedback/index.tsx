@@ -206,7 +206,7 @@ function AddContentsScreen() {
         </XStack>
         <YStack h={isPhoneDevice ? "$3" : "$5"} />
         <YStack flex={1} />
-        <YStack mx={"$4"} mb={"$5"}>
+        <YStack mx={isPhoneDevice ? "$4" : 0} mb={isPhoneDevice ? "$5" : "$8"}>
           <BasicButton
             height={isPhoneDevice ? 48 : 72}
             disabledLinearGradientProps={{ colors: ["#a1a1aa", "#a1a1aa"] }}
@@ -289,7 +289,7 @@ export function RadioGroupItemWithLabel(
         size={props.size}
         fontWeight={"$semibold"}
         htmlFor={id}
-        lineHeight={"$4"}
+        lineHeight={props.isPhoneDevice ? 30 : 42}
       >
         {props.label}
       </Label>

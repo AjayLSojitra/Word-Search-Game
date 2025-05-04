@@ -504,7 +504,7 @@ function PlayGameScreen() {
           <XStack alignItems="center">
             {isForTraining === "Yes" && (
               <TouchableScale
-                style={{ marginRight: 8 }}
+                style={{ marginRight: isPhoneDevice ? 8 : 12 }}
                 hitSlop={HIT_SLOP}
                 onPress={() => {
                   intervalCompleted.current = true;
@@ -515,13 +515,17 @@ function PlayGameScreen() {
                 <YStack
                   alignItems="center"
                   justifyContent="center"
-                  height={24}
-                  width={24}
+                  height={isPhoneDevice ? 24 : 36}
+                  width={isPhoneDevice ? 24 : 36}
                 >
                   <Image
                     key={"help"}
                     source={images.help}
-                    style={{ height: 18, width: 18, tintColor: "#1c2e4a" }}
+                    style={{
+                      height: isPhoneDevice ? 18 : 27,
+                      width: isPhoneDevice ? 18 : 27,
+                      tintColor: "#1c2e4a",
+                    }}
                     alt={"help"}
                   />
                 </YStack>
@@ -543,15 +547,19 @@ function PlayGameScreen() {
               <YStack
                 alignItems="center"
                 justifyContent="center"
-                height={24}
-                width={24}
+                height={isPhoneDevice ? 24 : 36}
+                width={isPhoneDevice ? 24 : 36}
               >
                 <Image
                   key={"sound"}
                   source={
                     isSoundSwitchEnabled ? images.soundOnWhite : images.soundOff
                   }
-                  style={{ height: 24, width: 24, tintColor: "#1c2e4a" }}
+                  style={{
+                    height: isPhoneDevice ? 24 : 36,
+                    width: isPhoneDevice ? 24 : 36,
+                    tintColor: "#1c2e4a",
+                  }}
                   alt={"sound"}
                 />
               </YStack>
@@ -574,29 +582,34 @@ function PlayGameScreen() {
               {...SHADOW.basicCard}
               bg={"$white"}
               borderRadius={100}
-              px={"$2"}
-              py={"$1"}
-              ml={"$4"}
-              my={"$2"}
+              px={isPhoneDevice ? "$2" : "$3"}
+              py={isPhoneDevice ? "$1" : "$2"}
+              ml={isPhoneDevice ? "$4" : 0}
+              my={isPhoneDevice ? "$2" : "$3"}
               alignItems="center"
               justifyContent="center"
             >
               <Image
                 key={"timer"}
                 source={images.timer}
-                style={{ height: 18, width: 18 }}
+                style={{
+                  height: isPhoneDevice ? 18 : 27,
+                  width: isPhoneDevice ? 18 : 27,
+                }}
                 alt={"timer"}
               />
-              <YStack w={"$2"} />
+              <YStack w={isPhoneDevice ? "$2" : "$3"} />
               <SizableText
-                size={"$hsm"}
+                fontSize={isPhoneDevice ? "$hsm" : "$2xl"}
+                lineHeight={isPhoneDevice ? 22 : 34}
                 color={timerCountdown < 5 ? "$red.600" : "$blueGray.500"}
                 fontWeight={"$semibold"}
                 textAlign="center"
               >
                 {formattedValue(timerCountdown)}
                 <SizableText
-                  size={"$hsm"}
+                  fontSize={isPhoneDevice ? "$hsm" : "$2xl"}
+                  lineHeight={isPhoneDevice ? 22 : 34}
                   color={"$primary"}
                   fontWeight={"$bold900"}
                   textAlign="center"
@@ -612,9 +625,9 @@ function PlayGameScreen() {
               {...SHADOW.basicCard}
               bg={"$red.600"}
               borderRadius={100}
-              px={"$2"}
-              py={"$1"}
-              my={"$2"}
+              px={isPhoneDevice ? "$2" : "$3"}
+              py={isPhoneDevice ? "$1" : "$2"}
+              my={isPhoneDevice ? "$2" : "$3"}
               alignItems="center"
               justifyContent="center"
             >
@@ -638,29 +651,34 @@ function PlayGameScreen() {
             {...SHADOW.basicCard}
             bg={"$white"}
             borderRadius={100}
-            px={"$2"}
-            py={"$1"}
-            mr={"$4"}
-            my={"$2"}
+            px={isPhoneDevice ? "$2" : "$3"}
+            py={isPhoneDevice ? "$1" : "$2"}
+            mr={isPhoneDevice ? "$4" : 0}
+            my={isPhoneDevice ? "$2" : "$3"}
             alignItems="center"
             justifyContent="center"
           >
             <Image
               key={"correctWord"}
               source={images.correctWord}
-              style={{ height: 18, width: 18 }}
+              style={{
+                height: isPhoneDevice ? 18 : 27,
+                width: isPhoneDevice ? 18 : 27,
+              }}
               alt={"correctWord"}
             />
-            <YStack w={"$2"} />
+            <YStack w={isPhoneDevice ? "$2" : "$3"} />
             <SizableText
-              size={"$hsm"}
+              fontSize={isPhoneDevice ? "$hsm" : "$2xl"}
+              lineHeight={isPhoneDevice ? 22 : 34}
               color={"$blueGray.500"}
               fontWeight={"$semibold"}
               textAlign="center"
             >
               {`${formattedValue(getCorrectSpellCount())}`}
               <SizableText
-                size={"$hsm"}
+                fontSize={isPhoneDevice ? "$hsm" : "$2xl"}
+                lineHeight={isPhoneDevice ? 22 : 34}
                 color={"$primary"}
                 fontWeight={"$bold900"}
                 textAlign="center"
@@ -670,12 +688,12 @@ function PlayGameScreen() {
             </SizableText>
           </XStack>
         </XStack>
-        <YStack h={"$3"} />
+        <YStack h={isPhoneDevice ? "$3" : "$5"} />
         {isForTraining === "Yes" && (
           <>
-            <YStack h={"$4"} />
+            <YStack h={isPhoneDevice ? "$4" : "$6"} />
             <SizableText
-              mx={"$4"}
+              mx={isPhoneDevice ? "$4" : "$6"}
               fontSize={isPhoneDevice ? "$hxs" : "$hmd"}
               lineHeight={isPhoneDevice ? 24 : 30}
               color={"$white"}
@@ -692,7 +710,10 @@ function PlayGameScreen() {
             <YStack h={"$4"} />
           </>
         )}
-        <YStack height={150} marginTop={"$4"}>
+        <YStack
+          height={isPhoneDevice ? 150 : 234}
+          marginTop={isPhoneDevice ? "$4" : "$6"}
+        >
           <FlatList
             scrollEnabled={true}
             ref={scrollViewRef}
@@ -710,7 +731,7 @@ function PlayGameScreen() {
         </YStack>
       </ResponsiveContent>
 
-      <ResponsiveContent flex={1} justifyContent="flex-end">
+      <YStack flex={1} justifyContent="flex-end">
         {category ? (
           <CategoryInput
             ref={inputRef}
@@ -738,7 +759,7 @@ function PlayGameScreen() {
             item=""
           />
         )}
-      </ResponsiveContent>
+      </YStack>
       <YStack h={insets.bottom} />
     </YStack>
   );

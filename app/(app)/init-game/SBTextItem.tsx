@@ -1,3 +1,4 @@
+import { DeviceType, deviceType } from "expo-device";
 import React from "react";
 import { SizableText, YStack } from "tamagui";
 
@@ -15,6 +16,8 @@ const SBTextItem: React.FC<Props> = ({
   onPress,
 }) => {
   const isSelected = selectedIndex === index;
+  const isPhoneDevice = deviceType === DeviceType.PHONE;
+
   return (
     <YStack
       flex={1}
@@ -28,7 +31,8 @@ const SBTextItem: React.FC<Props> = ({
     >
       {typeof index === "number" && (
         <SizableText
-          fontSize={"$hmd"}
+          fontSize={isPhoneDevice ? "$hmd" : "$hlg"}
+          lineHeight={isPhoneDevice ? 30 : 40}
           fontWeight={"$bold900"}
           color={isSelected ? "$secondPrimaryColor" : "$white"}
         >

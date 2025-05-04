@@ -24,6 +24,7 @@ export type HeaderBarProps = {
 };
 
 function HeaderBar(props: Readonly<HeaderBarProps>) {
+  const isPhoneDevice = deviceType === DeviceType.PHONE;
   const {
     title,
     titleLeftIcon,
@@ -41,19 +42,21 @@ function HeaderBar(props: Readonly<HeaderBarProps>) {
     titleEllipsizeMode,
   } = props;
 
-  const isPhoneDevice = deviceType === DeviceType.PHONE;
-
   const renderCross = cross ? (
     <TouchableScale onPress={goBack}>
       <YStack
-        height={28}
-        width={44}
+        height={isPhoneDevice ? 28 : 42}
+        width={isPhoneDevice ? 44 : 66}
         borderRadius={4}
         bg={"$secondPrimaryColor"}
         justifyContent="center"
         alignItems="center"
       >
-        <Close height={28} width={28} fill={"#FFFFFF"} />
+        <Close
+          height={isPhoneDevice ? 28 : 42}
+          width={isPhoneDevice ? 28 : 42}
+          fill={"#FFFFFF"}
+        />
       </YStack>
     </TouchableScale>
   ) : (
@@ -63,8 +66,8 @@ function HeaderBar(props: Readonly<HeaderBarProps>) {
   const renderBackOrCross = back ? (
     <TouchableScale onPress={goBack}>
       <YStack
-        height={24}
-        width={24}
+        height={isPhoneDevice ? 24 : 36}
+        width={isPhoneDevice ? 24 : 36}
         p={4}
         alignItems="center"
         justifyContent="center"
@@ -72,7 +75,11 @@ function HeaderBar(props: Readonly<HeaderBarProps>) {
         <Image
           key={"backArrow"}
           source={images.backArrow}
-          style={{ height: 18, width: 18, tintColor: "#1c2e4a" }}
+          style={{
+            height: isPhoneDevice ? 18 : 27,
+            width: isPhoneDevice ? 18 : 27,
+            tintColor: "#1c2e4a",
+          }}
           alt={"back arrow"}
         />
       </YStack>
@@ -83,22 +90,27 @@ function HeaderBar(props: Readonly<HeaderBarProps>) {
 
   return (
     <XStack alignItems={profileElement ? "flex-start" : "center"}>
-      <YStack minWidth={40} alignItems="flex-start">
+      <YStack minWidth={isPhoneDevice ? 40 : 60} alignItems="flex-start">
         {leftElement || renderBackOrCross}
       </YStack>
       <YStack flex={1} alignItems="center" mt={profileElement ? "$-2" : 0}>
         {profileElement}
-        <XStack alignItems="center" justifyContent="center" mx={"$2"}>
+        <XStack
+          alignItems="center"
+          justifyContent="center"
+          mx={isPhoneDevice ? "$2" : "$3"}
+        >
           {titleLeftIcon}
           {customTitle ? (
             <>{customTitle}</>
           ) : (
             <SizableText
-              fontSize={titleSize}
               fontWeight={"$bold700"}
               color={"$secondPrimaryColor"}
               numberOfLines={titleNumberOfLines}
               ellipsizeMode={titleEllipsizeMode}
+              fontSize={isPhoneDevice ? "$hsm" : "$2xl"}
+              lineHeight={isPhoneDevice ? 22 : 34}
             >
               {title}
             </SizableText>
@@ -106,7 +118,9 @@ function HeaderBar(props: Readonly<HeaderBarProps>) {
         </XStack>
         <XStack alignItems="center">
           {subTitleLeftIcon || <></>}
-          {subTitle && subTitleLeftIcon && <YStack w={"$1"} />}
+          {subTitle && subTitleLeftIcon && (
+            <YStack w={isPhoneDevice ? "$1" : "$2"} />
+          )}
           {subTitle ? (
             <SizableText
               fontSize={isPhoneDevice ? "$xs" : "$lg"}
@@ -121,7 +135,7 @@ function HeaderBar(props: Readonly<HeaderBarProps>) {
           )}
         </XStack>
       </YStack>
-      <YStack minWidth={40} alignItems="flex-end">
+      <YStack minWidth={isPhoneDevice ? 40 : 60} alignItems="flex-end">
         {rightElement || <></>}
       </YStack>
     </XStack>

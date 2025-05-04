@@ -32,18 +32,18 @@ function TimeOverScreen() {
   };
 
   return (
-    <YStack flex={1} bg={"$black"}>
-      <ScrollHeader title="" backgroundColor={"$black"} back={false} />
+    <YStack flex={1} bg={"$primary"}>
+      <ScrollHeader title="" backgroundColor={"$primary"} back={false} />
 
       <ResponsiveContent flex={1}>
         <SizableText
-          fontSize={"$6xl"}
-          color={"$white"}
+          fontSize={isPhoneDevice ? "$6xl" : "$8xl"}
+          lineHeight={isPhoneDevice ? 80 : 110}
+          color={"$secondPrimaryColor"}
           fontWeight={"700"}
           textAlign="center"
           rotateX={"-30deg"}
           rotateY={"30deg"}
-          lineHeight={80}
           textShadowOffset={{ width: 0, height: 7 }}
           textShadowColor={"$primary"}
           textShadowRadius={8}
@@ -52,30 +52,34 @@ function TimeOverScreen() {
         </SizableText>
 
         <YStack alignItems="center">
-          <YStack h={"$8"} />
+          <YStack h={isPhoneDevice ? "$8" : "$12"} />
           <Image
             key={"timeOver"}
             source={images.timeOver}
-            style={{ height: 150, width: 150 }}
+            style={{
+              height: isPhoneDevice ? 150 : 225,
+              width: isPhoneDevice ? 150 : 225,
+            }}
             alt={"timeOver"}
           />
 
-          <YStack h={"$12"} />
+          <YStack h={isPhoneDevice ? "$12" : "$18"} />
           <XStack alignItems="center">
             <YStack>
               <SizableText
                 fontSize={isPhoneDevice ? "$hxs" : "$hmd"}
-                lineHeight={isPhoneDevice ? 24 : 30}
-                color={"$white"}
-                fontWeight={"$normal"}
+                lineHeight={isPhoneDevice ? 24 : 34}
+                color={"$secondPrimaryColor"}
+                fontWeight={"$semibold"}
                 textAlign="center"
               >
                 {languageData.correct_word}
               </SizableText>
 
               <SizableText
-                fontSize={"$hsm"}
-                color={"$primary"}
+                fontSize={isPhoneDevice ? "$hsm" : "$2xl"}
+                lineHeight={isPhoneDevice ? 22 : 34}
+                color={"$white"}
                 fontWeight={"$bold700"}
                 textAlign="center"
               >
@@ -83,21 +87,22 @@ function TimeOverScreen() {
               </SizableText>
             </YStack>
           </XStack>
-          <YStack h={"$2"} />
-          <XStack alignItems="center" mx={"$4"}>
+          <YStack h={isPhoneDevice ? "$2" : "$3"} />
+          <XStack alignItems="center" mx={isPhoneDevice ? "$4" : 0}>
             <YStack>
               <SizableText
                 fontSize={isPhoneDevice ? "$hxs" : "$hmd"}
-                lineHeight={isPhoneDevice ? 24 : 30}
-                color={"$white"}
-                fontWeight={"$normal"}
+                lineHeight={isPhoneDevice ? 24 : 34}
+                color={"$secondPrimaryColor"}
+                fontWeight={"$semibold"}
                 textAlign="center"
               >
                 {languageData.wrong_word}
               </SizableText>
 
               <SizableText
-                fontSize={"$hsm"}
+                fontSize={isPhoneDevice ? "$hsm" : "$2xl"}
+                lineHeight={isPhoneDevice ? 22 : 34}
                 color={"$red.600"}
                 fontWeight={"$bold700"}
                 textAlign="center"
@@ -109,16 +114,17 @@ function TimeOverScreen() {
             <YStack>
               <SizableText
                 fontSize={isPhoneDevice ? "$hxs" : "$hmd"}
-                lineHeight={isPhoneDevice ? 24 : 30}
-                color={"$white"}
-                fontWeight={"$normal"}
+                lineHeight={isPhoneDevice ? 24 : 34}
+                color={"$secondPrimaryColor"}
+                fontWeight={"$semibold"}
                 textAlign="center"
               >
                 {languageData.repeat_word}
               </SizableText>
 
               <SizableText
-                fontSize={"$hsm"}
+                fontSize={isPhoneDevice ? "$hsm" : "$2xl"}
+                lineHeight={isPhoneDevice ? 22 : 34}
                 color={"$yellow.600"}
                 fontWeight={"$bold700"}
                 textAlign="center"
@@ -129,9 +135,9 @@ function TimeOverScreen() {
           </XStack>
         </YStack>
         <YStack flex={1} />
-        <YStack mx={"$4"} mb={"$4"}>
+        <YStack mx={isPhoneDevice ? "$4" : 0} mb={isPhoneDevice ? "$4" : "$6"}>
           <BasicButton
-            height={46}
+            height={isPhoneDevice ? 46 : 69}
             linearGradientProps={{ colors: ["#ffffff", "#ffffff"] }}
             onPress={() => {
               router.back();
@@ -141,14 +147,17 @@ function TimeOverScreen() {
               <Image
                 key={"home"}
                 source={images.home}
-                style={{ height: 18, width: 18 }}
+                style={{
+                  height: isPhoneDevice ? 18 : 27,
+                  width: isPhoneDevice ? 18 : 27,
+                }}
                 alt={"home"}
               />
-              <YStack w={"$2"} />
+              <YStack w={isPhoneDevice ? "$2" : "$3"} />
               <SizableText
                 fontSize={isPhoneDevice ? "$hxs" : "$hmd"}
-                lineHeight={isPhoneDevice ? 24 : 30}
-                color={"$black"}
+                lineHeight={isPhoneDevice ? 24 : 34}
+                color={"$secondPrimaryColor"}
                 fontWeight={"700"}
                 textAlign="center"
                 textTransform="uppercase"

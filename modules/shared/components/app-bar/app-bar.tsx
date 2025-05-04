@@ -1,3 +1,4 @@
+import { DeviceType, deviceType } from "expo-device";
 import React from "react";
 import { FlexAlignType, Platform, StatusBar } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -27,6 +28,7 @@ function AppBar({
   alignItems?: FlexAlignType;
 }) {
   const insets = useSafeAreaInsets();
+  const isPhoneDevice = deviceType === DeviceType.PHONE;
 
   return (
     <XStack
@@ -56,7 +58,8 @@ function AppBar({
         ) : (
           <Text
             textAlign={"center"}
-            fontSize={"$hsm"}
+            fontSize={isPhoneDevice ? "$hsm" : "$2xl"}
+            lineHeight={isPhoneDevice ? 22 : 34}
             fontWeight={"$semibold"}
             color={"$blueGray.700"}
             fontFamily={"$body"}

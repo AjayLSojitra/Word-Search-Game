@@ -409,15 +409,73 @@ function WelcomeScreen() {
         </YStack>
         <YStack flex={1} justifyContent="center">
           <Image
-            key={"appIcon"}
+            key={"icon"}
             source={images.icon}
-            style={{ height: 200, width: 200, alignSelf: "center" }}
-            alt={"appIcon"}
+            style={{
+              height: isPhoneDevice ? 144 : 244,
+              width: isPhoneDevice ? 144 : 244,
+              alignSelf: "center",
+              resizeMode: "center",
+            }}
+            alt={"icon"}
           />
+
+          {premium === true && (
+            <YStack
+              bg={"$secondPrimaryColor"}
+              alignSelf="center"
+              p={isPhoneDevice ? 4 : 6}
+              borderRadius={12}
+              justifyContent="center"
+              alignItems="center"
+            >
+              <XStack
+                bg={"$secondPrimaryColor"}
+                p={isPhoneDevice ? "$2" : "$3"}
+                borderRadius={8}
+                justifyContent="center"
+                alignItems="center"
+              >
+                <Image
+                  key={"prePartyCategory"}
+                  source={images.prePartyCategory}
+                  style={{
+                    height: isPhoneDevice ? 30 : 45,
+                    width: isPhoneDevice ? 30 : 45,
+                    alignSelf: "center",
+                    resizeMode: "center",
+                  }}
+                  alt={"prePartyCategory"}
+                />
+                <YStack w={isPhoneDevice ? "$2" : "$3"} />
+                <YStack>
+                  <SizableText
+                    fontSize={isPhoneDevice ? "$lg" : "$2xl"}
+                    lineHeight={isPhoneDevice ? 26 : 40}
+                    color={"$white"}
+                    fontWeight={"$bold700"}
+                    textAlign="center"
+                  >
+                    Premium Subscriber
+                  </SizableText>
+
+                  <SizableText
+                    fontSize={isPhoneDevice ? "$xs" : "$lg"}
+                    lineHeight={isPhoneDevice ? 18 : 26}
+                    color={"$white"}
+                    fontWeight={"$normal"}
+                    textAlign="center"
+                  >
+                    Enjoy Ad-Free experience!
+                  </SizableText>
+                </YStack>
+              </XStack>
+            </YStack>
+          )}
         </YStack>
-        <YStack mx={"$6"} my={"$6"}>
+        <YStack mx={isPhoneDevice ? "$6" : 0} my={"$6"}>
           <BasicButton
-            height={56}
+            height={isPhoneDevice ? 56 : 84}
             linearGradientProps={{ colors: ["#1c2e4a", "#1c2e4a"] }}
             onPress={() => {
               redirectTo.current = "LEVEL-SELECTION-SCREEN";
@@ -429,7 +487,7 @@ function WelcomeScreen() {
               }
             }}
           >
-            <YStack width={responsiveWidth - 60}>
+            <YStack width={responsiveWidth - 60} justifyContent="center">
               <Image
                 key={"letsPlayPrimary"}
                 source={images.letsPlayPrimary}
@@ -454,9 +512,9 @@ function WelcomeScreen() {
               </SizableText>
             </YStack>
           </BasicButton>
-          <YStack h={"$5"} />
+          <YStack h={isPhoneDevice ? "$5" : "$8"} />
           <BasicButton
-            height={56}
+            height={isPhoneDevice ? 56 : 84}
             linearGradientProps={{ colors: ["#1c2e4a", "#1c2e4a"] }}
             onPress={() => {
               redirectTo.current = "CATEGORY-SCREEN";
@@ -468,7 +526,7 @@ function WelcomeScreen() {
               }
             }}
           >
-            <YStack width={responsiveWidth - 60}>
+            <YStack width={responsiveWidth - 60} justifyContent="center">
               <Image
                 key={"categories"}
                 source={images.categories}
@@ -493,13 +551,13 @@ function WelcomeScreen() {
               </SizableText>
             </YStack>
           </BasicButton>
-          <YStack h={"$5"} />
+          <YStack h={isPhoneDevice ? "$5" : "$8"} />
           <BasicButton
-            height={56}
+            height={isPhoneDevice ? 56 : 84}
             linearGradientProps={{ colors: ["#1c2e4a", "#1c2e4a"] }}
             onPress={onPressTrainYourMind}
           >
-            <YStack width={responsiveWidth - 60}>
+            <YStack width={responsiveWidth - 60} justifyContent="center">
               <Image
                 key={"premium"}
                 source={images.premium}

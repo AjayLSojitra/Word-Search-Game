@@ -1,7 +1,10 @@
 import React from "react";
 import { useController } from "react-hook-form";
 import { Text } from "tamagui";
-import BasicInput, { BasicInputProps } from "@design-system/components/input/basic-input";
+import BasicInput, {
+  BasicInputProps,
+} from "@design-system/components/input/basic-input";
+import { DeviceType, deviceType } from "expo-device";
 
 export type INPUT_TYPES = "text" | "email" | "phone";
 
@@ -18,18 +21,12 @@ export type FormInputProps = {
 };
 
 function FormInput(props: Readonly<FormInputProps>): any {
-  const {
-    name,
-    control,
-    type,
-    textInputProps,
-    label,
-    testID,
-  } = props;
+  const { name, control, type, textInputProps, label, testID } = props;
   const { field, formState } = useController({
     name,
     control,
   });
+  const isPhoneDevice = deviceType === DeviceType.PHONE;
   let errorMessage =
     props?.errorMessage ?? formState.errors?.[field.name]?.message;
   const isInvalid = errorMessage ? true : false;
@@ -38,19 +35,19 @@ function FormInput(props: Readonly<FormInputProps>): any {
     type === "email"
       ? "email-address"
       : type === "phone"
-        ? "number-pad"
-        : "default";
+      ? "number-pad"
+      : "default";
 
   return (
     <>
       {label ? (
         <Text
-          fontSize={"$hsm"}
+          fontSize={isPhoneDevice ? "$hsm" : "$2xl"}
+          lineHeight={isPhoneDevice ? 22 : 34}
           color={isInvalid ? "$red.500" : "$blueGray.700"}
           fontWeight={"$semibold"}
           mb={"$2"}
           fontFamily={"$body"}
-
         >
           {label}
         </Text>

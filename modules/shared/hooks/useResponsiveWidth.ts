@@ -5,10 +5,10 @@ function useResponsiveWidth() {
   const { width } = useWindowDimensions();
   const RESPONSIVE_WIDTH = [
     width,
+    width * 0.9,
     width * 0.85,
-    width * 0.6,
-    width * 0.45,
-    width * 0.3,
+    width * 0.8,
+    width * 0.5,
   ];
   const { mQ } = useMediaQuery();
 

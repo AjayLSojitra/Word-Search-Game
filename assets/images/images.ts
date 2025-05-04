@@ -36,6 +36,7 @@ const images = {
   categories: require("./menu.png"),
   copy: require("./copy.png"),
   adsFree: require("./ads-free.png"),
+  prePartyCategory: require("./pre-party-category.png"),
 };
 
 export default images;

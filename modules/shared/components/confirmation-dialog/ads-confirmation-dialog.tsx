@@ -6,6 +6,7 @@ import BasicButton from "@design-system/components/buttons/basic-button";
 import ResponsiveContent from "@modules/shared/responsive-content";
 import lotties from "@assets/lotties/lotties";
 import LottieWrapper from "../lottie-wrapper";
+import { DeviceType, deviceType } from "expo-device";
 
 type AdsConfirmationDialogProps = {
   onPositivePress?: () => void;
@@ -23,6 +24,7 @@ function AdsConfirmationDialog(props: Readonly<AdsConfirmationDialogProps>) {
     content,
   } = props;
   const responsiveWidth = useResponsiveWidth();
+  const isPhoneDevice = deviceType === DeviceType.PHONE;
 
   return (
     <Modal
@@ -50,8 +52,8 @@ function AdsConfirmationDialog(props: Readonly<AdsConfirmationDialogProps>) {
           >
             <SizableText
               color={"$secondPrimaryColor"}
-              lineHeight={21.79}
-              fontSize={"$hsm"}
+              fontSize={isPhoneDevice ? "$hsm" : "$2xl"}
+              lineHeight={isPhoneDevice ? 22 : 34}
               fontWeight={"400"}
               textAlign="center"
             >
@@ -86,8 +88,8 @@ function AdsConfirmationDialog(props: Readonly<AdsConfirmationDialogProps>) {
                 }}
               >
                 <SizableText
-                  fontSize={"$hsm"}
-                  lineHeight={18.75}
+                  fontSize={isPhoneDevice ? "$hsm" : "$2xl"}
+                  lineHeight={isPhoneDevice ? 18.75 : 34}
                   color={"$white"}
                   fontWeight={"700"}
                 >
@@ -105,8 +107,8 @@ function AdsConfirmationDialog(props: Readonly<AdsConfirmationDialogProps>) {
                 }}
               >
                 <SizableText
-                  fontSize={"$hsm"}
-                  lineHeight={18.75}
+                  fontSize={isPhoneDevice ? "$hsm" : "$2xl"}
+                  lineHeight={isPhoneDevice ? 18.75 : 34}
                   color={"$white"}
                   fontWeight={"700"}
                 >

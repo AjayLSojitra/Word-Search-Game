@@ -14,10 +14,12 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import contents from "@assets/contents/contents";
 import AdsNotifyDialog from "@modules/shared/components/confirmation-dialog/ads-notify-dialog";
 import CategoryItem from "./category-item";
+import { DeviceType, deviceType } from "expo-device";
 
 function CategoriesScreen() {
   const languageData =
     contents.categories?.[global?.currentSelectedLanguage ?? "English"];
+  const isPhoneDevice = deviceType === DeviceType.PHONE;
 
   const insets = useSafeAreaInsets();
   const router = useRouter();
@@ -118,7 +120,12 @@ function CategoriesScreen() {
             content={`Ad is loading...`}
           />
         </YStack>
-        <YStack flex={1} mx={"$2"} justifyContent="center">
+        <YStack
+          flex={1}
+          mx={isPhoneDevice ? "$2" : 0}
+          mt={isPhoneDevice ? "$4" : "$6"}
+          justifyContent="center"
+        >
           <FlatList
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}
@@ -127,7 +134,7 @@ function CategoriesScreen() {
             keyExtractor={keyExtractor}
             ListFooterComponent={renderFooter}
             horizontal={false}
-            numColumns={2}
+            numColumns={isPhoneDevice ? 2 : 3}
           />
         </YStack>
       </ResponsiveContent>

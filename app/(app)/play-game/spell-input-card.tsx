@@ -5,6 +5,7 @@ import { SHADOW } from "@design-system/utils/constants";
 import images from "@assets/images/images";
 import { Image } from "react-native";
 import TouchableScale from "@design-system/components/shared/touchable-scale";
+import { DeviceType, deviceType } from "expo-device";
 
 function SpellInputCard({
   item,
@@ -13,6 +14,7 @@ function SpellInputCard({
   item: SpellInputs;
   onPress: () => void;
 }>) {
+  const isPhoneDevice = deviceType === DeviceType.PHONE;
   const getBGColor = () => {
     if (item?.status === "DUPLICATE") {
       return "$yellow.500";
@@ -48,10 +50,10 @@ function SpellInputCard({
       justifyContent="center"
       alignSelf="center"
       borderRadius={8}
-      px={"$2"}
-      ml={"$2"}
-      mt={"$3"}
-      height={25}
+      px={isPhoneDevice ? "$2" : "$3"}
+      ml={isPhoneDevice ? "$2" : "$3"}
+      mt={isPhoneDevice ? "$3" : "$5"}
+      height={isPhoneDevice ? 25 : 37}
       borderColor={"$white"}
       borderWidth={1}
       {...SHADOW.basicCard}
@@ -61,22 +63,30 @@ function SpellInputCard({
           <Image
             key={"help"}
             source={getStatusImage()}
-            style={{ height: 12, width: 12 }}
+            style={{
+              height: isPhoneDevice ? 12 : 18,
+              width: isPhoneDevice ? 12 : 18,
+            }}
             alt={"help"}
           />
-          <YStack w={"$1"} />
+          <YStack w={isPhoneDevice ? "$1" : "$1.5"} />
           <SizableText
-            fontSize={"$xs"}
+            fontSize={isPhoneDevice ? "$xs" : "$lg"}
+            lineHeight={isPhoneDevice ? 20 : 26}
             color={item?.status === "CORRECT" ? "$white" : "$white"}
             fontWeight={"700"}
           >
             {item?.inputValue}
           </SizableText>
-          <YStack w={"$1"} />
+          <YStack w={isPhoneDevice ? "$1" : "$1.5"} />
           <Image
             key={"copy"}
             source={images.copy}
-            style={{ height: 12, width: 12, tintColor: "#ffffff" }}
+            style={{
+              height: isPhoneDevice ? 12 : 18,
+              width: isPhoneDevice ? 12 : 18,
+              tintColor: "#ffffff",
+            }}
             alt={"copy"}
           />
         </XStack>

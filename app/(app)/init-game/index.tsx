@@ -10,12 +10,11 @@ import {
   TransformsStyle,
   StyleSheet,
   ScrollView,
+  useWindowDimensions,
 } from "react-native";
-import ResponsiveContent from "@modules/shared/components/responsive-content";
 import ScrollHeader from "@design-system/components/navigation/scroll-header";
 import TouchableScale from "@design-system/components/shared/touchable-scale";
 import Carousel from "react-native-reanimated-carousel";
-import useResponsiveWidth from "@modules/shared/hooks/useResponsiveWidth";
 import Animated, {
   Extrapolation,
   SharedValue,
@@ -34,7 +33,6 @@ import {
 } from "expo-router";
 import { alphabets } from "@utils/helper";
 import LocalStorage from "@utils/local-storage";
-import { isTablet } from "react-native-device-info";
 import { TestIds, useInterstitialAd } from "react-native-google-mobile-ads";
 import {
   canShowAdmobInteratitial,
@@ -61,14 +59,14 @@ function InitGameScreen() {
   const [selectedDurationIndex, setSelectedDurationIndex] = useState<number>(0);
   const [selectedWordLengthIndex, setSelectedWordLengthIndex] =
     useState<number>(0);
-  const responsiveWidth = useResponsiveWidth();
-  const PAGE_WIDTH = responsiveWidth / 5;
+  const isPhoneDevice = deviceType === DeviceType.PHONE;
+  const { width: responsiveWidth } = useWindowDimensions();
+  const PAGE_WIDTH = responsiveWidth / (isPhoneDevice ? 5 : 9);
   const baseOptions = {
     vertical: false,
     width: PAGE_WIDTH,
-    height: PAGE_WIDTH * 0.6,
+    height: PAGE_WIDTH * 0.85,
   } as const;
-  const isPhoneDevice = deviceType === DeviceType.PHONE;
 
   const previousProgress = useRef(0);
   const alphabetCarouselRef = useRef(null);
@@ -134,6 +132,7 @@ function InitGameScreen() {
       });
     }, [])
   );
+
   async function playSound() {
     if (isSoundEnabled.current) {
       const { sound } = await Audio.Sound.createAsync(sounds.optionChange);
@@ -186,14 +185,18 @@ function InitGameScreen() {
             <YStack
               alignItems="center"
               justifyContent="center"
-              height={24}
-              width={24}
+              height={isPhoneDevice ? 24 : 36}
+              width={isPhoneDevice ? 24 : 36}
               p={4}
             >
               <Image
                 key={"help"}
                 source={images.help}
-                style={{ height: 18, width: 18, tintColor: "#1c2e4a" }}
+                style={{
+                  height: isPhoneDevice ? 18 : 27,
+                  width: isPhoneDevice ? 18 : 27,
+                  tintColor: "#1c2e4a",
+                }}
                 alt={"help"}
               />
             </YStack>
@@ -201,7 +204,7 @@ function InitGameScreen() {
         }
       />
 
-      <ResponsiveContent flex={1}>
+      <YStack flex={1}>
         <YStack alignItems="center" justifyContent="center">
           <AdsNotifyDialog
             showDialog={showAdsConfirmationPopup}
@@ -210,13 +213,13 @@ function InitGameScreen() {
         </YStack>
         <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
           <YStack alignItems="center">
-            <YStack h={"$6"} />
+            <YStack h={isPhoneDevice ? "$6" : "$9"} />
             <SizableText
-              fontSize={"$xl"}
+              fontSize={isPhoneDevice ? "$xl" : "$hlg"}
+              lineHeight={isPhoneDevice ? 30 : 40}
               fontWeight={"$semibold"}
               color={"$secondPrimaryColor"}
               textAlign="center"
-              lineHeight={30}
             >
               {languageData.pick_duration}
             </SizableText>
@@ -228,7 +231,7 @@ function InitGameScreen() {
               pagingEnabled={false}
               style={{
                 width: responsiveWidth / 1.5,
-                height: 140,
+                height: isPhoneDevice ? 140 : 210,
                 marginTop: -25,
                 justifyContent: "center",
                 alignItems: "center",
@@ -273,7 +276,15 @@ function InitGameScreen() {
               customAnimation={
                 parallaxLayout(
                   {
-                    size: responsiveWidth / (level === "EASY" ? 3.5 : 3.2),
+                    size:
+                      responsiveWidth /
+                      (level === "EASY"
+                        ? isPhoneDevice
+                          ? 3.5
+                          : 5.5
+                        : isPhoneDevice
+                        ? 3.2
+                        : 5.5),
                     vertical: false,
                   },
                   {
@@ -291,11 +302,11 @@ function InitGameScreen() {
             />
 
             <SizableText
-              fontSize={"$xl"}
+              fontSize={isPhoneDevice ? "$xl" : "$hlg"}
+              lineHeight={isPhoneDevice ? 30 : 40}
               fontWeight={"$semibold"}
               color={"$secondPrimaryColor"}
               textAlign="center"
-              lineHeight={30}
             >
               {languageData.pick_length}
             </SizableText>
@@ -308,7 +319,7 @@ function InitGameScreen() {
               defaultIndex={0}
               style={{
                 width: responsiveWidth / 1.5,
-                height: 140,
+                height: isPhoneDevice ? 140 : 210,
                 marginTop: -25,
                 justifyContent: "center",
                 alignItems: "center",
@@ -352,7 +363,7 @@ function InitGameScreen() {
               customAnimation={
                 parallaxLayout(
                   {
-                    size: responsiveWidth / 3.5,
+                    size: responsiveWidth / (isPhoneDevice ? 3.5 : 5.5),
                     vertical: false,
                   },
                   {
@@ -369,14 +380,14 @@ function InitGameScreen() {
               }}
             />
 
-            <YStack h={"$4"} />
+            <YStack h={isPhoneDevice ? "$4" : "$6"} />
 
             <Carousel
               ref={alphabetCarouselRef}
               {...baseOptions}
               loop
               style={{
-                height: isTablet() ? 165 : 100,
+                height: responsiveWidth / (isPhoneDevice ? 2.5 : 4),
                 width: responsiveWidth,
                 justifyContent: "center",
                 alignItems: "center",
@@ -487,16 +498,20 @@ function InitGameScreen() {
                 bg={"#1c2e4a"}
                 borderRadius={100}
                 alignContent="center"
-                px={"$3"}
-                py={"$1"}
+                px={isPhoneDevice ? "$3" : "$5"}
+                py={isPhoneDevice ? "$1" : "$1.5"}
               >
                 <Image
                   key={"random"}
                   source={images.random}
-                  style={{ height: 14, width: 14, alignSelf: "center" }}
+                  style={{
+                    height: isPhoneDevice ? 14 : 21,
+                    width: isPhoneDevice ? 14 : 21,
+                    alignSelf: "center",
+                  }}
                   alt={"random"}
                 />
-                <YStack w={"$2"} />
+                <YStack w={isPhoneDevice ? "$2" : "$3"} />
                 <SizableText
                   fontSize={isPhoneDevice ? "$xs" : "$lg"}
                   lineHeight={isPhoneDevice ? 20 : 26}
@@ -511,11 +526,12 @@ function InitGameScreen() {
           </YStack>
         </ScrollView>
 
-        <YStack mx={"$4"}>
+        <YStack mx={isPhoneDevice ? "$4" : "$6"}>
           <SizableText
-            mx={"$4"}
-            mb={"$4"}
-            fontSize={"$sm"}
+            mx={isPhoneDevice ? "$4" : "$6"}
+            mb={isPhoneDevice ? "$4" : "$6"}
+            fontSize={isPhoneDevice ? "$sm" : "$xl"}
+            lineHeight={isPhoneDevice ? 20 : 26}
             fontWeight={"$semibold"}
             color={"$secondPrimaryColor"}
             textAlign="center"
@@ -527,7 +543,7 @@ function InitGameScreen() {
             {durations[selectedDurationIndex]} {languageData.seconds}
           </SizableText>
           <BasicButton
-            height={56}
+            height={isPhoneDevice ? 56 : 84}
             linearGradientProps={{ colors: ["#1c2e4a", "#1c2e4a"] }}
             onPress={() => {
               redirectTo.current = "PLAY-GAME";
@@ -539,7 +555,10 @@ function InitGameScreen() {
               }
             }}
           >
-            <YStack width={responsiveWidth - 60} justifyContent="center">
+            <YStack
+              width={responsiveWidth - (isPhoneDevice ? 60 : 90)}
+              justifyContent="center"
+            >
               <Image
                 key={"letsPlayPrimary"}
                 source={images.letsPlayPrimary}
@@ -566,7 +585,7 @@ function InitGameScreen() {
           </BasicButton>
           <YStack h={"$4"} />
         </YStack>
-      </ResponsiveContent>
+      </YStack>
       <YStack h={insets.bottom} />
     </YStack>
   );
@@ -604,11 +623,11 @@ const CustomItem: React.FC<ItemProps> = ({
     >
       <YStack justifyContent="center" alignItems="center" alignSelf="center">
         <SizableText
-          fontSize={"$5xl"}
+          fontSize={isPhoneDevice ? "$5xl" : "$6xl"}
+          lineHeight={isPhoneDevice ? 55 : 70}
           fontWeight={"$semibold"}
           color={"$secondPrimaryColor"}
           textAlign="center"
-          lineHeight={55}
         >
           {value}
         </SizableText>

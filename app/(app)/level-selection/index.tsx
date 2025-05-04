@@ -14,6 +14,7 @@ import {
 import { useEffect, useRef, useState } from "react";
 import contents from "@assets/contents/contents";
 import AdsNotifyDialog from "@modules/shared/components/confirmation-dialog/ads-notify-dialog";
+import { deviceType, DeviceType } from "expo-device";
 
 function LevelSelectionScreen() {
   const languageData =
@@ -22,6 +23,7 @@ function LevelSelectionScreen() {
     ];
   const insets = useSafeAreaInsets();
   const router = useRouter();
+  const isPhoneDevice = deviceType === DeviceType.PHONE;
   const { isLoaded, isClosed, load, show, error } = useInterstitialAd(
     __DEV__
       ? TestIds.INTERSTITIAL_VIDEO
@@ -86,9 +88,9 @@ function LevelSelectionScreen() {
             content={`Ad is loading...`}
           />
         </YStack>
-        <YStack flex={1} mx={"$6"} justifyContent="center">
+        <YStack flex={1} mx={isPhoneDevice ? "$6" : 0} justifyContent="center">
           <BasicButton
-            height={56}
+            height={isPhoneDevice ? 56 : 84}
             linearGradientProps={{ colors: ["#1c2e4a", "#1c2e4a"] }}
             onPress={() => {
               redirectTo.current = "EASY";
@@ -102,24 +104,28 @@ function LevelSelectionScreen() {
           >
             <XStack alignItems="center">
               <SizableText
-                fontSize={"$hsm"}
+                fontSize={isPhoneDevice ? "$hsm" : "$hmd"}
+                lineHeight={isPhoneDevice ? 30 : 40}
                 color={"$white"}
                 fontWeight={"700"}
               >
                 {languageData.easy}
               </SizableText>
-              <YStack w={"$3"} />
+              <YStack w={isPhoneDevice ? "$3" : "$5"} />
               <Image
                 key={"easy"}
                 source={images.easy}
-                style={{ height: 24, width: 24 }}
+                style={{
+                  height: isPhoneDevice ? 24 : 36,
+                  width: isPhoneDevice ? 24 : 36,
+                }}
                 alt={"easy"}
               />
             </XStack>
           </BasicButton>
-          <YStack h={"$5"} />
+          <YStack h={isPhoneDevice ? "$5" : "$8"} />
           <BasicButton
-            height={56}
+            height={isPhoneDevice ? 56 : 84}
             linearGradientProps={{ colors: ["#1c2e4a", "#1c2e4a"] }}
             onPress={() => {
               redirectTo.current = "HARD";
@@ -133,17 +139,21 @@ function LevelSelectionScreen() {
           >
             <XStack alignItems="center">
               <SizableText
-                fontSize={"$hsm"}
+                fontSize={isPhoneDevice ? "$hsm" : "$hmd"}
+                lineHeight={isPhoneDevice ? 30 : 40}
                 color={"$white"}
                 fontWeight={"700"}
               >
                 {languageData.hard}
               </SizableText>
-              <YStack w={"$3"} />
+              <YStack w={isPhoneDevice ? "$3" : "$5"} />
               <Image
                 key={"hard"}
                 source={images.hard}
-                style={{ height: 24, width: 24 }}
+                style={{
+                  height: isPhoneDevice ? 24 : 36,
+                  width: isPhoneDevice ? 24 : 36,
+                }}
                 alt={"hard"}
               />
             </XStack>

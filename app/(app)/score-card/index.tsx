@@ -17,6 +17,7 @@ import ResponsiveContent from "@modules/shared/responsive-content";
 import AdmobBanner from "@modules/shared/components/ads/admob-banner";
 import contents from "@assets/contents/contents";
 import { deviceType, DeviceType } from "expo-device";
+import { staticSupportEmail } from "@modules/shared/components/helpers";
 
 function ScoreCardScreen() {
   const {
@@ -91,22 +92,22 @@ function ScoreCardScreen() {
   }, [sound]);
 
   return (
-    <YStack flex={1} backgroundColor={"$black"}>
-      <ScrollHeader title="" backgroundColor={"$black"} back={false} />
+    <YStack flex={1} backgroundColor={"$primary"}>
+      <ScrollHeader title="" backgroundColor={"$primary"} back={false} />
 
       <ResponsiveContent flex={1}>
         <ViewShot ref={ref}>
-          <YStack bg={"$primary"} pb={"$5"}>
+          <YStack bg={"$primary"} pb={isPhoneDevice ? "$5" : "$7"}>
             <SizableText
-              fontSize={"$6xl"}
+              fontSize={isPhoneDevice ? "$6xl" : "$8xl"}
+              lineHeight={isPhoneDevice ? 80 : 110}
               color={"$white"}
-              fontWeight={"700"}
+              fontWeight={"$bold700"}
               textAlign="center"
               rotateX={"-30deg"}
               rotateY={"30deg"}
-              lineHeight={80}
               textShadowOffset={{ width: 0, height: 5 }}
-              textShadowColor={"$black"}
+              textShadowColor={"$secondPrimaryColor"}
               textShadowRadius={6}
               adjustsFontSizeToFit
               numberOfLines={1}
@@ -114,9 +115,9 @@ function ScoreCardScreen() {
               {languageData.ready_to_take_on_the_challenge}
             </SizableText>
             <YStack
-              mx={"$6"}
-              px={"$6"}
-              py={"$4"}
+              mx={isPhoneDevice ? "$6" : 0}
+              px={isPhoneDevice ? "$6" : "$9"}
+              py={isPhoneDevice ? "$4" : "$6"}
               alignItems="center"
               bg={"$white"}
               borderRadius={8}
@@ -124,44 +125,52 @@ function ScoreCardScreen() {
             >
               <SizableText
                 fontSize={isPhoneDevice ? "$hxs" : "$hmd"}
-                lineHeight={isPhoneDevice ? 24 : 30}
-                color={"$black"}
+                lineHeight={isPhoneDevice ? 24 : 34}
+                color={"$secondPrimaryColor"}
                 fontWeight={"$bold700"}
                 textAlign="center"
                 textTransform="uppercase"
               >
                 {`${new Date().toDateString()}  ${new Date().toLocaleTimeString()}`}
               </SizableText>
-              <YStack h={"$4"} />
+              <YStack h={isPhoneDevice ? "$4" : "$6"} />
               <YStack
                 borderRadius={8}
-                p={"$1"}
+                p={isPhoneDevice ? "$1" : "$1.5"}
                 backgroundColor={"$primary"}
                 {...SHADOW.basicCard}
               >
                 <Image
                   key={"appIcon"}
                   source={images.icon}
-                  style={{ height: 90, width: 90 }}
+                  style={{
+                    height: isPhoneDevice ? 90 : 135,
+                    width: isPhoneDevice ? 90 : 135,
+                  }}
                   alt={"appIcon"}
                 />
               </YStack>
-              <YStack h={"$4"} />
-              <YStack bg={"$black"} borderRadius={100} px={10} pt={5}>
+              <YStack h={isPhoneDevice ? "$4" : "$6"} />
+              <YStack
+                bg={"$secondPrimaryColor"}
+                borderRadius={100}
+                px={isPhoneDevice ? 10 : 15}
+                pt={isPhoneDevice ? 5 : 7}
+              >
                 <SizableText
-                  fontSize={"$2xl"}
+                  fontSize={isPhoneDevice ? "$2xl" : "$4xl"}
+                  lineHeight={isPhoneDevice ? 32 : 44}
                   color={"$primary"}
                   fontWeight={"$bold700"}
                   textAlign="center"
-                  lineHeight={30}
                 >
                   {`${formattedValue(parseInt(correctWord))} /`}{" "}
                   <SizableText
-                    fontSize={"$2xl"}
+                    fontSize={isPhoneDevice ? "$2xl" : "$4xl"}
+                    lineHeight={isPhoneDevice ? 32 : 44}
                     color={"$white"}
                     fontWeight={"$bold700"}
                     textAlign="center"
-                    lineHeight={30}
                   >
                     {`${formattedValue(
                       parseInt(correctWord) +
@@ -171,24 +180,24 @@ function ScoreCardScreen() {
                   </SizableText>
                 </SizableText>
               </YStack>
-              <YStack h={"$3"} />
+              <YStack h={isPhoneDevice ? "$3" : "$5"} />
               <SizableText
-                fontSize={"$2xl"}
-                color={"$black"}
+                fontSize={isPhoneDevice ? "$2xl" : "$4xl"}
+                lineHeight={isPhoneDevice ? 32 : 44}
+                color={"$secondPrimaryColor"}
                 fontWeight={"$bold700"}
                 textAlign="center"
-                lineHeight={30}
                 textTransform="uppercase"
               >
                 {languageData.correct_words}
               </SizableText>
-              <YStack h={"$3"} />
+              <YStack h={isPhoneDevice ? "$3" : "$5"} />
               <YStack>
                 {alphabet ? (
                   <>
                     <SizableText
                       fontSize={isPhoneDevice ? "$hxs" : "$hmd"}
-                      lineHeight={isPhoneDevice ? 24 : 30}
+                      lineHeight={isPhoneDevice ? 24 : 34}
                       color={"$primary"}
                       fontWeight={"$bold700"}
                       textAlign="center"
@@ -196,7 +205,7 @@ function ScoreCardScreen() {
                       {languageData.congratulations}{" "}
                       <SizableText
                         fontSize={isPhoneDevice ? "$hxs" : "$hmd"}
-                        lineHeight={isPhoneDevice ? 24 : 30}
+                        lineHeight={isPhoneDevice ? 24 : 34}
                         color={"$primary"}
                         fontWeight={"$bold700"}
                         textAlign="center"
@@ -206,7 +215,7 @@ function ScoreCardScreen() {
                       </SizableText>
                       <SizableText
                         fontSize={isPhoneDevice ? "$hxs" : "$hmd"}
-                        lineHeight={isPhoneDevice ? 24 : 30}
+                        lineHeight={isPhoneDevice ? 24 : 34}
                         color={"$primary"}
                         fontWeight={"$bold700"}
                         textAlign="center"
@@ -215,7 +224,7 @@ function ScoreCardScreen() {
                       </SizableText>
                       <SizableText
                         fontSize={isPhoneDevice ? "$hxs" : "$hmd"}
-                        lineHeight={isPhoneDevice ? 24 : 30}
+                        lineHeight={isPhoneDevice ? 24 : 34}
                         color={"$primary"}
                         fontWeight={"$bold700"}
                         textAlign="center"
@@ -225,7 +234,7 @@ function ScoreCardScreen() {
                       </SizableText>
                       <SizableText
                         fontSize={isPhoneDevice ? "$hxs" : "$hmd"}
-                        lineHeight={isPhoneDevice ? 24 : 30}
+                        lineHeight={isPhoneDevice ? 24 : 34}
                         color={"$primary"}
                         fontWeight={"$bold700"}
                         textAlign="center"
@@ -234,7 +243,7 @@ function ScoreCardScreen() {
                       </SizableText>
                       <SizableText
                         fontSize={isPhoneDevice ? "$hxs" : "$hmd"}
-                        lineHeight={isPhoneDevice ? 24 : 30}
+                        lineHeight={isPhoneDevice ? 24 : 34}
                         color={"$primary"}
                         fontWeight={"$bold700"}
                         textAlign="center"
@@ -244,7 +253,7 @@ function ScoreCardScreen() {
                       </SizableText>
                       <SizableText
                         fontSize={isPhoneDevice ? "$hxs" : "$hmd"}
-                        lineHeight={isPhoneDevice ? 24 : 30}
+                        lineHeight={isPhoneDevice ? 24 : 34}
                         color={"$primary"}
                         fontWeight={"$bold700"}
                         textAlign="center"
@@ -256,7 +265,7 @@ function ScoreCardScreen() {
                 ) : (
                   <SizableText
                     fontSize={isPhoneDevice ? "$hxs" : "$hmd"}
-                    lineHeight={isPhoneDevice ? 24 : 30}
+                    lineHeight={isPhoneDevice ? 24 : 34}
                     color={"$primary"}
                     fontWeight={"$bold700"}
                     textAlign="center"
@@ -264,7 +273,7 @@ function ScoreCardScreen() {
                     {languageData.congratulations}{" "}
                     <SizableText
                       fontSize={isPhoneDevice ? "$hxs" : "$hmd"}
-                      lineHeight={isPhoneDevice ? 24 : 30}
+                      lineHeight={isPhoneDevice ? 24 : 34}
                       color={"$primary"}
                       fontWeight={"$bold700"}
                       textAlign="center"
@@ -275,15 +284,15 @@ function ScoreCardScreen() {
                 )}
               </YStack>
             </YStack>
-            <YStack h={"$3"} />
+            <YStack h={isPhoneDevice ? "$3" : "$5"} />
             <SizableText
               fontSize={isPhoneDevice ? "$hxs" : "$hmd"}
-              lineHeight={isPhoneDevice ? 24 : 30}
-              color={"$black"}
+              lineHeight={isPhoneDevice ? 24 : 34}
+              color={"$secondPrimaryColor"}
               fontWeight={"$bold700"}
               textAlign="center"
             >
-              {`Email: info.as2infotech@gmail.com`}
+              {`Email: ${global?.supportEmail ?? staticSupportEmail}`}
             </SizableText>
           </YStack>
         </ViewShot>
@@ -293,18 +302,18 @@ function ScoreCardScreen() {
           left={0}
           right={0}
           bottom={0}
-          bg={"$black"}
+          bg={"$primary"}
           zIndex={1}
           position="absolute"
         >
           <SizableText
-            fontSize={"$6xl"}
-            color={"$white"}
+            fontSize={isPhoneDevice ? "$6xl" : "$8xl"}
+            lineHeight={isPhoneDevice ? 80 : 110}
+            color={"$secondPrimaryColor"}
             fontWeight={"700"}
             textAlign="center"
             rotateX={"-30deg"}
             rotateY={"30deg"}
-            lineHeight={80}
             textShadowOffset={{ width: 0, height: 7 }}
             textShadowColor={"$primary"}
             textShadowRadius={8}
@@ -315,46 +324,55 @@ function ScoreCardScreen() {
           </SizableText>
 
           <YStack alignItems="center">
-            <YStack h={"$8"} />
+            <YStack h={isPhoneDevice ? "$8" : "$12"} />
             <Image
               key={"gameOver"}
               source={images.gameOver}
-              style={{ height: 100, width: 100 }}
+              style={{
+                height: isPhoneDevice ? 100 : 150,
+                width: isPhoneDevice ? 100 : 150,
+                tintColor: "#1c2e4a",
+              }}
               alt={"gameOver"}
             />
 
-            <YStack h={"$8"} />
+            <YStack h={isPhoneDevice ? "$8" : "$12"} />
             <XStack alignItems="center">
               <YStack alignItems="center">
                 <SizableText
-                  fontSize={"$2xl"}
-                  color={"$white"}
+                  fontSize={isPhoneDevice ? "$2xl" : "$4xl"}
+                  lineHeight={isPhoneDevice ? 32 : 44}
+                  color={"$secondPrimaryColor"}
                   fontWeight={"$bold700"}
                   textAlign="center"
-                  lineHeight={32}
                 >
                   {languageData.your_score}
                 </SizableText>
-                <YStack h={"$1"} />
-                <YStack bg={"$white"} borderRadius={100} px={10} pt={5}>
+                <YStack h={isPhoneDevice ? "$1" : "$1.5"} />
+                <YStack
+                  bg={"$secondPrimaryColor"}
+                  borderRadius={100}
+                  px={10}
+                  pt={5}
+                >
                   <SizableText
-                    fontSize={"$2xl"}
+                    fontSize={isPhoneDevice ? "$2xl" : "$4xl"}
+                    lineHeight={isPhoneDevice ? 32 : 44}
                     color={"$primary"}
                     fontWeight={"$bold700"}
                     textAlign="center"
-                    lineHeight={30}
                   >
                     {formattedValue(parseInt(correctWord))}
                   </SizableText>
                 </YStack>
               </YStack>
             </XStack>
-            <YStack h={"$8"} />
+            <YStack h={isPhoneDevice ? "$8" : "$12"} />
             <XStack justifyContent="center">
               <BasicButton
                 width={responsiveWidth / 2.5}
-                height={40}
-                linearGradientProps={{ colors: ["#05958f", "#05958f"] }}
+                height={isPhoneDevice ? 40 : 60}
+                linearGradientProps={{ colors: ["#1c2e4a", "#1c2e4a"] }}
                 onPress={() => {
                   shareImage();
                 }}
@@ -363,14 +381,16 @@ function ScoreCardScreen() {
                   <Image
                     key={"share"}
                     source={images.share}
-                    style={{ height: 18, width: 18 }}
+                    style={{
+                      height: isPhoneDevice ? 18 : 27,
+                      width: isPhoneDevice ? 18 : 27,
+                    }}
                     alt={"share"}
                   />
-                  <YStack w={"$2"} />
+                  <YStack w={isPhoneDevice ? "$2" : "$3"} />
                   <SizableText
-                    mb={-5}
                     fontSize={isPhoneDevice ? "$hxs" : "$hmd"}
-                    lineHeight={isPhoneDevice ? 24 : 30}
+                    lineHeight={isPhoneDevice ? 24 : 34}
                     color={"$white"}
                     fontWeight={"700"}
                     textAlign="center"
@@ -384,11 +404,14 @@ function ScoreCardScreen() {
 
           <YStack flex={1} />
 
-          <YStack mx={"$4"} mb={"$4"}>
+          <YStack
+            mx={isPhoneDevice ? "$4" : 0}
+            mb={isPhoneDevice ? "$4" : "$6"}
+          >
             <XStack alignItems="center">
               <BasicButton
                 width={responsiveWidth / 2 - 24}
-                height={46}
+                height={isPhoneDevice ? 46 : 69}
                 linearGradientProps={{ colors: ["#ffffff", "#ffffff"] }}
                 onPress={() => {
                   router.dismissAll();
@@ -398,14 +421,17 @@ function ScoreCardScreen() {
                   <Image
                     key={"home"}
                     source={images.home}
-                    style={{ height: 18, width: 18 }}
+                    style={{
+                      height: isPhoneDevice ? 18 : 27,
+                      width: isPhoneDevice ? 18 : 27,
+                    }}
                     alt={"home"}
                   />
-                  <YStack w={"$2"} />
+                  <YStack w={isPhoneDevice ? "$2" : "$3"} />
                   <SizableText
                     fontSize={isPhoneDevice ? "$hxs" : "$hmd"}
-                    lineHeight={isPhoneDevice ? 24 : 30}
-                    color={"$black"}
+                    lineHeight={isPhoneDevice ? 24 : 34}
+                    color={"$secondPrimaryColor"}
                     fontWeight={"700"}
                     textAlign="center"
                   >
@@ -413,10 +439,10 @@ function ScoreCardScreen() {
                   </SizableText>
                 </XStack>
               </BasicButton>
-              <YStack w={"$4"} />
+              <YStack w={isPhoneDevice ? "$4" : "$6"} />
               <BasicButton
                 width={responsiveWidth / 2 - 24}
-                height={46}
+                height={isPhoneDevice ? 46 : 69}
                 linearGradientProps={{ colors: ["#ffffff", "#ffffff"] }}
                 onPress={() => {
                   router.back();
@@ -426,14 +452,17 @@ function ScoreCardScreen() {
                   <Image
                     key={"playAgain"}
                     source={images.playAgain}
-                    style={{ height: 18, width: 18 }}
+                    style={{
+                      height: isPhoneDevice ? 18 : 27,
+                      width: isPhoneDevice ? 18 : 27,
+                    }}
                     alt={"playAgain"}
                   />
-                  <YStack w={"$2"} />
+                  <YStack w={isPhoneDevice ? "$2" : "$3"} />
                   <SizableText
                     fontSize={isPhoneDevice ? "$hxs" : "$hmd"}
-                    lineHeight={isPhoneDevice ? 24 : 30}
-                    color={"$black"}
+                    lineHeight={isPhoneDevice ? 24 : 34}
+                    color={"$secondPrimaryColor"}
                     fontWeight={"700"}
                     textAlign="center"
                   >

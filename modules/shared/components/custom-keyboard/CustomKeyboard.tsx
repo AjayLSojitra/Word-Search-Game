@@ -1,8 +1,7 @@
 import TouchableScale from "@design-system/components/shared/touchable-scale";
+import { DeviceType, deviceType } from "expo-device";
 import React, { useState } from "react";
-import { View, Text, StyleSheet, Dimensions } from "react-native";
-
-const { width: screenWidth } = Dimensions.get("window");
+import { View, Text, useWindowDimensions } from "react-native";
 
 const layouts: { [key: string]: string[][] } = {
   English: [
@@ -80,6 +79,7 @@ const CustomKeyboard: React.FC<CustomKeyboardProps> = ({ onKeyPress }) => {
     layouts[currentLanguage] || layouts.English
   );
   const [isNewWord, setIsNewWord] = useState(true);
+  const isPhoneDevice = deviceType === DeviceType.PHONE;
 
   const getSpaceKeyText = (currentLanguage: string) => {
     switch (currentLanguage) {
@@ -118,29 +118,66 @@ const CustomKeyboard: React.FC<CustomKeyboardProps> = ({ onKeyPress }) => {
     }
   };
 
+  const { width: screenWidth } = useWindowDimensions();
   const keyWidth = (screenWidth - 58) / 10;
   return (
-    <View style={styles.keyboard}>
+    <View
+      style={{
+        padding: isPhoneDevice ? 10 : 15,
+        backgroundColor: "#d5d6e0", // Light background for the keyboard
+        marginTop: isPhoneDevice ? 20 : 30,
+      }}
+    >
       {keyboardLayout.map((row, rowIndex) => (
-        <View key={rowIndex} style={styles.row}>
+        <View
+          key={rowIndex}
+          style={{
+            flexDirection: "row", // Arrange keys horizontally
+            justifyContent: "center", // Center keys in the row
+            marginBottom: isPhoneDevice ? 2 : 3, // Space between rows
+          }}
+        >
           {row.map((key) => (
             <TouchableScale
               key={key}
               onPress={() => handleKeyPress(key)}
               style={[
-                styles.key,
-                { width: key === "Space" ? 170 : keyWidth },
+                {
+                  height: isPhoneDevice ? 45 : 69, // Height of each key
+                  backgroundColor: "#ffffff", // White background for keys
+                  justifyContent: "center",
+                  alignItems: "center",
+                  margin: isPhoneDevice ? 2 : 3, // Space between keys
+                  borderRadius: 8, // Rounded corners for keys
+                },
+                {
+                  width:
+                    key === "Space" ? (isPhoneDevice ? 170 : 255) : keyWidth,
+                },
                 key === "Backspace"
-                  ? styles.backspaceKey
+                  ? {
+                      backgroundColor: "#babadb", // A different color for backspace key
+                      width: isPhoneDevice ? 50 : 75,
+                    }
                   : key === "Space"
-                  ? styles.spaceKey
+                  ? {
+                      width: isPhoneDevice ? 170 : 255, // Make space key wider
+                      backgroundColor: "#ffffff", // A different color for the space key
+                    }
                   : {},
               ]}
             >
               <Text
                 style={[
-                  styles.keyText,
-                  key === "Space" ? styles.spaceKeyText : {}, // Apply different style for space key
+                  {
+                    fontSize: isPhoneDevice ? 22 : 33, // Font size for the key text
+                    color: "#333", // Dark color for text
+                  },
+                  key === "Space"
+                    ? {
+                        fontSize: isPhoneDevice ? 14 : 21, // Customize space key text style (if different from normal keys)
+                      }
+                    : {}, // Apply different style for space key
                 ]}
               >
                 {key === "Backspace"
@@ -156,42 +193,5 @@ const CustomKeyboard: React.FC<CustomKeyboardProps> = ({ onKeyPress }) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  keyboard: {
-    padding: 10,
-    backgroundColor: "#d5d6e0", // Light background for the keyboard
-    marginTop: 20,
-  },
-  row: {
-    flexDirection: "row", // Arrange keys horizontally
-    justifyContent: "center", // Center keys in the row
-    marginBottom: 2, // Space between rows
-  },
-  key: {
-    // width: 30, // Width of each key
-    height: 45, // Height of each key
-    backgroundColor: "#ffffff", // White background for keys
-    justifyContent: "center",
-    alignItems: "center",
-    margin: 2, // Space between keys
-    borderRadius: 8, // Rounded corners for keys
-  },
-  backspaceKey: {
-    backgroundColor: "#babadb", // A different color for backspace key
-    width: 50,
-  },
-  spaceKey: {
-    width: 170, // Make space key wider
-    backgroundColor: "#ffffff", // A different color for the space key
-  },
-  keyText: {
-    fontSize: 22, // Font size for the key text
-    color: "#333", // Dark color for text
-  },
-  spaceKeyText: {
-    fontSize: 14, // Customize space key text style (if different from normal keys)
-  },
-});
 
 export default CustomKeyboard;

@@ -28,9 +28,9 @@ function HelpScreen() {
             {isForTraining === "Yes" ? (
               <>
                 <SizableText
-                  fontSize={isPhoneDevice ? "$xs" : "$lg"}
-                  lineHeight={isPhoneDevice ? 20 : 26}
-                  fontWeight={"$normal"}
+                  fontSize={isPhoneDevice ? "$hxs" : "$hmd"}
+                  lineHeight={isPhoneDevice ? 24 : 30}
+                  fontWeight={"$medium"}
                   color={"$secondPrimaryColor"}
                 >
                   {`When you choose to train your mind, a random character from the alphabet will be selected, and a random word length between 3 to 8 will also be chosen. You will see the randomly selected character displayed in the first input box.
