@@ -1,6 +1,6 @@
 {
   "name": "Word Search Game",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "main": "index.js",
   "scripts": {
     "start": "TAMAGUI_TARGET=native expo start --clear --dev-client",
