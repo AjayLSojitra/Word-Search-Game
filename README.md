@@ -284,6 +284,6 @@ Apple ID 6745386392
     ✔ Enable Firebase Crashlytics.
     ✔ Enable Anonymous firebase authentication from Authentication section.
     ✔ Firebase rules will be: allow read, write: if request.auth.uid != null;
-    - Store all the accounts details in Google Drive.
+    ✔ Store all the accounts details in Google Drive.
     ✔ Change the Primary and Primary secondary color codes.
     ✔ Update url in expo -> updates -> url. In app.json file.
