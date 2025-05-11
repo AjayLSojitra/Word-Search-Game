@@ -24,7 +24,7 @@
     },
     "updates": {
       "fallbackToCacheTimeout": 0,
-      "url": "https://u.expo.dev/e227101b-7e13-464e-947d-4c416fe0b083"
+      "url": "https://u.expo.dev/19e89d36-1cfe-4df8-90fd-f2fa2569ece3"
     },
     "runtimeVersion": {
       "policy": "appVersion"
@@ -74,7 +74,7 @@
     }
   },
   "react-native-google-mobile-ads": {
-    "android_app_id": "ca-app-pub-5944540568418609~3212426971",
-    "ios_app_id": "ca-app-pub-5944540568418609~9551239070"
+    "android_app_id": "ca-app-pub-1802560534115589~2224679366",
+    "ios_app_id": "ca-app-pub-1802560534115589~8961478109"
   }
 }

@@ -45,7 +45,7 @@ export async function openBrowser(
 export async function shareMyApp() {
   try {
     Share.share({
-      message: `Download "Word Search Game" now!
+      message: `Download Word Search Game today and make word learning an enjoyable and rewarding experience. Whether you're training your brain, learning new words, or just passing the time, this app offers something for everyone.
       \nGoogle Play Store link: https://play.google.com/store/apps/details?id=${
         global?.androidPackageName ?? staticAndroidPackageName
       }
@@ -81,18 +81,18 @@ export async function rateMyApp() {
 //STATIC ADS IDS
 const isAndroid = Platform.OS === "android";
 export const staticAppOpenAd = isAndroid
-  ? "ca-app-pub-1802560534115589/6978243138"
-  : "ca-app-pub-1802560534115589/1498685742";
+  ? "ca-app-pub-1802560534115589/3327967921"
+  : "ca-app-pub-1802560534115589/2432547018";
 export const staticBannerAd = isAndroid
-  ? "ca-app-pub-1802560534115589/1690257431"
-  : "ca-app-pub-1802560534115589/4124849088";
+  ? "ca-app-pub-1802560534115589/4641049596"
+  : "ca-app-pub-1802560534115589/3254674092";
 export const staticInterstitialAd = isAndroid
-  ? "ca-app-pub-1802560534115589/7611748088"
-  : "ca-app-pub-1802560534115589/2048430216";
+  ? "ca-app-pub-1802560534115589/7099691976"
+  : "ca-app-pub-1802560534115589/4096164236";
 export const staticRewardInterstitialAd = isAndroid
-  ? "ca-app-pub-1802560534115589/8064094096"
-  : "ca-app-pub-1802560534115589/2811767413";
-export const staticInterstitialAdIntervalClicks = 4;
+  ? "ca-app-pub-1802560534115589/9628510757"
+  : "ca-app-pub-1802560534115589/1470000897";
+export const staticInterstitialAdIntervalClicks = 10;
 export const staticInterstitialAdIntervalSeconds = 60;
 export const staticDefaultLanguage = "English";
 export const staticSupportEmail = "srkwebstudio@gmail.com";

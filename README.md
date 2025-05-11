@@ -91,27 +91,30 @@ Onesignal:
 
 iOS assets related
 
-    https://developer.apple.com/help/app-store-connect/reference/screenshot-specifications
-    https://developer.apple.com/help/app-store-connect/reference/app-preview-specifications
-    Replace Audio from Video: https://www.onlineconverter.com/add-audio-to-video
-    Change FPS: https://videobolt.net/simple-video-tools/fps
-    Resize video: https://www.adobe.com/in/express/feature/video/resize
-    Youtube video size for standard upload - 1920-1080
+- https://developer.apple.com/help/app-store-connect/reference/screenshot-specifications
+- https://developer.apple.com/help/app-store-connect/reference/app-preview-specifications
+- Replace Audio from Video: https://www.onlineconverter.com/add-audio-to-video
+- Change FPS: https://videobolt.net/simple-video-tools/fps
+- Resize video: https://www.adobe.com/in/express/feature/video/resize
+- Youtube video size for standard upload - 1920\*1080
 
 For screenshot resize:
 
-    https://imageresizer.com/
+- https://imageresizer.com/
 
 For make image portion blur:
 
-    https://www.canva.com/features/photo-blur/
+- https://www.canva.com/features/photo-blur/
 
 For mockup creation:
 
-    image: device=83% iPad/Tablet=70%
-    subtitle bottom: device=7 iPad/Tablet=7
-    title top: device=10 iPad/Tablet=10
-    https://studio.app-mockup.com/
+- Device: Apple iPhone 11 Pro Max
+- iPad: Apple iPad Pro 136 inch
+- image: device=83% iPad/Tablet=70%
+- subtitle bottom: device=7 iPad/Tablet=7
+- title top: device=10 iPad/Tablet=10
+- https://studio.app-mockup.com/
+- https://old.app-mockup.com/
 
 For get previous screen name:
 
@@ -265,22 +268,22 @@ Apple ID 6745386392
     ✔ Change the static ads ids, helpers.ts and on firebase
     ✔ Package name and bundle ids in app.json.
     ✔ Replace App name from whole project.
-    - Craete Adaptive icon, favicons, icon, splash, app icon if present in images folder of Assets.
+    ✔ Craete Adaptive icon, favicons, icon, splash, app icon if present in images folder of Assets.
     ✔ Firebase Database creation
-    - Remove unneccesary Assets.
-    - Replace android_app_id and ios_app_id under react-native-google-mobile-ads in app.json.
+    ✔ Remove unneccesary Assets.
+    ✔ Replace android_app_id and ios_app_id under react-native-google-mobile-ads in app.json.
     ✔ Expo: Project id, slug, name, owner in app.json
     ✔ Replace oneSignalAppId in app.json
     ✔ Replace name in package.json
     ✔ Replace All google services json and GoogleService-info.plist files under firebase-config folder.
     ✔ Remove Credentials folder.
-    - Replace Share App Message.
-    - Replace the ascAppId in eas.json file.
-    - Enable Firebase Appcheck.
-    - Enable Firebase Analytics.
-    - Enable Firebase Crashlytics.
+    ✔ Replace Share App Message.
+    ✔ Replace the ascAppId in eas.json file.
+    ✔ Enable Firebase Appcheck.
+    ✔ Enable Firebase Analytics.
+    ✔ Enable Firebase Crashlytics.
     ✔ Enable Anonymous firebase authentication from Authentication section.
     ✔ Firebase rules will be: allow read, write: if request.auth.uid != null;
     - Store all the accounts details in Google Drive.
     ✔ Change the Primary and Primary secondary color codes.
-    - Update url in expo -> updates -> url. In app.json file.
+    ✔ Update url in expo -> updates -> url. In app.json file.
