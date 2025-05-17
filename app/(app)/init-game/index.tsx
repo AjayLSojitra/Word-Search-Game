@@ -174,7 +174,7 @@ function InitGameScreen() {
   return (
     <YStack flex={1} backgroundColor={"$primary"}>
       <ScrollHeader
-        title={languageData.word_search_game}
+        title={languageData.initialize_game}
         backgroundColor={"$primary"}
         rightElement={
           <TouchableScale

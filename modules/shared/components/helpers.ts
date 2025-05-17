@@ -45,7 +45,7 @@ export async function openBrowser(
 export async function shareMyApp() {
   try {
     Share.share({
-      message: `Download Word Search Game today and make word learning an enjoyable and rewarding experience. Whether you're training your brain, learning new words, or just passing the time, this app offers something for everyone.
+      message: `Download WordSpark now and make every word count!
       \nGoogle Play Store link: https://play.google.com/store/apps/details?id=${
         global?.androidPackageName ?? staticAndroidPackageName
       }

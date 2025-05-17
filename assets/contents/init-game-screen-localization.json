@@ -1,6 +1,6 @@
 {
   "English": {
-    "word_search_game": "Word Search Game",
+    "initialize_game": "Initialize Game",
     "pick_random": "Pick a Random Letter",
     "pick_duration": "Pick a Duration",
     "seconds": "Seconds",
@@ -12,7 +12,7 @@
     "lets_play": "Let's Play"
   },
   "Hindi": {
-    "word_search_game": "शब्द खोज खेल",
+    "initialize_game": "गेम आरंभ करें",
     "pick_random": "एक यादृच्छिक वर्णमाला चुनें",
     "pick_duration": "एक अवधि चुनें",
     "seconds": "सेकंड",
@@ -24,7 +24,7 @@
     "lets_play": "आइए खेलें"
   },
   "Chinese": {
-    "word_search_game": "单词搜索游戏",
+    "initialize_game": "初始化游戏",
     "pick_random": "选择一个随机字母表",
     "pick_duration": "选择持续时间",
     "seconds": "秒",
@@ -36,7 +36,7 @@
     "lets_play": "让我们开始玩"
   },
   "Spanish": {
-    "word_search_game": "Juego de Búsqueda de Palabras",
+    "initialize_game": "Inicializar juego",
     "pick_random": "Elige un alfabeto aleatorio",
     "pick_duration": "Elige una duración",
     "seconds": "Segundos",
@@ -48,7 +48,7 @@
     "lets_play": "Vamos a jugar"
   },
   "Italian": {
-    "word_search_game": "Gioco di Ricerca Parole",
+    "initialize_game": "Inizializza il gioco",
     "pick_random": "Scegli un alfabeto casuale",
     "pick_duration": "Scegli una durata",
     "seconds": "Secondi",
@@ -60,7 +60,7 @@
     "lets_play": "Giochiamo"
   },
   "Portuguese": {
-    "word_search_game": "Jogo de Busca de Palavras",
+    "initialize_game": "Inicializar jogo",
     "pick_random": "Escolha um alfabeto aleatório",
     "pick_duration": "Escolha uma duração",
     "seconds": "Segundos",
@@ -72,7 +72,7 @@
     "lets_play": "Vamos Jogar"
   },
   "Russian": {
-    "word_search_game": "Игра по поиску слов",
+    "initialize_game": "Инициализировать игру",
     "pick_random": "Выберите случайный алфавит",
     "pick_duration": "Выберите продолжительность",
     "seconds": "Секунды",
@@ -84,7 +84,7 @@
     "lets_play": "Давайте играть"
   },
   "French": {
-    "word_search_game": "Jeu de Recherche de Mots",
+    "initialize_game": "Initialiser le jeu",
     "pick_random": "Choisissez un alphabet au hasard",
     "pick_duration": "Choisissez une durée",
     "seconds": "Secondes",
@@ -96,7 +96,7 @@
     "lets_play": "Jouons"
   },
   "German": {
-    "word_search_game": "Wortsuche Spiel",
+    "initialize_game": "Spiel initialisieren",
     "pick_random": "Wählen Sie ein zufälliges Alphabet",
     "pick_duration": "Wählen Sie eine Dauer",
     "seconds": "Sekunden",
@@ -108,7 +108,7 @@
     "lets_play": "Lass uns spielen"
   },
   "Urdu": {
-    "word_search_game": "لفظ تلاش کھیل",
+    "initialize_game": "گیم شروع کریں۔",
     "pick_random": "بے ترتیب حروف تہجی کا انتخاب کریں۔",
     "pick_duration": "ایک دورانیہ منتخب کریں۔",
     "seconds": "سیکنڈ",

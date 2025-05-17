@@ -1,5 +1,5 @@
 module.exports = {
-  name: "Word Search Game",
+  name: "WordSpark",
   scheme: "wordsearchgame",
   icon: "./assets/icon.png",
   web: { favicon: "./assets/favicon.png" },

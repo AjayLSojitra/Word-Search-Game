@@ -9,10 +9,10 @@
       "revenueCatAppleId": "appl_kSmxEkPBORAhrFOrzizZRAbtGzd",
       "revenueCatGoogleId": "goog_ThNwmAIcpEpTgyADIWjkNyzNpwc"
     },
-    "name": "Word Search Game",
+    "name": "WordSpark",
     "slug": "word-search-game-app",
     "owner": "ajay_sarvadhidigital",
-    "version": "2.0.0",
+    "version": "3.0.0",
     "orientation": "portrait",
     "jsEngine": "hermes",
     "icon": "./assets/icon.png",
@@ -44,7 +44,7 @@
         "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#ffffff"
       },
-      "versionCode": 2
+      "versionCode": 3
     },
     "web": {
       "favicon": "./assets/favicon.png",

@@ -1,4 +1,4 @@
-Word Search Game
+WordSpark: Brain Booster
 
 (Must)TODO items for launch:
 
@@ -147,9 +147,9 @@ To make build: Local for test without server:
         Change the version number according to previous version platform wise in App.json and package.json. For android change versionCode also.
 
     Current Versions Details:
-        Android: 2.0.0
-        Android versionCode: 2
-        iOS: 2.0.0
+        Android: 3.0.0
+        Android versionCode: 3
+        iOS: 3.0.0
 
     In Future (Second Phase):
         Enable code tampering.
