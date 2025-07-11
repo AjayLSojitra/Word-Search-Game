@@ -54,6 +54,9 @@
       },
       "channel": "production"
     },
+    "preview": {
+      "distribution": "internal"
+    },
     "e2e": {
       "env": {
         "APP_VARIANT": "test"

@@ -44,7 +44,10 @@
         "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#ffffff"
       },
-      "versionCode": 3
+      "versionCode": 3,
+      "compileSdkVersion": 36,
+      "targetSdkVersion": 36,
+      "kotlinVersion": "1.9.10"
     },
     "web": {
       "favicon": "./assets/favicon.png",
