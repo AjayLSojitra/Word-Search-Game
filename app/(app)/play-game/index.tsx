@@ -103,32 +103,32 @@ function PlayGameScreen() {
       : undefined;
   }, [sound]);
 
-  const { isLoaded, isClosed, load, show, error } = useInterstitialAd(
-    __DEV__
-      ? TestIds.INTERSTITIAL_VIDEO
-      : global?.interstitialAd ?? staticInterstitialAd
-  );
-  const isInterstitialShowed = useRef<boolean>(false);
+  // const { isLoaded, isClosed, load, show, error } = useInterstitialAd(
+  //   __DEV__
+  //     ? TestIds.INTERSTITIAL_VIDEO
+  //     : global?.interstitialAd ?? staticInterstitialAd
+  // );
+  // const isInterstitialShowed = useRef<boolean>(false);
 
-  useEffect(() => {
-    load();
-  }, [load]);
+  // useEffect(() => {
+  //   load();
+  // }, [load]);
 
-  useEffect(() => {
-    if (error) {
-      setShowAdsConfirmationPopup(false);
-    }
-  }, [error]);
+  // useEffect(() => {
+  //   if (error) {
+  //     setShowAdsConfirmationPopup(false);
+  //   }
+  // }, [error]);
 
-  useEffect(() => {
-    if (isClosed) {
-      load();
+  // useEffect(() => {
+  //   if (isClosed) {
+  //     load();
 
-      // Action after the ad is closed
-      setShowAdsConfirmationPopup(false);
-      redirectToNextScreenAfterAdmobInterstitial();
-    }
-  }, [isClosed]);
+  //     // Action after the ad is closed
+  //     setShowAdsConfirmationPopup(false);
+  //     redirectToNextScreenAfterAdmobInterstitial();
+  //   }
+  // }, [isClosed]);
 
   const redirectToNextScreenAfterAdmobInterstitial = () => {
     if (isForTraining === "Yes") {
@@ -175,18 +175,19 @@ function PlayGameScreen() {
             //Time is over
             toggleTimer();
             if (alphabet) {
-              //Show Interstitial Ad
-              if (isLoaded && global?.showAds) {
-                setShowAdsConfirmationPopup(true);
-                setTimeout(() => {
-                  if (!isInterstitialShowed.current) {
-                    isInterstitialShowed.current = true;
-                    show();
-                  }
-                }, 3000);
-              } else {
-                redirectToNextScreenAfterAdmobInterstitial();
-              }
+              // //Show Interstitial Ad
+              // if (isLoaded && global?.showAds) {
+              //   setShowAdsConfirmationPopup(true);
+              //   setTimeout(() => {
+              //     if (!isInterstitialShowed.current) {
+              //       isInterstitialShowed.current = true;
+              //       show();
+              //     }
+              //   }, 3000);
+              // } else {
+              //   redirectToNextScreenAfterAdmobInterstitial();
+              // }
+              redirectToNextScreenAfterAdmobInterstitial();
             }
           } else {
             setTimerCountdown(timerRef.current);

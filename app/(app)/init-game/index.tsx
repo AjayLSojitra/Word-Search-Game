@@ -79,42 +79,42 @@ function InitGameScreen() {
   const durations = level === "EASY" ? easyDuration : hardDuration;
   const wordLengths = level === "EASY" ? easyWordLengths : hardWordLengths;
 
-  const { isLoaded, isClosed, load, show, error } = useInterstitialAd(
-    __DEV__
-      ? TestIds.INTERSTITIAL_VIDEO
-      : global?.interstitialAd ?? staticInterstitialAd
-  );
+  // const { isLoaded, isClosed, load, show, error } = useInterstitialAd(
+  //   __DEV__
+  //     ? TestIds.INTERSTITIAL_VIDEO
+  //     : global?.interstitialAd ?? staticInterstitialAd
+  // );
   const redirectTo = useRef<"PLAY-GAME" | "IGNORE">();
 
   const [showAdsConfirmationPopup, setShowAdsConfirmationPopup] =
     useState(false);
 
-  useEffect(() => {
-    load();
-  }, [load]);
+  // useEffect(() => {
+  //   load();
+  // }, [load]);
 
-  useEffect(() => {
-    if (error) {
-      setShowAdsConfirmationPopup(false);
-    }
-  }, [error]);
+  // useEffect(() => {
+  //   if (error) {
+  //     setShowAdsConfirmationPopup(false);
+  //   }
+  // }, [error]);
 
-  useEffect(() => {
-    if (isClosed) {
-      load();
+  // useEffect(() => {
+  //   if (isClosed) {
+  //     load();
 
-      // Action after the ad is closed
-      setShowAdsConfirmationPopup(false);
-      redirectToNextScreenAfterAdmobInterstitial();
-    }
-  }, [isClosed]);
+  //     // Action after the ad is closed
+  //     setShowAdsConfirmationPopup(false);
+  //     redirectToNextScreenAfterAdmobInterstitial();
+  //   }
+  // }, [isClosed]);
 
-  const showInterstitial = () => {
-    setShowAdsConfirmationPopup(true);
-    setTimeout(() => {
-      show();
-    }, 2000);
-  };
+  // const showInterstitial = () => {
+  //   setShowAdsConfirmationPopup(true);
+  //   setTimeout(() => {
+  //     show();
+  //   }, 2000);
+  // };
 
   const redirectToNextScreenAfterAdmobInterstitial = () => {
     if (redirectTo.current === "PLAY-GAME") {
@@ -487,9 +487,9 @@ function InitGameScreen() {
               onPress={() => {
                 generateRandomNumber();
                 redirectTo.current = "IGNORE";
-                if (isLoaded && canShowAdmobInteratitial()) {
-                  showInterstitial();
-                }
+                // if (isLoaded && canShowAdmobInteratitial()) {
+                //   showInterstitial();
+                // }
               }}
             >
               <XStack
@@ -547,12 +547,13 @@ function InitGameScreen() {
             linearGradientProps={{ colors: ["#1c2e4a", "#1c2e4a"] }}
             onPress={() => {
               redirectTo.current = "PLAY-GAME";
-              if (isLoaded && canShowAdmobInteratitial()) {
-                showInterstitial();
-              } else {
-                // No advert ready to show yet
-                redirectToNextScreenAfterAdmobInterstitial();
-              }
+              // if (isLoaded && canShowAdmobInteratitial()) {
+              //   showInterstitial();
+              // } else {
+              //   // No advert ready to show yet
+              //   redirectToNextScreenAfterAdmobInterstitial();
+              // }
+              redirectToNextScreenAfterAdmobInterstitial();
             }}
           >
             <YStack
