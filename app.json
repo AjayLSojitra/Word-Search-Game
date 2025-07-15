@@ -60,6 +60,9 @@
       [
         "expo-build-properties",
         {
+          "android": {
+            "minSdkVersion": 24
+          },
           "ios": {
             "useFrameworks": "static"
           }
