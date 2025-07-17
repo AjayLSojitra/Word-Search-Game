@@ -147,9 +147,9 @@ To make build: Local for test without server:
         Change the version number according to previous version platform wise in App.json and package.json. For android change versionCode also.
 
     Current Versions Details:
-        Android: 3.0.0
-        Android versionCode: 3
-        iOS: 3.0.0
+        Android: 4.0.0
+        Android versionCode: 4
+        iOS: 4.0.0
 
     In Future (Second Phase):
         Enable code tampering.

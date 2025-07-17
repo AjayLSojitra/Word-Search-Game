@@ -22,7 +22,7 @@ import { toastConfig } from "../utils/toast-handler";
 import AdmobProvider from "@modules/app/admob-provider";
 import OneSignalProvider from "@modules/app/onesignal-provider";
 import { requestTrackingPermissionsAsync } from "expo-tracking-transparency";
-// import { useAppOpenAd } from "@modules/shared/components/use-app-open-ad";
+import { useAppOpenAd } from "@modules/shared/components/use-app-open-ad";
 import Purchases from "react-native-purchases";
 import Constants from "expo-constants";
 
@@ -71,7 +71,7 @@ function RoutingInstrumentation() {
 }
 
 export default function Layout() {
-  // useAppOpenAd();
+  useAppOpenAd();
 
   useEffect(() => {
     (async () => {
