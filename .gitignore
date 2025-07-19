@@ -148,5 +148,13 @@ web-build/
 *.app
 app.tar.gz
 
+# Build artifacts
+*.apk
+*.aab
+*.ipa
+build-*.apk
+build-*.aab
+build-*.ipa
+
 # Tamagui
 .tamagui/tamagui.config.json
