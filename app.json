@@ -44,10 +44,7 @@
         "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#ffffff"
       },
-      "versionCode": 4,
-      "compileSdkVersion": 36,
-      "targetSdkVersion": 36,
-      "kotlinVersion": "1.9.10"
+      "versionCode": 4
     },
     "web": {
       "favicon": "./assets/favicon.png",
@@ -74,7 +71,10 @@
         {
           "mode": "production"
         }
-      ]
+      ],
+      "expo-font",
+      "expo-router",
+      "expo-web-browser"
     ],
     "experiments": {
       "tsconfigPaths": true
