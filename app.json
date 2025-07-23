@@ -9,7 +9,7 @@
       "revenueCatAppleId": "appl_kSmxEkPBORAhrFOrzizZRAbtGzd",
       "revenueCatGoogleId": "goog_ThNwmAIcpEpTgyADIWjkNyzNpwc"
     },
-    "name": "WordSpark",
+    "name": "word-search-game",
     "slug": "word-search-game-app",
     "owner": "ajay_sarvadhidigital",
     "version": "4.0.0",

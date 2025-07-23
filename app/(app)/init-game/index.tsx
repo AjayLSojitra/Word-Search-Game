@@ -84,7 +84,7 @@ function InitGameScreen() {
       ? TestIds.INTERSTITIAL_VIDEO
       : global?.interstitialAd ?? staticInterstitialAd
   );
-  const redirectTo = useRef<"PLAY-GAME" | "IGNORE">();
+  const redirectTo = useRef<"PLAY-GAME" | "IGNORE">("IGNORE");
 
   const [showAdsConfirmationPopup, setShowAdsConfirmationPopup] =
     useState(false);

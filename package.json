@@ -1,5 +1,5 @@
 {
-  "name": "Word Search Game",
+  "name": "word-search-game",
   "version": "4.0.0",
   "main": "index.js",
   "scripts": {

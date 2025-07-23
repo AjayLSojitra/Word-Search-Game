@@ -1,5 +1,5 @@
+import React, { PropsWithChildren, useEffect } from "react";
 import { atom, useRecoilState } from "recoil";
-import { PropsWithChildren, useEffect } from "react";
 
 export interface AnalyticsProvider {
   identify?: (
@@ -62,8 +62,7 @@ export function AnalyticsProvider(props: PropsWithChildren) {
   const [_, setAnalytics] = useRecoilState(analyticsState);
 
   useEffect(() => {
-    const analytics = new Analytics([
-    ]);
+    const analytics = new Analytics([]);
     setAnalytics(analytics);
   }, []);
 
