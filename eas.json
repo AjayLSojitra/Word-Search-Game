@@ -4,12 +4,6 @@
     "appVersionSource": "local"
   },
   "build": {
-    "env": {
-      "EXPO_USE_DEV_SERVER": "1"
-    },
-    "android": {
-      "gradleCommand": ":app:assembleDebug"
-    },
     "development-simulator": {
       "developmentClient": true,
       "distribution": "internal",

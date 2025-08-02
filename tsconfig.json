@@ -1,9 +1,11 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
+    "strict": true,
     "strictPropertyInitialization": false,
     "experimentalDecorators": true,
     "moduleResolution": "node",
+    "forceConsistentCasingInFileNames": true,
     "paths": {
       "@design-system/*": ["./design-system/*"],
       "@assets/*": ["./assets/*"],
