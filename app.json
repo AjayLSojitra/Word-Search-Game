@@ -58,7 +58,11 @@
         "expo-build-properties",
         {
           "android": {
-            "minSdkVersion": 24
+            "minSdkVersion": 24,
+            "targetSdkVersion": 35,
+            "compileSdkVersion": 35,
+            "enableProguardInReleaseBuilds": false,
+            "enableSeparateBuildPerCPUArchitecture": false
           },
           "ios": {
             "useFrameworks": "static"
@@ -73,8 +77,7 @@
         }
       ],
       "expo-font",
-      "expo-router",
-      "expo-web-browser"
+      "expo-router"
     ],
     "experiments": {
       "tsconfigPaths": true

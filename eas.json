@@ -4,6 +4,12 @@
     "appVersionSource": "local"
   },
   "build": {
+    "env": {
+      "EXPO_USE_DEV_SERVER": "1"
+    },
+    "android": {
+      "gradleCommand": ":app:assembleDebug"
+    },
     "development-simulator": {
       "developmentClient": true,
       "distribution": "internal",
@@ -15,7 +21,8 @@
     "development": {
       "distribution": "internal",
       "android": {
-        "gradleCommand": ":app:assembleDebug"
+        "gradleCommand": ":app:assembleDebug",
+        "buildType": "apk"
       },
       "ios": {
         "buildConfiguration": "Debug",
@@ -29,6 +36,10 @@
       "env": {
         "APP_VARIANT": "test"
       },
+      "android": {
+        "buildType": "apk",
+        "gradleCommand": ":app:assembleRelease"
+      },
       "ios": {
         "resourceClass": "m-medium"
       },
@@ -39,6 +50,10 @@
       "env": {
         "APP_VARIANT": "beta"
       },
+      "android": {
+        "buildType": "apk",
+        "gradleCommand": ":app:assembleRelease"
+      },
       "ios": {
         "resourceClass": "m-medium"
       },
@@ -48,6 +63,10 @@
       "env": {
         "APP_VARIANT": "production",
         "ANDROID_SDK_ROOT": "/Users/drunkenducks/Library/Android/sdk"
+      },
+      "android": {
+        "buildType": "app-bundle",
+        "gradleCommand": ":app:bundleRelease"
       },
       "ios": {
         "resourceClass": "m-medium"
