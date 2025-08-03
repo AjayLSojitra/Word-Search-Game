@@ -28,8 +28,8 @@ import Constants from "expo-constants";
 
 const API_KEY =
   Platform.OS === "ios"
-    ? Constants.expoConfig.extra.revenueCatAppleId
-    : Constants.expoConfig.extra.revenueCatGoogleId;
+    ? Constants.expoConfig?.extra?.revenueCatAppleId
+    : Constants.expoConfig?.extra?.revenueCatGoogleId;
 
 Purchases.configure({ apiKey: API_KEY });
 
@@ -38,7 +38,7 @@ export const unstable_settings = {
   initialRouteName: "index",
 };
 
-function FontLoader(props) {
+function FontLoader(props: { children: React.ReactNode }) {
   let [fontsLoaded] = useDefaultFonts();
   if (!fontsLoaded) {
     return <WebSplash />;

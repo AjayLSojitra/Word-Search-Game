@@ -12,7 +12,7 @@
     "name": "word-search-game",
     "slug": "word-search-game-app",
     "owner": "ajay_sarvadhidigital",
-    "version": "5.0.0",
+    "version": "6.0.0",
     "orientation": "portrait",
     "jsEngine": "hermes",
     "icon": "./assets/icon.png",
@@ -44,7 +44,7 @@
         "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#ffffff"
       },
-      "versionCode": 5
+      "versionCode": 6
     },
     "web": {
       "favicon": "./assets/favicon.png",
