@@ -135,7 +135,7 @@ function AddContentsScreen() {
               placeholder: languageData.your_feedback,
               focusable: true,
               autoFocus: false,
-              fontSize: isPhoneDevice ? "$hxs" : "$xl",
+              fontSize: isPhoneDevice ? 14 : 20,
               autoCapitalize: "sentences",
               hideShadow: false,
               numberOfLines: 5,
