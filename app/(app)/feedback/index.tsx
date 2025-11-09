@@ -1,4 +1,5 @@
 import {
+  Input,
   Label,
   RadioGroup,
   SizableText,
@@ -11,8 +12,7 @@ import ScrollHeader from "@design-system/components/navigation/scroll-header";
 import BasicButton from "@design-system/components/buttons/basic-button";
 import ResponsiveContent from "@modules/shared/responsive-content";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
-import FormInput from "@modules/shared/components/form-input/form-input";
+import { useController, useForm } from "react-hook-form";
 import { showErrorToast, showNormalToast } from "@utils/toast-handler";
 import DeviceInfo from "react-native-device-info";
 import { initializeApp } from "firebase/app";
@@ -23,13 +23,14 @@ import { HIT_SLOP } from "@utils/theme";
 import { Image, ImageProps, Platform } from "react-native";
 import images from "@assets/images/images";
 import TouchableScale from "@design-system/components/shared/touchable-scale";
-import { router } from "expo-router";
 import InputAccessoryViewiOS from "@modules/shared/components/input-accessory-view-details";
 import { DeviceType, deviceType } from "expo-device";
 import contents from "@assets/contents/contents";
+import useGoBack from "@modules/shared/hooks/use-go-back";
 
 function AddContentsScreen() {
   const insets = useSafeAreaInsets();
+  const goBack = useGoBack();
   const [selectedFeedbackType, setSelectedFeedbackType] = useState<
     "GENERAL" | "FEATURES_SUGGESTIONS" | "TECHNICAL_HELP" | ""
   >("GENERAL");
@@ -41,7 +42,7 @@ function AddContentsScreen() {
 
   const languageData =
     contents.feedbackScreenSelectedLanguage?.[
-      global?.currentSelectedLanguage ?? "English"
+      (global as any)?.currentSelectedLanguage ?? "English"
     ];
 
   const feedbackTypes = [
@@ -57,6 +58,10 @@ function AddContentsScreen() {
 
   const { control, watch } = useForm({
     defaultValues: { feedback: "" },
+  });
+  const { field, formState } = useController({
+    name: "feedback",
+    control,
   });
 
   return (
@@ -126,25 +131,39 @@ function AddContentsScreen() {
           </YStack>
         </RadioGroup>
         <YStack h={isPhoneDevice ? "$5" : "$9"} />
-        <YStack mx={"$4"}>
-          <FormInput
-            name="feedback"
-            control={control}
-            type={"text"}
-            textInputProps={{
-              placeholder: languageData.your_feedback,
-              focusable: true,
-              autoFocus: false,
-              fontSize: isPhoneDevice ? 14 : 20,
-              autoCapitalize: "sentences",
-              hideShadow: false,
-              numberOfLines: 5,
-              maxLength: 250,
-              multiline: true,
-              textAlign: "left",
-              textAlignVertical: "top",
+        <YStack
+          mx={isPhoneDevice ? "$4" : "$7"}
+          mb={isPhoneDevice ? "$4" : "$7"}
+        >
+          <Input
+            ref={field.ref}
+            borderWidth={0}
+            minHeight={48}
+            color={"$blueGray.700"}
+            keyboardType="default"
+            fontSize={isPhoneDevice ? 14 : 20}
+            fontFamily={"$body"}
+            fontWeight={"$medium"}
+            editable={true}
+            placeholderTextColor={"$blueGray.400"}
+            borderRadius={16}
+            inputAccessoryViewID="inputAccessoryView"
+            px={"$4"}
+            style={{
+              includeFontPadding: false,
             }}
-            testID="feedback-input"
+            value={field.value}
+            placeholder={"Your valuable feedback!"}
+            focusable={true}
+            autoFocus={false}
+            autoCapitalize={"sentences"}
+            numberOfLines={5}
+            multiline={true}
+            maxLength={isPhoneDevice ? 250 : 350}
+            textAlign={"left"}
+            textAlignVertical={"top"}
+            onChangeText={field.onChange}
+            onBlur={field.onBlur}
           />
         </YStack>
         <YStack h={isPhoneDevice ? "$5" : "$9"} />
@@ -224,13 +243,7 @@ function AddContentsScreen() {
                     });
 
                     showNormalToast(languageData.thank_you_for_feedback);
-                    try {
-                      if (router.canGoBack()) {
-                        router.back();
-                      } else {
-                        router.replace("/");
-                      }
-                    } catch {}
+                    goBack("/");
                   } catch (err) {
                     alert(err);
                   }

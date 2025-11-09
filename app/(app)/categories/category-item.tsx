@@ -1,4 +1,4 @@
-import React from "react";
+import React, { JSX } from "react";
 import { SizableText, YStack } from "tamagui";
 import TouchableScale from "@design-system/components/shared/touchable-scale";
 import { SvgNBProps } from "@utils/types";

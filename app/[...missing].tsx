@@ -1,6 +1,7 @@
 import React from "react";
 import { YStack } from "tamagui";
 import { useRouter } from "expo-router";
+import { InteractionManager } from "react-native";
 import ErrorPlaceholder from "../modules/shared/error-paceholder";
 
 function RouteNotFoundScreen() {
@@ -13,7 +14,22 @@ function RouteNotFoundScreen() {
         description="Sorry for the inconvenience, please try again"
         buttonTitle="Return Home"
         onPress={() => {
-          router.replace("/");
+          InteractionManager.runAfterInteractions(() => {
+            setTimeout(() => {
+              try {
+                router.replace("/");
+              } catch (error) {
+                console.warn("Navigation error:", error);
+                try {
+                  router.replace("/");
+                } catch (fallbackError) {
+                  if (router.canGoBack()) {
+                    router.back();
+                  }
+                }
+              }
+            }, 100);
+          });
         }}
       />
     </YStack>

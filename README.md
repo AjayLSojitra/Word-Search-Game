@@ -22,7 +22,7 @@ WordSpark: Brain Booster
 ✔ Share option is taking too much time on the Game over screen - so need to check it.
 ✔ Settings screen language selection not applying immediately.
 ✔ Init game design modification. Because it's look like same we have on Verbal Fluency Game.
-✔ Manage responsivness.
+✔ Manage responsiveness.
 
 Initial project setup
 
@@ -36,7 +36,7 @@ Github (For clone my repo in other machines): Example: git clone https://AjayLSo
 
 Add in app.json in expo-build-properties //https://docs.expo.dev/versions/latest/sdk/build-properties/ "ios": { "deploymentTarget": "14.0" }
 
-Set SDK Path For Android "production": { "env": { "APP_VARIANT": "production", "ANDROID_SDK_ROOT": "/Users/drunkenducks/Library/Android/sdk" } }
+Set SDK Path For Android "production": { "env": { "APP_VARIANT": "production", "ANDROID_SDK_ROOT": "/Users/ajay/Library/Android/sdk" } }
 
 // Basic commands
 
@@ -147,9 +147,9 @@ To make build: Local for test without server:
         Change the version number according to previous version platform wise in App.json and package.json. For android change versionCode also.
 
     Current Versions Details:
-        Android: 6.0.0
-        Android versionCode: 6
-        iOS: 6.0.0
+        Android: 7.0.0
+        Android versionCode: 7
+        iOS: 7.0.0
 
     In Future (Second Phase):
         Enable code tampering.
@@ -216,7 +216,7 @@ Apple ID 6745386392
             It will redirect you to Register a new Identifier, now select App there and press on continue.
             It will redirect you to Register an App Id, where you need to insert Bundle ID in Explict option selected.
             Select Capabilities, like we are using onesignal, so select Push Notifications checkbox.
-            Now Press on continue and it will create indentifires for your app.
+            Now Press on continue and it will create indentifiers for your app.
             Now go to App Store Connect.
             Click on + button beside of Apps(Top left corner) and it will open New App popup.
             Select Platform as iOS.
@@ -232,7 +232,7 @@ Apple ID 6745386392
 
     Go to app store connect and go to Distribution.
 
-    Check for + icon beside of iOS App on top left corner. It will show + icon only your previous build is Ready for Sale and you havent added new version or this your first time for this app.
+    Check for + icon beside of iOS App on top left corner. It will show + icon only your previous build is Ready for Sale and you haven't added new version or this your first time for this app.
 
     if + icon is present there, press it and it will ask for build number, where you need to enter new build number like, previous was 1.0.0 then you need to insert 2.0.0.
 
@@ -246,7 +246,7 @@ Apple ID 6745386392
             Now it will ask for Password, after inserting password press Enter.
             Now it will ask for generate certificate, press Y.
             Now it will ask for Device, where you can insert your device UDID for testing purpose development build from TestFlight.
-            Now it will ask for Provisional prifile, press Y.
+            Now it will ask for Provisional profile, press Y.
             If already present then it will ask for reuse original profile press Y.
             Now it will ask for push notification keys, press Y.
             Now it will generate and provide ipa file link, where you can press on that link and download ipa file.
@@ -256,7 +256,7 @@ Apple ID 6745386392
             Once confirm by transformer clink on Deliver CTA.
             After Deliver check after around 10-15 minutes, if app has any error Transporter will show the error.
             If approved and delivered by Transporter then go to App store connect.
-            In App store connect, go to Test Flight, wehere you will see your app as in processing mode.
+            In App store connect, go to Test Flight, where you will see your app as in processing mode.
             After processing done, it will show Manage CTA, now click on it and it will show confirmation popup for you app is not doing any violation and select none.
             Now go to Distribution and it will show + icon beside Build(for this you need scroll to down bit) and click on it and it will show you all the build list.
             Select latest build from it.
@@ -268,9 +268,9 @@ Apple ID 6745386392
     ✔ Change the static ads ids, helpers.ts and on firebase
     ✔ Package name and bundle ids in app.json.
     ✔ Replace App name from whole project.
-    ✔ Craete Adaptive icon, favicons, icon, splash, app icon if present in images folder of Assets.
-    ✔ Firebase Database creation
-    ✔ Remove unneccesary Assets.
+    ✔ Create Adaptive icon, favicons, icon, splash, app icon if present in images folder of Assets.
+    ✔ Firebase Database creation.
+    ✔ Remove unnecessary Assets.
     ✔ Replace android_app_id and ios_app_id under react-native-google-mobile-ads in app.json.
     ✔ Expo: Project id, slug, name, owner in app.json
     ✔ Replace oneSignalAppId in app.json

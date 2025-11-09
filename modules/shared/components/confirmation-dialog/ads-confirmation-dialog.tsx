@@ -32,7 +32,7 @@ function AdsConfirmationDialog(props: Readonly<AdsConfirmationDialogProps>) {
       transparent={true}
       visible={showDialog}
       onRequestClose={() => {
-        setChangeShowDialogStatus(!showDialog);
+        setChangeShowDialogStatus?.(!showDialog);
       }}
     >
       <YStack backgroundColor={"#rgba(33, 33, 33, 0.25)"} flex={1}>
@@ -83,8 +83,8 @@ function AdsConfirmationDialog(props: Readonly<AdsConfirmationDialogProps>) {
                 height={46}
                 linearGradientProps={{ colors: ["#000000", "#000000"] }}
                 onPress={() => {
-                  setChangeShowDialogStatus(!showDialog);
-                  onNegativePress();
+                  setChangeShowDialogStatus?.(!showDialog);
+                  onNegativePress?.();
                 }}
               >
                 <SizableText
@@ -103,7 +103,7 @@ function AdsConfirmationDialog(props: Readonly<AdsConfirmationDialogProps>) {
                 height={46}
                 linearGradientProps={{ colors: ["#05958f", "#05958f"] }}
                 onPress={() => {
-                  onPositivePress();
+                  onPositivePress?.();
                 }}
               >
                 <SizableText

@@ -6,74 +6,90 @@ import BasicButton from "@design-system/components/buttons/basic-button";
 import images from "@assets/images/images";
 import { Image } from "react-native";
 import ResponsiveContent from "@modules/shared/responsive-content";
-import { TestIds, useInterstitialAd } from "react-native-google-mobile-ads";
-import {
-  canShowAdmobInteratitial,
-  staticInterstitialAd,
-} from "@modules/shared/components/helpers";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import contents from "@assets/contents/contents";
-import AdsNotifyDialog from "@modules/shared/components/confirmation-dialog/ads-notify-dialog";
+import { InteractionManager } from "react-native";
 import { deviceType, DeviceType } from "expo-device";
+import { useInterstitialAd } from "@modules/app/interstitial-ad";
+import { AdLoader } from "@modules/app/ad-loader";
 
 function LevelSelectionScreen() {
   const languageData =
     contents.levelSelectionScreenSelectedLanguage?.[
-      global?.currentSelectedLanguage ?? "English"
+      (global as any)?.currentSelectedLanguage ?? "English"
     ];
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const isPhoneDevice = deviceType === DeviceType.PHONE;
-  const { isLoaded, isClosed, load, show, error } = useInterstitialAd(
-    __DEV__
-      ? TestIds.INTERSTITIAL_VIDEO
-      : global?.interstitialAd ?? staticInterstitialAd
-  );
-  const redirectTo = useRef<"EASY" | "HARD">();
+  // Initialize interstitial ad
+  const { isPreparingToShow, loadAd, showAd } = useInterstitialAd({
+    onAdClosed: () => {
+      console.log("Interstitial ad was closed");
+      // Navigate after ad is closed
+      executePendingNavigation();
+    },
+    onAdFailedToLoad: (error) => {
+      console.log("Interstitial ad failed to load:", error);
+      // Navigate even if ad fails
+      executePendingNavigation();
+    },
+    onAdAttempt: (willShow, reason) => {
+      console.log(
+        `Ad attempt: ${willShow ? "Will show" : "Will not show"} - ${reason}`
+      );
+      if (!willShow) {
+        // Ad won't show, navigate immediately
+        executePendingNavigation();
+      }
+    },
+  });
 
-  const redirectToInitGame = (level: "EASY" | "HARD") => {
-    router.push(`./init-game?level=${level}`);
-  };
+  // Store pending navigation
+  const pendingNavigationRef = useRef<(() => void) | null>(null);
 
-  const [showAdsConfirmationPopup, setShowAdsConfirmationPopup] =
-    useState(false);
-
-  useEffect(() => {
-    load();
-  }, [load]);
-
-  useEffect(() => {
-    if (isClosed) {
-      load();
-
-      // Action after the ad is closed
-      setShowAdsConfirmationPopup(false);
-      redirectToNextScreenAfterAdmobInterstitial();
-    }
-  }, [isClosed]);
-
-  useEffect(() => {
-    if (error) {
-      setShowAdsConfirmationPopup(false);
-    }
-  }, [error]);
-
-  const showInterstitial = () => {
-    setShowAdsConfirmationPopup(true);
-    setTimeout(() => {
-      show();
-    }, 2000);
-  };
-
-  const redirectToNextScreenAfterAdmobInterstitial = () => {
-    if (redirectTo.current === "EASY") {
-      redirectToInitGame("EASY");
-    }
-
-    if (redirectTo.current === "HARD") {
-      redirectToInitGame("HARD");
+  const executePendingNavigation = () => {
+    if (pendingNavigationRef.current) {
+      pendingNavigationRef.current();
+      pendingNavigationRef.current = null;
     }
   };
+
+  const handleSectionPress = (value: "EASY" | "HARD" | undefined) => {
+    // Store the navigation action
+    pendingNavigationRef.current = () => {
+      InteractionManager.runAfterInteractions(() => {
+        setTimeout(() => {
+          try {
+            switch (value) {
+              case "EASY":
+                router.push(`./init-game?level=EASY`);
+                break;
+              case "HARD":
+                router.push(`./init-game?level=HARD`);
+                break;
+            }
+          } catch (error) {
+            console.warn("Navigation error:", error);
+            try {
+              router.replace("/welcome");
+            } catch (fallbackError) {
+              if (router.canGoBack()) {
+                router.back();
+              }
+            }
+          }
+        }, 100);
+      });
+    };
+
+    // Show interstitial ad - navigation will happen in callbacks
+    showAd();
+  };
+
+  // Load interstitial ad when component mounts
+  useEffect(() => {
+    loadAd();
+  }, [loadAd]);
 
   return (
     <YStack flex={1} bg={"$primary"}>
@@ -82,24 +98,12 @@ function LevelSelectionScreen() {
         backgroundColor={"$primary"}
       />
       <ResponsiveContent flex={1}>
-        <YStack alignItems="center" justifyContent="center">
-          <AdsNotifyDialog
-            showDialog={showAdsConfirmationPopup}
-            content={`Ad is loading...`}
-          />
-        </YStack>
         <YStack flex={1} mx={isPhoneDevice ? "$6" : 0} justifyContent="center">
           <BasicButton
             height={isPhoneDevice ? 56 : 84}
             linearGradientProps={{ colors: ["#1c2e4a", "#1c2e4a"] }}
             onPress={() => {
-              redirectTo.current = "EASY";
-              if (isLoaded && canShowAdmobInteratitial()) {
-                showInterstitial();
-              } else {
-                // No advert ready to show yet
-                redirectToNextScreenAfterAdmobInterstitial();
-              }
+              handleSectionPress("EASY");
             }}
           >
             <XStack alignItems="center">
@@ -128,13 +132,7 @@ function LevelSelectionScreen() {
             height={isPhoneDevice ? 56 : 84}
             linearGradientProps={{ colors: ["#1c2e4a", "#1c2e4a"] }}
             onPress={() => {
-              redirectTo.current = "HARD";
-              if (isLoaded && canShowAdmobInteratitial()) {
-                showInterstitial();
-              } else {
-                // No advert ready to show yet
-                redirectToNextScreenAfterAdmobInterstitial();
-              }
+              handleSectionPress("HARD");
             }}
           >
             <XStack alignItems="center">
@@ -161,6 +159,12 @@ function LevelSelectionScreen() {
         </YStack>
       </ResponsiveContent>
       <YStack h={insets.bottom} />
+
+      {/* Interstitial Ad Loader */}
+      <AdLoader
+        isVisible={isPreparingToShow}
+        message="Preparing ad, please wait..."
+      />
     </YStack>
   );
 }

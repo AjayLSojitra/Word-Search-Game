@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { OpaqueColorValue } from "react-native";
+import { OpaqueColorValue, InteractionManager } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { ColorTokens, YStack } from "tamagui";
 import HeaderBar, { HeaderBarProps } from "./header-bar";
@@ -18,13 +18,26 @@ function ScrollHeader(props: ScrollHeaderProps) {
   const router = useRouter();
 
   const goBack = useCallback(() => {
-    try {
-      if (router.canGoBack()) {
-        router.back();
-      } else {
-        router.replace("/");
-      }
-    } catch {}
+    InteractionManager.runAfterInteractions(() => {
+      setTimeout(() => {
+        try {
+          if (router.canGoBack()) {
+            router.back();
+          } else {
+            router.replace("/");
+          }
+        } catch (error) {
+          console.warn("Navigation error:", error);
+          try {
+            router.replace("/");
+          } catch (fallbackError) {
+            if (router.canGoBack()) {
+              router.back();
+            }
+          }
+        }
+      }, 100);
+    });
   }, []);
 
   return (

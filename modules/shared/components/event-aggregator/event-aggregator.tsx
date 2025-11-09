@@ -1,50 +1,45 @@
-import { v4 as uuidv4 } from 'uuid';
-import { atom, selector, useRecoilValue, useSetRecoilState } from "recoil";
-import { useEffect } from 'react';
+import { create } from "zustand";
+import { useEffect } from "react";
+
+interface EventStore {
+  events: Record<string, object>;
+  publishEvent: (event: object) => void;
+  getEvent: (eventName: string) => object | undefined;
+}
+
+const useEventStore = create<EventStore>((set, get) => ({
+  events: {},
+  publishEvent: (event: object) => {
+    const eventName = event?.constructor?.name;
+    if (!eventName) return;
+    set((state) => ({
+      events: {
+        ...state.events,
+        [eventName]: event,
+      },
+    }));
+  },
+  getEvent: (eventName: string) => {
+    return get().events[eventName];
+  },
+}));
 
 export function useEventPublisher() {
-    return useSetRecoilState(eventStore);
+  return useEventStore((state) => state.publishEvent);
 }
 
 export interface EventAggregatorProps {
-    eventToSubscribe: string;
-    onEventReceived: (eventName: string, value: object) => void;
+  eventToSubscribe: string;
+  onEventReceived: (eventName: string, value: object) => void;
 }
 
 export function EventAggregator(props: Readonly<EventAggregatorProps>) {
-    const event = useRecoilValue<object>(useEventState(props.eventToSubscribe));
-    useEffect(() => {
-        if (!event) return;
-        props.onEventReceived(props.eventToSubscribe, event);
-    }, [event]);
-    return <></>
-}
-
-const eventStoreState = atom({
-    key: "eventStore",
-    default: {}
-});
-
-const eventStore = selector({
-    key: 'events',
-    get: ({ get }) => get(eventStoreState),
-    set: ({ set, get }, event: object) => {
-        const eventStore = get(eventStoreState);
-        const eventName = event?.constructor?.name;
-        if (!eventName) return;
-        set(eventStoreState, {
-            ...eventStore,
-            [eventName]: event
-        });
-    }
-});
-
-const eventStateSelectorMap = {};
-
-function useEventState(eventName: string) {
-    eventStateSelectorMap[eventName] = eventStateSelectorMap[eventName] ?? selector({
-        key: `${eventName}-${uuidv4()}`,
-        get: ({ get }) => get(eventStore)[eventName],
-    });
-    return eventStateSelectorMap[eventName];
+  const event = useEventStore((state) =>
+    state.getEvent(props.eventToSubscribe)
+  );
+  useEffect(() => {
+    if (!event) return;
+    props.onEventReceived(props.eventToSubscribe, event);
+  }, [event]);
+  return <></>;
 }

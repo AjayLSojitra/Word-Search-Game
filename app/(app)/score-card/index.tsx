@@ -5,19 +5,21 @@ import { useFocusEffect, useGlobalSearchParams, useRouter } from "expo-router";
 import { Image } from "react-native";
 import images from "@assets/images/images";
 import useResponsiveWidth from "@modules/shared/hooks/useResponsiveWidth";
-import { Audio } from "expo-av";
+import { createAudioPlayer, AudioPlayer } from "expo-audio";
 import sounds from "@assets/sounds/sounds";
 import { useCallback, useEffect, useRef, useState } from "react";
 import * as Sharing from "expo-sharing";
 import ViewShot, { captureRef } from "react-native-view-shot";
+import { InteractionManager } from "react-native";
 import { SHADOW } from "@design-system/utils/constants";
 import BasicButton from "@design-system/components/buttons/basic-button";
 import LocalStorage from "@utils/local-storage";
 import ResponsiveContent from "@modules/shared/responsive-content";
-import AdmobBanner from "@modules/shared/components/ads/admob-banner";
 import contents from "@assets/contents/contents";
 import { deviceType, DeviceType } from "expo-device";
 import { staticSupportEmail } from "@modules/shared/components/helpers";
+import useGoBack from "@modules/shared/hooks/use-go-back";
+import { BannerAdComponent } from "@modules/app/banner-ad";
 
 function ScoreCardScreen() {
   const {
@@ -37,14 +39,15 @@ function ScoreCardScreen() {
   } = useGlobalSearchParams();
   const languageData =
     contents.scoreCardScreenSelectedLanguage?.[
-      global?.currentSelectedLanguage ?? "English"
+      (global as any)?.currentSelectedLanguage ?? "English"
     ];
   const insets = useSafeAreaInsets();
   const router = useRouter();
+  const goBack = useGoBack();
   const isPhoneDevice = deviceType === DeviceType.PHONE;
   const responsiveWidth = useResponsiveWidth();
-  const [sound, setSound] = useState<Audio.Sound>();
-  const ref = useRef();
+  const [sound, setSound] = useState<AudioPlayer>();
+  const ref = useRef<ViewShot>(null);
   const isSoundEnabled = useRef(true);
   useFocusEffect(
     useCallback(() => {
@@ -63,7 +66,7 @@ function ScoreCardScreen() {
         format: "png",
         quality: 0.7,
       });
-      if (Sharing.isAvailableAsync) {
+      if (await Sharing.isAvailableAsync()) {
         Sharing.shareAsync(uri, { dialogTitle: "Word Search Game" });
       }
     } catch (e) {
@@ -77,16 +80,16 @@ function ScoreCardScreen() {
 
   async function playSound() {
     if (isSoundEnabled.current) {
-      const { sound } = await Audio.Sound.createAsync(sounds.gaveOver);
-      setSound(sound);
-      await sound.playAsync();
+      const player = createAudioPlayer(sounds.gaveOver);
+      setSound(player);
+      player.play();
     }
   }
 
   useEffect(() => {
     return sound
       ? () => {
-          sound.unloadAsync();
+          sound.remove();
         }
       : undefined;
   }, [sound]);
@@ -292,7 +295,7 @@ function ScoreCardScreen() {
               fontWeight={"$bold700"}
               textAlign="center"
             >
-              {`Email: ${global?.supportEmail ?? staticSupportEmail}`}
+              {`Email: ${(global as any)?.supportEmail ?? staticSupportEmail}`}
             </SizableText>
           </YStack>
         </ViewShot>
@@ -414,7 +417,22 @@ function ScoreCardScreen() {
                 height={isPhoneDevice ? 46 : 69}
                 linearGradientProps={{ colors: ["#ffffff", "#ffffff"] }}
                 onPress={() => {
-                  router.dismissAll();
+                  InteractionManager.runAfterInteractions(() => {
+                    setTimeout(() => {
+                      try {
+                        router.replace("/welcome");
+                      } catch (error) {
+                        console.warn("Navigation error:", error);
+                        try {
+                          router.replace("/welcome");
+                        } catch (fallbackError) {
+                          if (router.canGoBack()) {
+                            router.back();
+                          }
+                        }
+                      }
+                    }, 100);
+                  });
                 }}
               >
                 <XStack alignItems="center" justifyContent="center">
@@ -445,7 +463,7 @@ function ScoreCardScreen() {
                 height={isPhoneDevice ? 46 : 69}
                 linearGradientProps={{ colors: ["#ffffff", "#ffffff"] }}
                 onPress={() => {
-                  router.back();
+                  goBack("/welcome");
                 }}
               >
                 <XStack alignItems="center" justifyContent="center">
@@ -474,7 +492,7 @@ function ScoreCardScreen() {
           </YStack>
         </YStack>
       </ResponsiveContent>
-      <AdmobBanner />
+      <BannerAdComponent />
       <YStack h={insets.bottom} />
     </YStack>
   );

@@ -14,7 +14,10 @@ export const checkSubscriptionStatus = async (uniqueDeviceId: string) => {
       // handle first time subscription
       return false;
     } else {
-      if (!(customerInfo.latestExpirationDate > new Date().toISOString())) {
+      if (
+        !customerInfo.latestExpirationDate ||
+        !(customerInfo.latestExpirationDate > new Date().toISOString())
+      ) {
         // handle subscribe again
         return false;
       } else {
@@ -32,14 +35,18 @@ function useSubscriptionData() {
   const uniqueDeviceId = DeviceInfo.getUniqueIdSync();
   const [premium, setPremium] = useState(true);
 
-  console.log("global?.showAdsFromFirebase: ", global?.showAdsFromFirebase)
+  console.log(
+    "global?.showAdsFromFirebase: ",
+    (global as any)?.showAdsFromFirebase
+  );
 
   useLayoutEffect(() => {
     const onCustomerInfoUpdated = (customerInfo: CustomerInfo) => {
       const hasPremium =
         typeof customerInfo.entitlements.active["Premium"] !== "undefined";
-      setPremium(hasPremium || global?.showAdsFromFirebase === false);
-      global.showAds = global?.showAdsFromFirebase && hasPremium === false;
+      setPremium(hasPremium || (global as any)?.showAdsFromFirebase === false);
+      (global as any).showAds =
+        (global as any)?.showAdsFromFirebase && hasPremium === false;
       return hasPremium;
     };
 
@@ -49,8 +56,9 @@ function useSubscriptionData() {
       try {
         const status = await checkSubscriptionStatus(uniqueDeviceId);
         if (status !== hasPremium) {
-          setPremium(status || global?.showAdsFromFirebase === false);
-          global.showAds = global?.showAdsFromFirebase && status === false;
+          setPremium(status || (global as any)?.showAdsFromFirebase === false);
+          (global as any).showAds =
+            (global as any)?.showAdsFromFirebase && status === false;
         }
       } catch (error) {
         console.error(error);
@@ -68,8 +76,9 @@ function useSubscriptionData() {
     premium,
     refresh: async () => {
       const status = await checkSubscriptionStatus(uniqueDeviceId);
-      setPremium(status || global?.showAdsFromFirebase === false);
-      global.showAds = global?.showAdsFromFirebase && status === false;
+      setPremium(status || (global as any)?.showAdsFromFirebase === false);
+      (global as any).showAds =
+        (global as any)?.showAdsFromFirebase && status === false;
     },
   };
 }

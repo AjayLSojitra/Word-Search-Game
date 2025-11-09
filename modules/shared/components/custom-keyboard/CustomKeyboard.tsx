@@ -74,7 +74,7 @@ interface CustomKeyboardProps {
 }
 
 const CustomKeyboard: React.FC<CustomKeyboardProps> = ({ onKeyPress }) => {
-  const currentLanguage = global?.currentSelectedLanguage ?? "English";
+  const currentLanguage = (global as any)?.currentSelectedLanguage ?? "English";
   const [keyboardLayout] = useState<string[][]>(
     layouts[currentLanguage] || layouts.English
   );
@@ -105,7 +105,7 @@ const CustomKeyboard: React.FC<CustomKeyboardProps> = ({ onKeyPress }) => {
         return "مسافت"; // Space in Urdu
     }
   };
-  const handleKeyPress = (key) => {
+  const handleKeyPress = (key: any) => {
     if (key === "Backspace") {
       onKeyPress(key); // Call backspace function
     } else if (key === "Space") {

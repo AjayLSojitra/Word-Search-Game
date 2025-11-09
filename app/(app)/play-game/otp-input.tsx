@@ -40,7 +40,8 @@ const OtpInput = forwardRef<OtpInputRef, OtpInputProps>((props, ref) => {
   const responsiveWidth = useResponsiveWidth();
   const isPhoneDevice = deviceType === DeviceType.PHONE;
   useImperativeHandle(ref, () => ({ clear, focus, setValue: setTextWithRef }));
-  const selectedLanguage = global?.currentSelectedLanguage ?? "English";
+  const selectedLanguage =
+    (global as any)?.currentSelectedLanguage ?? "English";
   const widthStyle =
     selectedLanguage === "English"
       ? (responsiveWidth - 42) / numberOfDigits - 2

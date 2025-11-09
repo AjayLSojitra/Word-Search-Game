@@ -1,5 +1,5 @@
 export const alphabets = () => {
-  const currentLanguage = global?.currentSelectedLanguage ?? "English"; // Fallback to "English" if undefined
+  const currentLanguage = (global as any)?.currentSelectedLanguage ?? "English"; // Fallback to "English" if undefined
 
   switch (currentLanguage) {
     case "English":
@@ -325,6 +325,35 @@ export const alphabets = () => {
         "ء",
         "ی",
         "ے",
+      ];
+    default:
+      return [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F",
+        "G",
+        "H",
+        "I",
+        "J",
+        "K",
+        "L",
+        "M",
+        "N",
+        "O",
+        "P",
+        "Q",
+        "R",
+        "S",
+        "T",
+        "U",
+        "V",
+        "W",
+        "X",
+        "Y",
+        "Z",
       ];
   }
 };

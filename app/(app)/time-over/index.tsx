@@ -1,13 +1,14 @@
 import { SizableText, XStack, YStack } from "tamagui";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import ScrollHeader from "@design-system/components/navigation/scroll-header";
-import { useGlobalSearchParams, useRouter } from "expo-router";
+import { useGlobalSearchParams } from "expo-router";
 import BasicButton from "@design-system/components/buttons/basic-button";
 import { Image } from "react-native";
 import images from "@assets/images/images";
 import ResponsiveContent from "@modules/shared/responsive-content";
 import contents from "@assets/contents/contents";
 import { DeviceType, deviceType } from "expo-device";
+import useGoBack from "@modules/shared/hooks/use-go-back";
 
 function TimeOverScreen() {
   const {
@@ -21,10 +22,10 @@ function TimeOverScreen() {
   } = useGlobalSearchParams();
   const languageData =
     contents.timeOverScreenSelectedLanguage?.[
-      global?.currentSelectedLanguage ?? "English"
+      (global as any)?.currentSelectedLanguage ?? "English"
     ];
   const insets = useSafeAreaInsets();
-  const router = useRouter();
+  const goBack = useGoBack();
   const isPhoneDevice = deviceType === DeviceType.PHONE;
 
   const formattedValue = (value: number) => {
@@ -140,7 +141,7 @@ function TimeOverScreen() {
             height={isPhoneDevice ? 46 : 69}
             linearGradientProps={{ colors: ["#ffffff", "#ffffff"] }}
             onPress={() => {
-              router.back();
+              goBack("/welcome");
             }}
           >
             <XStack alignItems="center" justifyContent="center">

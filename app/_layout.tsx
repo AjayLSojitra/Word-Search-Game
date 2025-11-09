@@ -6,7 +6,6 @@ import {
 } from "expo-router";
 import { NativeBaseProvider } from "native-base";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { RecoilRoot } from "recoil";
 import { AnalyticsProvider, useAnalytics } from "@modules/analytics/analytics";
 import theme, { config } from "@utils/theme";
 import WebSplash from "../modules/shared/components/web-splash";
@@ -19,12 +18,12 @@ import VersionRestrictionProvider from "@modules/app/version-restriction-provide
 import { Platform } from "react-native";
 import Toast from "react-native-toast-message";
 import { toastConfig } from "../utils/toast-handler";
-import AdmobProvider from "@modules/app/admob-provider";
 import OneSignalProvider from "@modules/app/onesignal-provider";
 import { requestTrackingPermissionsAsync } from "expo-tracking-transparency";
 import { useAppOpenAd } from "@modules/shared/components/use-app-open-ad";
 import Purchases from "react-native-purchases";
 import Constants from "expo-constants";
+import { ConsentInitializer } from "@modules/app/consent-initializer";
 
 const API_KEY =
   Platform.OS === "ios"
@@ -89,50 +88,42 @@ export default function Layout() {
       <TamaguiProvider config={themeConfig}>
         <Theme name={"light"}>
           <NativeBaseProvider theme={theme} config={config}>
-            <RecoilRoot>
-              <FontLoader>
-                <OneSignalProvider>
-                  {(checkPassed, fallback) => {
-                    return checkPassed ? (
-                      <AdmobProvider>
+            <FontLoader>
+              <OneSignalProvider>
+                {(checkPassed, fallback) => {
+                  return checkPassed ? (
+                    <ConsentInitializer>
+                      <VersionRestrictionProvider>
                         {(checkPassed, fallback) => {
                           return checkPassed ? (
-                            <VersionRestrictionProvider>
-                              {(checkPassed, fallback) => {
-                                return checkPassed ? (
-                                  <AnalyticsProvider>
-                                    <>
-                                      <PageTracking />
-                                      <RoutingInstrumentation />
-                                      {/* Do not wrap anything else within AuthProvider or risk having a weird login issue */}
-                                      <Stack
-                                        screenOptions={{
-                                          headerShown: false,
-                                          gestureEnabled: false,
-                                          animation: "ios_from_right",
-                                        }}
-                                      />
-                                      <ConfirmationDialog />
-                                    </>
-                                  </AnalyticsProvider>
-                                ) : (
-                                  fallback
-                                );
-                              }}
-                            </VersionRestrictionProvider>
+                            <AnalyticsProvider>
+                              <>
+                                <PageTracking />
+                                <RoutingInstrumentation />
+                                {/* Do not wrap anything else within AuthProvider or risk having a weird login issue */}
+                                <Stack
+                                  screenOptions={{
+                                    headerShown: false,
+                                    gestureEnabled: false,
+                                    animation: "ios_from_right",
+                                  }}
+                                />
+                                <ConfirmationDialog />
+                              </>
+                            </AnalyticsProvider>
                           ) : (
                             fallback
                           );
                         }}
-                      </AdmobProvider>
-                    ) : (
-                      fallback
-                    );
-                  }}
-                </OneSignalProvider>
-              </FontLoader>
-              <Toast config={toastConfig} />
-            </RecoilRoot>
+                      </VersionRestrictionProvider>
+                    </ConsentInitializer>
+                  ) : (
+                    fallback
+                  );
+                }}
+              </OneSignalProvider>
+            </FontLoader>
+            <Toast config={toastConfig} />
           </NativeBaseProvider>
         </Theme>
       </TamaguiProvider>
