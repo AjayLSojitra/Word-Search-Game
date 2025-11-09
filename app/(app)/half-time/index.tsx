@@ -122,8 +122,6 @@ function HalfTimeScreen() {
           color={"$secondPrimaryColor"}
           fontWeight={"700"}
           textAlign="center"
-          rotateX={"-30deg"}
-          rotateY={"30deg"}
           textShadowOffset={{ width: 0, height: 7 }}
           textShadowColor={"$primary"}
           textShadowRadius={8}
