@@ -37,7 +37,7 @@ function WelcomeScreen() {
 
   const languageData =
     contents.welcomeScreenSelectedLanguage?.[
-      (global as any)?.currentSelectedLanguage ?? "English"
+    (global as any)?.currentSelectedLanguage ?? "English"
     ];
 
   const [selectedLanguageRefreshKey, setSelectedLanguageRefreshKey] =
@@ -85,8 +85,7 @@ function WelcomeScreen() {
     },
     onAdAttempt: (willShow, reason) => {
       console.log(
-        `Rewarded ad attempt: ${
-          willShow ? "Will show" : "Will not show"
+        `Rewarded ad attempt: ${willShow ? "Will show" : "Will not show"
         } - ${reason}`
       );
       if (!willShow) {
@@ -474,6 +473,7 @@ function WelcomeScreen() {
               width: isPhoneDevice ? 144 : 244,
               alignSelf: "center",
               resizeMode: "center",
+              borderRadius: 8
             }}
             alt={"icon"}
           />

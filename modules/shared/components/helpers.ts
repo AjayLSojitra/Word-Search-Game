@@ -45,7 +45,7 @@ export async function openBrowser(
 export async function shareMyApp() {
   try {
     Share.share({
-      message: `Download WordSpark now and make every word count!
+      message: `Download LexiNexa: Word Challenge now and make every word count!
       \nGoogle Play Store link: https://play.google.com/store/apps/details?id=${
         (global as any)?.androidPackageName ?? staticAndroidPackageName
       }

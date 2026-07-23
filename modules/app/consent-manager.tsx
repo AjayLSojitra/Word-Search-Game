@@ -229,7 +229,7 @@ export const ConsentManager: React.FC<ConsentManagerProps> = ({
             h={40}
             borderRadius="$2"
           >
-            <SizableText color="$white" fontSize="$sm" fontWeight="$semibold">
+            <SizableText color="$white" fontSize="$sm" fontWeight="$semibold" adjustsFontSizeToFit numberOfLines={1}>
               Update Consent
             </SizableText>
           </Button>

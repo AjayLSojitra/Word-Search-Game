@@ -1,4 +1,4 @@
-WordSpark: Brain Booster
+LexiNexa: Word Challenge: Brain Booster
 
 (Must)TODO items for launch:
 

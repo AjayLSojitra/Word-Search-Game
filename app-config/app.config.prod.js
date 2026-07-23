@@ -1,5 +1,5 @@
 module.exports = {
-  name: "WordSpark",
+  name: "LexiNexa: Word Challenge",
   scheme: "wordsearchgame",
   icon: "./assets/icon.png",
   web: { favicon: "./assets/favicon.png" },

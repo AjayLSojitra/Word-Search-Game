@@ -287,7 +287,7 @@ function SettingsScreen() {
                       </XStack>
                     );
                   }}
-                  renderItem={(item, index, isSelected) => {
+                  renderItem={(item, isSelected) => {
                     return (
                       <>
                         <XStack

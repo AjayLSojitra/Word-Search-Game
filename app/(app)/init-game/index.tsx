@@ -47,7 +47,7 @@ function InitGameScreen() {
   const currentAlphabets = alphabets();
   const languageData =
     contents.initGameScreenSelectedLanguage?.[
-      (global as any)?.currentSelectedLanguage ?? "English"
+    (global as any)?.currentSelectedLanguage ?? "English"
     ];
   const { level = undefined }: { level?: string } = useGlobalSearchParams();
   const insets = useSafeAreaInsets();
@@ -165,8 +165,8 @@ function InitGameScreen() {
   useEffect(() => {
     return sound
       ? () => {
-          sound.remove();
-        }
+        sound.remove();
+      }
       : undefined;
   }, [sound]);
 
@@ -260,7 +260,7 @@ function InitGameScreen() {
               snapEnabled={true}
               pagingEnabled={false}
               style={{
-                width: Math.round(responsiveWidth / 1.5),
+                width: responsiveWidth,
                 height: isPhoneDevice ? 140 : 210,
                 marginTop: -25,
                 justifyContent: "center",
@@ -307,11 +307,11 @@ function InitGameScreen() {
                   {
                     size: Math.round(
                       responsiveWidth /
-                        (level === "EASY"
-                          ? isPhoneDevice
-                            ? 3.5
-                            : 5.5
-                          : isPhoneDevice
+                      (level === "EASY"
+                        ? isPhoneDevice
+                          ? 3.5
+                          : 5.5
+                        : isPhoneDevice
                           ? 3.2
                           : 5.5)
                     ),
@@ -348,7 +348,7 @@ function InitGameScreen() {
               pagingEnabled={false}
               defaultIndex={0}
               style={{
-                width: Math.round(responsiveWidth / 1.5),
+                width: responsiveWidth,
                 height: isPhoneDevice ? 140 : 210,
                 marginTop: -25,
                 justifyContent: "center",

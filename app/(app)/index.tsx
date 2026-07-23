@@ -184,6 +184,7 @@ function SplashScreen() {
           height: isPhoneDevice ? 200 : 300,
           width: isPhoneDevice ? 200 : 300,
           resizeMode: "center",
+          borderRadius: 8
         }}
         alt={"icon"}
       />

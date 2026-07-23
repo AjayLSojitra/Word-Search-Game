@@ -67,7 +67,7 @@ function ScoreCardScreen() {
         quality: 0.7,
       });
       if (await Sharing.isAvailableAsync()) {
-        Sharing.shareAsync(uri, { dialogTitle: "Word Search Game" });
+        Sharing.shareAsync(uri, { dialogTitle: "LexiNexa: Word Challenge" });
       }
     } catch (e) {
       console.log(e);
@@ -147,6 +147,7 @@ function ScoreCardScreen() {
                   style={{
                     height: isPhoneDevice ? 90 : 135,
                     width: isPhoneDevice ? 90 : 135,
+                    borderRadius: 8
                   }}
                   alt={"appIcon"}
                 />
