@@ -5,7 +5,6 @@
       "eas": {
         "projectId": "19e89d36-1cfe-4df8-90fd-f2fa2569ece3"
       },
-      "oneSignalAppId": "65166109-1d68-4abe-982e-488a3aff9f40",
       "revenueCatAppleId": "appl_kSmxEkPBORAhrFOrzizZRAbtGzd",
       "revenueCatGoogleId": "goog_ThNwmAIcpEpTgyADIWjkNyzNpwc"
     },
@@ -59,8 +58,8 @@
         {
           "android": {
             "minSdkVersion": 24,
-            "targetSdkVersion": 35,
-            "compileSdkVersion": 35,
+            "targetSdkVersion": 36,
+            "compileSdkVersion": 36,
             "enableProguardInReleaseBuilds": false,
             "enableSeparateBuildPerCPUArchitecture": false
           },
@@ -70,12 +69,6 @@
         }
       ],
       "expo-tracking-transparency",
-      [
-        "onesignal-expo-plugin",
-        {
-          "mode": "production"
-        }
-      ],
       "expo-font",
       "expo-router"
     ],

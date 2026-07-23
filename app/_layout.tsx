@@ -20,7 +20,6 @@ import { Platform } from "react-native";
 import Toast from "react-native-toast-message";
 import { toastConfig } from "../utils/toast-handler";
 import AdmobProvider from "@modules/app/admob-provider";
-import OneSignalProvider from "@modules/app/onesignal-provider";
 import { requestTrackingPermissionsAsync } from "expo-tracking-transparency";
 import { useAppOpenAd } from "@modules/shared/components/use-app-open-ad";
 import Purchases from "react-native-purchases";
@@ -91,45 +90,37 @@ export default function Layout() {
           <NativeBaseProvider theme={theme} config={config}>
             <RecoilRoot>
               <FontLoader>
-                <OneSignalProvider>
+                <AdmobProvider>
                   {(checkPassed, fallback) => {
                     return checkPassed ? (
-                      <AdmobProvider>
+                      <VersionRestrictionProvider>
                         {(checkPassed, fallback) => {
                           return checkPassed ? (
-                            <VersionRestrictionProvider>
-                              {(checkPassed, fallback) => {
-                                return checkPassed ? (
-                                  <AnalyticsProvider>
-                                    <>
-                                      <PageTracking />
-                                      <RoutingInstrumentation />
-                                      {/* Do not wrap anything else within AuthProvider or risk having a weird login issue */}
-                                      <Stack
-                                        screenOptions={{
-                                          headerShown: false,
-                                          gestureEnabled: false,
-                                          animation: "ios_from_right",
-                                        }}
-                                      />
-                                      <ConfirmationDialog />
-                                    </>
-                                  </AnalyticsProvider>
-                                ) : (
-                                  fallback
-                                );
-                              }}
-                            </VersionRestrictionProvider>
+                            <AnalyticsProvider>
+                              <>
+                                <PageTracking />
+                                <RoutingInstrumentation />
+                                {/* Do not wrap anything else within AuthProvider or risk having a weird login issue */}
+                                <Stack
+                                  screenOptions={{
+                                    headerShown: false,
+                                    gestureEnabled: false,
+                                    animation: "ios_from_right",
+                                  }}
+                                />
+                                <ConfirmationDialog />
+                              </>
+                            </AnalyticsProvider>
                           ) : (
                             fallback
                           );
                         }}
-                      </AdmobProvider>
+                      </VersionRestrictionProvider>
                     ) : (
                       fallback
                     );
                   }}
-                </OneSignalProvider>
+                </AdmobProvider>
               </FontLoader>
               <Toast config={toastConfig} />
             </RecoilRoot>

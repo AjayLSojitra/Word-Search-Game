@@ -25,7 +25,6 @@ import {
   staticRewardInterstitialAd,
 } from "@modules/shared/components/helpers";
 import InAppReview from "react-native-in-app-review";
-import { OneSignal } from "react-native-onesignal";
 import { DeviceType, deviceType } from "expo-device";
 import useTriggeredEvent from "@modules/shared/components/use-triggered-event";
 import contents from "@assets/contents/contents";
@@ -91,9 +90,7 @@ function WelcomeScreen() {
     "LEVEL-SELECTION-SCREEN" | "SETTING-SCREEN" | "CATEGORY-SCREEN"
   >();
 
-  useEffect(() => {
-    OneSignal.Notifications.requestPermission(true);
-  }, []);
+
 
   useEffect(() => {
     if (errorRewarded) {
