@@ -1,8 +1,9 @@
 import { SizableText, XStack, YStack } from "tamagui";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Audio } from "expo-av";
+import { createAudioPlayer, AudioPlayer } from "expo-audio";
 import sounds from "@assets/sounds/sounds";
+import { InteractionManager } from "react-native";
 import images from "@assets/images/images";
 import {
   Image,
@@ -33,16 +34,12 @@ import {
 } from "expo-router";
 import { alphabets } from "@utils/helper";
 import LocalStorage from "@utils/local-storage";
-import { TestIds, useInterstitialAd } from "react-native-google-mobile-ads";
-import {
-  canShowAdmobInteratitial,
-  staticInterstitialAd,
-} from "@modules/shared/components/helpers";
 import contents from "@assets/contents/contents";
 import { DeviceType, deviceType } from "expo-device";
 import SBItem from "./SBItem";
 import parallaxLayout from "./parallax";
-import AdsNotifyDialog from "@modules/shared/components/confirmation-dialog/ads-notify-dialog";
+import { useInterstitialAd } from "@modules/app/interstitial-ad";
+import { AdLoader } from "@modules/app/ad-loader";
 
 const BlurView = Animated.createAnimatedComponent(_BlurView);
 
@@ -50,28 +47,28 @@ function InitGameScreen() {
   const currentAlphabets = alphabets();
   const languageData =
     contents.initGameScreenSelectedLanguage?.[
-      global?.currentSelectedLanguage ?? "English"
+      (global as any)?.currentSelectedLanguage ?? "English"
     ];
   const { level = undefined }: { level?: string } = useGlobalSearchParams();
   const insets = useSafeAreaInsets();
-  const [sound, setSound] = useState<Audio.Sound>();
+  const [sound, setSound] = useState<AudioPlayer>();
   const [selectedAlphabetIndex, setSelectedAlphabetIndex] = useState<number>(0);
   const [selectedDurationIndex, setSelectedDurationIndex] = useState<number>(0);
   const [selectedWordLengthIndex, setSelectedWordLengthIndex] =
     useState<number>(0);
   const isPhoneDevice = deviceType === DeviceType.PHONE;
   const { width: responsiveWidth } = useWindowDimensions();
-  const PAGE_WIDTH = responsiveWidth / (isPhoneDevice ? 5 : 9);
+  const PAGE_WIDTH = Math.round(responsiveWidth / (isPhoneDevice ? 5 : 9));
   const baseOptions = {
     vertical: false,
     width: PAGE_WIDTH,
-    height: PAGE_WIDTH * 0.85,
+    height: Math.round(PAGE_WIDTH * 0.85),
   } as const;
 
   const previousProgress = useRef(0);
-  const alphabetCarouselRef = useRef(null);
-  const durationCarouselRef = useRef(null);
-  const wordLengthCarouselRef = useRef(null);
+  const alphabetCarouselRef = useRef<any>(null);
+  const durationCarouselRef = useRef<any>(null);
+  const wordLengthCarouselRef = useRef<any>(null);
   const easyDuration = ["30", "60", "90"];
   const hardDuration = ["120", "150", "180"];
   const easyWordLengths = ["3", "4", "5"];
@@ -79,50 +76,74 @@ function InitGameScreen() {
   const durations = level === "EASY" ? easyDuration : hardDuration;
   const wordLengths = level === "EASY" ? easyWordLengths : hardWordLengths;
 
-  const { isLoaded, isClosed, load, show, error } = useInterstitialAd(
-    __DEV__
-      ? TestIds.INTERSTITIAL_VIDEO
-      : global?.interstitialAd ?? staticInterstitialAd
-  );
-  const redirectTo = useRef<"PLAY-GAME" | "IGNORE">("IGNORE");
-
-  const [showAdsConfirmationPopup, setShowAdsConfirmationPopup] =
-    useState(false);
-
-  useEffect(() => {
-    load();
-  }, [load]);
-
-  useEffect(() => {
-    if (error) {
-      setShowAdsConfirmationPopup(false);
-    }
-  }, [error]);
-
-  useEffect(() => {
-    if (isClosed) {
-      load();
-
-      // Action after the ad is closed
-      setShowAdsConfirmationPopup(false);
-      redirectToNextScreenAfterAdmobInterstitial();
-    }
-  }, [isClosed]);
-
-  const showInterstitial = () => {
-    setShowAdsConfirmationPopup(true);
-    setTimeout(() => {
-      show();
-    }, 2000);
-  };
-
-  const redirectToNextScreenAfterAdmobInterstitial = () => {
-    if (redirectTo.current === "PLAY-GAME") {
-      router.push(
-        `./play-game?alphabet=${currentAlphabets[selectedAlphabetIndex]}&&wordLength=${wordLengths[selectedWordLengthIndex]}&&duration=${durations[selectedDurationIndex]}`
+  // Initialize interstitial ad
+  const { isPreparingToShow, loadAd, showAd } = useInterstitialAd({
+    onAdClosed: () => {
+      console.log("Interstitial ad was closed");
+      // Navigate after ad is closed
+      executePendingNavigation();
+    },
+    onAdFailedToLoad: (error) => {
+      console.log("Interstitial ad failed to load:", error);
+      // Navigate even if ad fails
+      executePendingNavigation();
+    },
+    onAdAttempt: (willShow, reason) => {
+      console.log(
+        `Ad attempt: ${willShow ? "Will show" : "Will not show"} - ${reason}`
       );
+      if (!willShow) {
+        // Ad won't show, navigate immediately
+        executePendingNavigation();
+      }
+    },
+  });
+
+  // Store pending navigation
+  const pendingNavigationRef = useRef<(() => void) | null>(null);
+
+  const executePendingNavigation = () => {
+    if (pendingNavigationRef.current) {
+      pendingNavigationRef.current();
+      pendingNavigationRef.current = null;
     }
   };
+
+  const handleSectionPress = (value: "PLAY-GAME" | "IGNORE") => {
+    // Store the navigation action
+    pendingNavigationRef.current = () => {
+      InteractionManager.runAfterInteractions(() => {
+        setTimeout(() => {
+          try {
+            switch (value) {
+              case "PLAY-GAME":
+                router.push(
+                  `./play-game?alphabet=${currentAlphabets[selectedAlphabetIndex]}&&wordLength=${wordLengths[selectedWordLengthIndex]}&&duration=${durations[selectedDurationIndex]}`
+                );
+                break;
+            }
+          } catch (error) {
+            console.warn("Navigation error:", error);
+            try {
+              router.replace("/welcome");
+            } catch (fallbackError) {
+              if (router.canGoBack()) {
+                router.back();
+              }
+            }
+          }
+        }, 100);
+      });
+    };
+
+    // Show interstitial ad - navigation will happen in callbacks
+    showAd();
+  };
+
+  // Load interstitial ad when component mounts
+  useEffect(() => {
+    loadAd();
+  }, [loadAd]);
 
   const isSoundEnabled = useRef(true);
   useFocusEffect(
@@ -135,16 +156,16 @@ function InitGameScreen() {
 
   async function playSound() {
     if (isSoundEnabled.current) {
-      const { sound } = await Audio.Sound.createAsync(sounds.optionChange);
-      setSound(sound);
-      await sound.playAsync();
+      const player = createAudioPlayer(sounds.optionChange);
+      setSound(player);
+      player.play();
     }
   }
 
   useEffect(() => {
     return sound
       ? () => {
-          sound.unloadAsync();
+          sound.remove();
         }
       : undefined;
   }, [sound]);
@@ -153,7 +174,7 @@ function InitGameScreen() {
     const min = 0;
     const max = 25;
     const randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
-    alphabetCarouselRef.current.scrollTo({
+    alphabetCarouselRef.current?.scrollTo({
       index: randomNumber,
       animated: true,
     });
@@ -179,7 +200,22 @@ function InitGameScreen() {
         rightElement={
           <TouchableScale
             onPress={() => {
-              router.push("./help");
+              InteractionManager.runAfterInteractions(() => {
+                setTimeout(() => {
+                  try {
+                    router.push("./help");
+                  } catch (error) {
+                    console.warn("Navigation error:", error);
+                    try {
+                      router.replace("/welcome");
+                    } catch (fallbackError) {
+                      if (router.canGoBack()) {
+                        router.back();
+                      }
+                    }
+                  }
+                }, 100);
+              });
             }}
           >
             <YStack
@@ -205,12 +241,6 @@ function InitGameScreen() {
       />
 
       <YStack flex={1}>
-        <YStack alignItems="center" justifyContent="center">
-          <AdsNotifyDialog
-            showDialog={showAdsConfirmationPopup}
-            content={`Ad is loading...`}
-          />
-        </YStack>
         <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
           <YStack alignItems="center">
             <YStack h={isPhoneDevice ? "$6" : "$9"} />
@@ -230,14 +260,14 @@ function InitGameScreen() {
               snapEnabled={true}
               pagingEnabled={false}
               style={{
-                width: responsiveWidth / 1.5,
+                width: Math.round(responsiveWidth / 1.5),
                 height: isPhoneDevice ? 140 : 210,
                 marginTop: -25,
                 justifyContent: "center",
                 alignItems: "center",
               }}
               defaultIndex={0}
-              width={responsiveWidth / 3.5}
+              width={Math.round(responsiveWidth / 3.5)}
               data={durations}
               renderItem={({ item, index, animationValue }) => {
                 return (
@@ -257,7 +287,6 @@ function InitGameScreen() {
               }}
               onSnapToItem={(index) => {
                 setSelectedDurationIndex(index);
-                redirectTo.current = "IGNORE";
               }}
               onProgressChange={(
                 offsetProgress: number,
@@ -276,15 +305,16 @@ function InitGameScreen() {
               customAnimation={
                 parallaxLayout(
                   {
-                    size:
+                    size: Math.round(
                       responsiveWidth /
-                      (level === "EASY"
-                        ? isPhoneDevice
-                          ? 3.5
-                          : 5.5
-                        : isPhoneDevice
-                        ? 3.2
-                        : 5.5),
+                        (level === "EASY"
+                          ? isPhoneDevice
+                            ? 3.5
+                            : 5.5
+                          : isPhoneDevice
+                          ? 3.2
+                          : 5.5)
+                    ),
                     vertical: false,
                   },
                   {
@@ -318,13 +348,13 @@ function InitGameScreen() {
               pagingEnabled={false}
               defaultIndex={0}
               style={{
-                width: responsiveWidth / 1.5,
+                width: Math.round(responsiveWidth / 1.5),
                 height: isPhoneDevice ? 140 : 210,
                 marginTop: -25,
                 justifyContent: "center",
                 alignItems: "center",
               }}
-              width={responsiveWidth / 3.5}
+              width={Math.round(responsiveWidth / 3.5)}
               data={wordLengths}
               renderItem={({ item, index, animationValue }) => {
                 return (
@@ -344,7 +374,6 @@ function InitGameScreen() {
               }}
               onSnapToItem={(index) => {
                 setSelectedWordLengthIndex(index);
-                redirectTo.current = "IGNORE";
               }}
               onProgressChange={(
                 offsetProgress: number,
@@ -363,7 +392,9 @@ function InitGameScreen() {
               customAnimation={
                 parallaxLayout(
                   {
-                    size: responsiveWidth / (isPhoneDevice ? 3.5 : 5.5),
+                    size: Math.round(
+                      responsiveWidth / (isPhoneDevice ? 3.5 : 5.5)
+                    ),
                     vertical: false,
                   },
                   {
@@ -387,7 +418,7 @@ function InitGameScreen() {
               {...baseOptions}
               loop
               style={{
-                height: responsiveWidth / (isPhoneDevice ? 2.5 : 4),
+                height: Math.round(responsiveWidth / (isPhoneDevice ? 2.5 : 4)),
                 width: responsiveWidth,
                 justifyContent: "center",
                 alignItems: "center",
@@ -473,11 +504,10 @@ function InitGameScreen() {
                   selectedIndex={selectedAlphabetIndex}
                   onPress={() => {
                     setSelectedAlphabetIndex(index);
-                    alphabetCarouselRef.current.scrollTo({
+                    alphabetCarouselRef.current?.scrollTo({
                       index: index,
                       animated: true,
                     });
-                    redirectTo.current = "IGNORE";
                   }}
                 />
               )}
@@ -486,10 +516,7 @@ function InitGameScreen() {
             <TouchableScale
               onPress={() => {
                 generateRandomNumber();
-                redirectTo.current = "IGNORE";
-                if (isLoaded && canShowAdmobInteratitial()) {
-                  showInterstitial();
-                }
+                handleSectionPress("IGNORE");
               }}
             >
               <XStack
@@ -546,13 +573,7 @@ function InitGameScreen() {
             height={isPhoneDevice ? 56 : 84}
             linearGradientProps={{ colors: ["#1c2e4a", "#1c2e4a"] }}
             onPress={() => {
-              redirectTo.current = "PLAY-GAME";
-              if (isLoaded && canShowAdmobInteratitial()) {
-                showInterstitial();
-              } else {
-                // No advert ready to show yet
-                redirectToNextScreenAfterAdmobInterstitial();
-              }
+              handleSectionPress("PLAY-GAME");
             }}
           >
             <YStack
@@ -587,6 +608,12 @@ function InitGameScreen() {
         </YStack>
       </YStack>
       <YStack h={insets.bottom} />
+
+      {/* Interstitial Ad Loader */}
+      <AdLoader
+        isVisible={isPreparingToShow}
+        message="Preparing ad, please wait..."
+      />
     </YStack>
   );
 }

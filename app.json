@@ -2,6 +2,9 @@
   "expo": {
     "scheme": "wordsearchgame",
     "extra": {
+      "router": {
+        "origin": false
+      },
       "eas": {
         "projectId": "19e89d36-1cfe-4df8-90fd-f2fa2569ece3"
       },
@@ -11,16 +14,12 @@
     "name": "word-search-game",
     "slug": "word-search-game-app",
     "owner": "ajay_sarvadhidigital",
-    "version": "6.0.0",
+    "version": "7.0.0",
     "orientation": "portrait",
     "jsEngine": "hermes",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#05958f"
-    },
+    "newArchEnabled": true,
     "updates": {
       "fallbackToCacheTimeout": 0,
       "url": "https://u.expo.dev/19e89d36-1cfe-4df8-90fd-f2fa2569ece3"
@@ -34,7 +33,11 @@
       "bundleIdentifier": "com.shreeramkrishna.wordsearch.spelling.checker",
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "WordSearchGame does not access your location. This permission is included to meet App Store requirements, but the app does not utilize location services for any functionality.",
-        "NSMicrophoneUsageDescription": "WordSearchGame does not access your microphone or any sensitive user data. This permission is included by default and is not used by the app. Your privacy and security are important to us."
+        "NSMicrophoneUsageDescription": "WordSearchGame does not access your microphone or any sensitive user data. This permission is included by default and is not used by the app. Your privacy and security are important to us.",
+        "ITSAppUsesNonExemptEncryption": false
+      },
+      "config": {
+        "usesNonExemptEncryption": false
       }
     },
     "android": {
@@ -43,23 +46,47 @@
         "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#ffffff"
       },
-      "versionCode": 6
+      "versionCode": 7
     },
     "web": {
       "favicon": "./assets/favicon.png",
       "bundler": "metro"
     },
     "plugins": [
+      "expo-router",
       "@react-native-firebase/app",
       "@react-native-firebase/crashlytics",
-      "./plugins/withAndroidVerifiedLinksWorkaround",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash.png",
+          "resizeMode": "contain",
+          "backgroundColor": "#05958f",
+          "imageWidth": 1024
+        }
+      ],
+      [
+        "expo-tracking-transparency",
+        {
+          "userTrackingPermission": "This identifier will be used to deliver personalized ads to you."
+        }
+      ],
+      [
+        "react-native-google-mobile-ads",
+        {
+          "androidAppId": "ca-app-pub-1802560534115589~2224679366",
+          "iosAppId": "ca-app-pub-1802560534115589~8961478109",
+          "delayAppMeasurementInit": true,
+          "userTrackingUsageDescription": "This identifier will be used to deliver personalized ads to you."
+        }
+      ],
       [
         "expo-build-properties",
         {
           "android": {
-            "minSdkVersion": 24,
-            "targetSdkVersion": 36,
             "compileSdkVersion": 36,
+            "targetSdkVersion": 36,
+            "minSdkVersion": 24,
             "enableProguardInReleaseBuilds": false,
             "enableSeparateBuildPerCPUArchitecture": false
           },
@@ -70,14 +97,11 @@
       ],
       "expo-tracking-transparency",
       "expo-font",
-      "expo-router"
+      "expo-audio"
     ],
     "experiments": {
-      "tsconfigPaths": true
+      "tsconfigPaths": true,
+      "typedRoutes": true
     }
-  },
-  "react-native-google-mobile-ads": {
-    "android_app_id": "ca-app-pub-1802560534115589~2224679366",
-    "ios_app_id": "ca-app-pub-1802560534115589~8961478109"
   }
 }

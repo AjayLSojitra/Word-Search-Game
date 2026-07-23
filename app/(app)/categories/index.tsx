@@ -4,98 +4,112 @@ import ScrollHeader from "@design-system/components/navigation/scroll-header";
 import { useRouter } from "expo-router";
 import { FlatList } from "react-native";
 import ResponsiveContent from "@modules/shared/responsive-content";
-import { TestIds, useInterstitialAd } from "react-native-google-mobile-ads";
-import {
-  canShowAdmobInteratitial,
-  catrgoriesIcons,
-  staticInterstitialAd,
-} from "@modules/shared/components/helpers";
+import { catrgoriesIcons } from "@modules/shared/components/helpers";
 import { useCallback, useEffect, useRef, useState } from "react";
 import contents from "@assets/contents/contents";
-import AdsNotifyDialog from "@modules/shared/components/confirmation-dialog/ads-notify-dialog";
+import { InteractionManager } from "react-native";
 import CategoryItem from "./category-item";
 import { DeviceType, deviceType } from "expo-device";
+import { useInterstitialAd } from "@modules/app/interstitial-ad";
+import { AdLoader } from "@modules/app/ad-loader";
 
 function CategoriesScreen() {
   const languageData =
-    contents.categories?.[global?.currentSelectedLanguage ?? "English"];
+    contents.categories?.[
+      (global as any)?.currentSelectedLanguage ?? "English"
+    ];
   const isPhoneDevice = deviceType === DeviceType.PHONE;
 
   const insets = useSafeAreaInsets();
   const router = useRouter();
-  const redirectTo = useRef<"PLAY-GAME" | "IGNORE">();
-  const { isLoaded, isClosed, load, show, error } = useInterstitialAd(
-    __DEV__
-      ? TestIds.INTERSTITIAL_VIDEO
-      : global?.interstitialAd ?? staticInterstitialAd
-  );
 
-  useEffect(() => {
-    load();
-  }, [load]);
+  // Store pending navigation
+  const pendingNavigationRef = useRef<(() => void) | null>(null);
 
-  useEffect(() => {
-    if (error) {
-      setShowAdsConfirmationPopup(false);
-    }
-  }, [error]);
-
-  useEffect(() => {
-    if (isClosed) {
-      load();
-
-      // Action after the ad is closed
-      setShowAdsConfirmationPopup(false);
-      redirectToNextScreenAfterAdmobInterstitial();
-    }
-  }, [isClosed]);
-
-  const [showAdsConfirmationPopup, setShowAdsConfirmationPopup] =
-    useState(false);
-  const showInterstitial = () => {
-    setShowAdsConfirmationPopup(true);
-    setTimeout(() => {
-      show();
-    }, 2000);
-  };
-
-  const selectedCategory = useRef<any>();
-
-  const redirectToNextScreenAfterAdmobInterstitial = () => {
-    if (redirectTo.current === "PLAY-GAME") {
-      router.push(`./play-game?category=${selectedCategory.current}`);
+  const executePendingNavigation = () => {
+    if (pendingNavigationRef.current) {
+      pendingNavigationRef.current();
+      pendingNavigationRef.current = null;
     }
   };
+
+  const handleSectionPress = (value: string) => {
+    // Store the navigation action
+    pendingNavigationRef.current = () => {
+      InteractionManager.runAfterInteractions(() => {
+        setTimeout(() => {
+          try {
+            switch (value) {
+              case "PLAY-GAME":
+                router.push(`./play-game?category=${selectedCategory.current}`);
+                break;
+            }
+          } catch (error) {
+            console.warn("Navigation error:", error);
+            try {
+              router.replace("/welcome");
+            } catch (fallbackError) {
+              if (router.canGoBack()) {
+                router.back();
+              }
+            }
+          }
+        }, 100);
+      });
+    };
+
+    // Show interstitial ad - navigation will happen in callbacks
+    showAd();
+  };
+
+  // Initialize interstitial ad
+  const { isPreparingToShow, loadAd, showAd } = useInterstitialAd({
+    onAdClosed: () => {
+      console.log("Interstitial ad was closed");
+      // Navigate after ad is closed
+      executePendingNavigation();
+    },
+    onAdFailedToLoad: (error) => {
+      console.log("Interstitial ad failed to load:", error);
+      // Navigate even if ad fails
+      executePendingNavigation();
+    },
+    onAdAttempt: (willShow, reason) => {
+      console.log(
+        `Ad attempt: ${willShow ? "Will show" : "Will not show"} - ${reason}`
+      );
+      if (!willShow) {
+        // Ad won't show, navigate immediately
+        executePendingNavigation();
+      }
+    },
+  });
+
+  // Load interstitial ad when component mounts
+  useEffect(() => {
+    loadAd();
+  }, [loadAd]);
+
+  const selectedCategory = useRef<any>(undefined);
 
   const renderItem = useCallback(
-    ({ item, index }) => {
+    ({ item, index }: { item: string; index: number }) => {
       return (
         <CategoryItem
           category={item}
           icon={catrgoriesIcons[index]}
           onPress={() => {
             selectedCategory.current = item;
-            redirectTo.current = "PLAY-GAME";
-            if (isLoaded && canShowAdmobInteratitial()) {
-              showInterstitial();
-            } else {
-              // No advert ready to show yet
-              redirectToNextScreenAfterAdmobInterstitial();
-            }
+            handleSectionPress("PLAY-GAME");
           }}
         />
       );
     },
-    [
-      selectedCategory.current,
-      redirectTo.current,
-      isLoaded,
-      canShowAdmobInteratitial(),
-    ]
+    [selectedCategory.current, pendingNavigationRef]
   );
 
   const keyExtractor = useCallback(
-    (item, index) => (item ?? "") + (index ?? 0),
+    (item: string, index: number) => (item ?? "") + (index ?? 0),
     []
   );
 
@@ -103,9 +117,9 @@ function CategoriesScreen() {
     return <YStack h={insets.bottom} />;
   }, [insets.bottom]);
 
-  const categories = Object.entries(languageData)
+  const categories: string[] = Object.entries(languageData)
     .filter(([key]) => key !== "Choose_Category")
-    .map(([key, value]) => value);
+    .map(([key, value]) => value as string);
 
   return (
     <YStack flex={1} bg={"$primary"}>
@@ -114,12 +128,6 @@ function CategoriesScreen() {
         backgroundColor={"$primary"}
       />
       <ResponsiveContent flex={1}>
-        <YStack alignItems="center" justifyContent="center">
-          <AdsNotifyDialog
-            showDialog={showAdsConfirmationPopup}
-            content={`Ad is loading...`}
-          />
-        </YStack>
         <YStack
           flex={1}
           mx={isPhoneDevice ? "$2" : 0}
@@ -138,6 +146,12 @@ function CategoriesScreen() {
           />
         </YStack>
       </ResponsiveContent>
+
+      {/* Interstitial Ad Loader */}
+      <AdLoader
+        isVisible={isPreparingToShow}
+        message="Preparing ad, please wait..."
+      />
     </YStack>
   );
 }

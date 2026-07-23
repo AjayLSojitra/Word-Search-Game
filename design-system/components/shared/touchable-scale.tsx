@@ -21,7 +21,7 @@ function TouchableScale(
   }
 ) {
   const [hover, setHover] = useState(false);
-  const { children } = props;
+  const { children, onPressIn, onPressOut, ...restProps } = props;
   const scale = useSharedValue(1);
   const animatedStyle = useAnimatedStyle(
     () => ({ transform: [{ scale: scale.value }] }),
@@ -30,7 +30,6 @@ function TouchableScale(
 
   return (
     <Pressable
-      {...props}
       hitSlop={props.hitSlop ?? { top: 8, left: 8, bottom: 8, right: 8 }}
       onHoverIn={() => {
         setHover(true);
@@ -38,18 +37,21 @@ function TouchableScale(
       onHoverOut={() => {
         setHover(false);
       }}
+      {...restProps}
+      onPressIn={(e) => {
+        scale.value = withTiming(0.96, { duration: 100 });
+        onPressIn?.(e);
+      }}
+      onPressOut={(e) => {
+        scale.value = withTiming(1, { duration: 50 });
+        onPressOut?.(e);
+      }}
     >
-      {({ pressed }: PressableStateCallbackType) => {
-        if (pressed) {
-          scale.value = withTiming(0.96, { duration: 100 });
-        } else if (scale.value != 1) {
-          scale.value = withTiming(1, { duration: 50 });
-        }
-
+      {(state: PressableStateCallbackType) => {
         return (
           <Animated.View style={animatedStyle}>
             {typeof children === "function"
-              ? children({ pressed, hovered: hover })
+              ? children({ ...state, hovered: hover })
               : children}
           </Animated.View>
         );

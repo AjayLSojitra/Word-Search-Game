@@ -8,6 +8,7 @@ import TouchableScale from "@design-system/components/shared/touchable-scale";
 import DeviceInfo from "react-native-device-info";
 import LocalStorage from "@utils/local-storage";
 import { useFocusEffect, useRouter } from "expo-router";
+import { InteractionManager } from "react-native";
 import ResponsiveContent from "@modules/shared/responsive-content";
 import {
   languages,
@@ -27,9 +28,11 @@ import contents from "@assets/contents/contents";
 import useSubscriptionData, {
   presentPaywall,
 } from "@modules/shared/hooks/use-subscription-data";
+import { ConsentManager } from "@modules/app/consent-manager";
 
 function SettingsScreen() {
-  const defaultLanguage = global?.defaultLanguage ?? staticDefaultLanguage;
+  const defaultLanguage =
+    (global as any)?.defaultLanguage ?? staticDefaultLanguage;
   const [selectedLanguage, setSelectedLanguage] = useState<any>(
     parseInt(defaultLanguage)
   );
@@ -37,7 +40,7 @@ function SettingsScreen() {
 
   const languageData =
     contents.settingScreenSelectedLanguage?.[
-      global?.currentSelectedLanguage ?? "English"
+      (global as any)?.currentSelectedLanguage ?? "English"
     ];
 
   const [selectedLanguageRefreshKey, setSelectedLanguageRefreshKey] =
@@ -77,8 +80,9 @@ function SettingsScreen() {
     });
   };
 
-  const privacyPolicyURL = global.privacy_policy ?? staticPrivacyPolicy;
-  const supportEmail = global?.supportEmail ?? staticSupportEmail;
+  const privacyPolicyURL =
+    (global as any).privacy_policy ?? staticPrivacyPolicy;
+  const supportEmail = (global as any)?.supportEmail ?? staticSupportEmail;
 
   const isPhoneDevice = deviceType === DeviceType.PHONE;
   const iconSize = isPhoneDevice ? 24 : 36;
@@ -142,6 +146,8 @@ function SettingsScreen() {
                 </XStack>
               </TouchableScale>
             )}
+
+            <ConsentManager />
 
             <TouchableScale
               onPress={() => {
@@ -238,7 +244,7 @@ function SettingsScreen() {
                       () => {
                         const languageToSet = selectedItem.name;
                         setSelectedLanguage(languageToSet); // Update state
-                        global.currentSelectedLanguage = languageToSet;
+                        (global as any).currentSelectedLanguage = languageToSet;
                         triggerEvent("languageSelection", languageToSet); // Pass the language as payload
                         setSelectedLanguageRefreshKey(
                           selectedLanguageRefreshKey + 1
@@ -318,7 +324,22 @@ function SettingsScreen() {
 
             <TouchableScale
               onPress={async () => {
-                router.push("./help");
+                InteractionManager.runAfterInteractions(() => {
+                  setTimeout(() => {
+                    try {
+                      router.push("./help");
+                    } catch (error) {
+                      console.warn("Navigation error:", error);
+                      try {
+                        router.replace("/welcome");
+                      } catch (fallbackError) {
+                        if (router.canGoBack()) {
+                          router.back();
+                        }
+                      }
+                    }
+                  }, 100);
+                });
               }}
             >
               <XStack alignItems="center" py={isPhoneDevice ? "$4" : "$6"}>
@@ -471,7 +492,22 @@ function SettingsScreen() {
 
             <TouchableScale
               onPress={() => {
-                router.push("./feedback");
+                InteractionManager.runAfterInteractions(() => {
+                  setTimeout(() => {
+                    try {
+                      router.push("./feedback");
+                    } catch (error) {
+                      console.warn("Navigation error:", error);
+                      try {
+                        router.replace("/welcome");
+                      } catch (fallbackError) {
+                        if (router.canGoBack()) {
+                          router.back();
+                        }
+                      }
+                    }
+                  }, 100);
+                });
               }}
             >
               <XStack alignItems="center" py={isPhoneDevice ? "$4" : "$6"}>

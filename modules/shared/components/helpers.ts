@@ -47,9 +47,9 @@ export async function shareMyApp() {
     Share.share({
       message: `Download WordSpark now and make every word count!
       \nGoogle Play Store link: https://play.google.com/store/apps/details?id=${
-        global?.androidPackageName ?? staticAndroidPackageName
+        (global as any)?.androidPackageName ?? staticAndroidPackageName
       }
-      \nApp Store link: ${global?.appStoreLink ?? appStoreLink}`,
+      \nApp Store link: ${(global as any)?.appStoreLink ?? appStoreLink}`,
     });
   } catch (e) {
     console.log(e);
@@ -62,14 +62,14 @@ export async function rateMyApp() {
       //To open the Google Play Store
       Linking.openURL(
         `market://details?id=${
-          global?.androidPackageName ?? staticAndroidPackageName
+          (global as any)?.androidPackageName ?? staticAndroidPackageName
         }`
       ).catch((err) => console.log(err));
     } else if (Platform.OS === "ios") {
       //To open the Apple App Store
       Linking.openURL(
         `itms-apps://itunes.apple.com.app/${
-          global?.APPLE_STORE_ID ?? APPLE_STORE_ID
+          (global as any)?.APPLE_STORE_ID ?? APPLE_STORE_ID
         }`
       ).catch((err) => console.log(err));
     }
@@ -105,18 +105,18 @@ export const staticAndroidPackageName =
   "com.shreeramkrishna.wordsearch.spelling.checker";
 export const APPLE_STORE_ID = "id6745386392";
 
-export const canShowAdmobInteratitial = () => {
-  if (global?.showAds) {
+export const canShowAdmobInterstitial = () => {
+  if ((global as any)?.showAds) {
     if (
-      (global.interstitialAdIntervalClicks ??
+      ((global as any)?.interstitialAdIntervalClicks ??
         staticInterstitialAdIntervalClicks) ===
-      (global.interstitialAdIntervalCurrentClicks ?? 0)
+      ((global as any)?.interstitialAdIntervalCurrentClicks ?? 0)
     ) {
-      global.interstitialAdIntervalCurrentClicks = 0;
+      (global as any).interstitialAdIntervalCurrentClicks = 0;
       return true;
     } else {
-      global.interstitialAdIntervalCurrentClicks =
-        (global.interstitialAdIntervalCurrentClicks ?? 0) + 1;
+      (global as any).interstitialAdIntervalCurrentClicks =
+        ((global as any)?.interstitialAdIntervalCurrentClicks ?? 0) + 1;
       return false;
     }
   }

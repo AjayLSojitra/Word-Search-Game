@@ -1,7 +1,7 @@
-module.exports = function(api) {
+module.exports = function (api) {
   api.cache(true);
   return {
-    presets: ['babel-preset-expo'],
+    presets: ["babel-preset-expo"],
     plugins: [
       "@babel/plugin-proposal-export-namespace-from",
       [
@@ -20,6 +20,7 @@ module.exports = function(api) {
       ],
       "react-native-reanimated/plugin",
       "macros",
+      ["@babel/plugin-proposal-decorators", { legacy: true }],
     ],
   };
 };

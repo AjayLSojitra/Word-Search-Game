@@ -51,11 +51,13 @@ function parallaxLayout(
       [-size + parallaxScrollingOffset, 0, size - parallaxScrollingOffset]
     );
 
-    const zIndex = interpolate(
-      value,
-      [-1, 0, 1],
-      [0, size, 0],
-      Extrapolation.CLAMP
+    const zIndex = Math.round(
+      interpolate(
+        value,
+        [-1, 0, 1],
+        [0, size, 0],
+        Extrapolation.CLAMP
+      )
     );
 
     const scale = interpolate(

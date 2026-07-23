@@ -27,7 +27,7 @@ function ToastView(props: ToastViewProps) {
 
   useEffect(() => {
     if (showConfetti) {
-      setConfettiState({ value: true });
+      setConfettiState({ value: true, mode: "large" });
     }
   }, [showConfetti]);
 
@@ -89,8 +89,9 @@ type ClarityToastViewProps = {
 export { ToastView };
 
 export const toastConfig: any = {
-  base: (toastConfigProps: { props: ToastViewProps }) => {
-    return <ToastView {...toastConfigProps.props} bg={"$blueGray.900"} />;
+  base: (toastConfigProps: { props: ToastViewProps & { key?: any } }) => {
+    const { key, ...restProps } = toastConfigProps.props;
+    return <ToastView key={key} {...restProps} bg={"$blueGray.900"} />;
   },
 };
 

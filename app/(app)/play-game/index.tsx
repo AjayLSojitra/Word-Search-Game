@@ -12,8 +12,9 @@ import TouchableScale from "@design-system/components/shared/touchable-scale";
 import images from "@assets/images/images";
 import { SHADOW } from "@design-system/utils/constants";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Audio } from "expo-av";
+import { createAudioPlayer, AudioPlayer } from "expo-audio";
 import sounds from "@assets/sounds/sounds";
+import { InteractionManager } from "react-native";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -26,9 +27,6 @@ import LocalStorage from "@utils/local-storage";
 import { HIT_SLOP } from "@utils/theme";
 import ResponsiveContent from "@modules/shared/responsive-content";
 import { OtpInputRef } from "./otp-input.types";
-import { TestIds, useInterstitialAd } from "react-native-google-mobile-ads";
-import { staticInterstitialAd } from "@modules/shared/components/helpers";
-import AdsNotifyDialog from "@modules/shared/components/confirmation-dialog/ads-notify-dialog";
 import contents from "@assets/contents/contents";
 import CategoryInput from "./category-input";
 import OtpInput from "./otp-input";
@@ -55,50 +53,49 @@ function PlayGameScreen() {
 
   const languageData =
     contents.welcomeScreenSelectedLanguage?.[
-      global?.currentSelectedLanguage ?? "English"
+      (global as any)?.currentSelectedLanguage ?? "English"
     ];
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const isPhoneDevice = deviceType === DeviceType.PHONE;
   const scrollViewRef = useRef<any>(null);
-  const currentLanguage = global?.currentSelectedLanguage ?? "English";
+  const currentLanguage = ((global as any)?.currentSelectedLanguage ??
+    "English") as keyof typeof wordfiles;
   const words = alphabet
     ? wordfiles[currentLanguage] // If alphabet exists, take from wordfiles
     : contents.CurrentLanguageCategoriesItem[currentLanguage][category];
 
   const [spellItems, setSpellItems] = useState<SpellInputs[]>([]);
   const inputRef = useRef<OtpInputRef>(null);
-  const [sound, setSound] = useState<Audio.Sound>();
+  const [sound, setSound] = useState<AudioPlayer>();
   async function playTimerOverWarningCountdownSound() {
     if (isSoundEnabled.current) {
-      const { sound } = await Audio.Sound.createAsync(
-        sounds.timerOverWarningCountdown
-      );
-      setSound(sound);
-      await sound.playAsync();
+      const player = createAudioPlayer(sounds.timerOverWarningCountdown);
+      setSound(player);
+      player.play();
     }
   }
 
   async function playCorrectSound() {
     if (isSoundEnabled.current) {
-      const { sound } = await Audio.Sound.createAsync(sounds.correct);
-      setSound(sound);
-      await sound.playAsync();
+      const player = createAudioPlayer(sounds.correct);
+      setSound(player);
+      player.play();
     }
   }
 
   async function playWrongSound() {
     if (isSoundEnabled.current) {
-      const { sound } = await Audio.Sound.createAsync(sounds.wrong);
-      setSound(sound);
-      await sound.playAsync();
+      const player = createAudioPlayer(sounds.wrong);
+      setSound(player);
+      player.play();
     }
   }
 
   useEffect(() => {
     return sound
       ? () => {
-          sound.unloadAsync();
+          sound.remove();
         }
       : undefined;
   }, [sound]);
@@ -106,7 +103,7 @@ function PlayGameScreen() {
   // const { isLoaded, isClosed, load, show, error } = useInterstitialAd(
   //   __DEV__
   //     ? TestIds.INTERSTITIAL_VIDEO
-  //     : global?.interstitialAd ?? staticInterstitialAd
+  //     : (global as any)?.interstitialAd ?? staticInterstitialAd
   // );
   // const isInterstitialShowed = useRef<boolean>(false);
 
@@ -131,15 +128,30 @@ function PlayGameScreen() {
   // }, [isClosed]);
 
   const redirectToNextScreenAfterAdmobInterstitial = () => {
-    if (isForTraining === "Yes") {
-      router.replace(
-        `./time-over?correctWord=${getCorrectSpellCount()}&&wrongWord=${getWrongSpellCount()}&&repeatWord=${getRepeatSpellCount()}`
-      );
-    } else {
-      router.replace(
-        `./score-card?correctWord=${getCorrectSpellCount()}&&wrongWord=${getWrongSpellCount()}&&repeatWord=${getRepeatSpellCount()}&&alphabet=${alphabet}&&wordLength=${wordLength}&&duration=${duration}`
-      );
-    }
+    InteractionManager.runAfterInteractions(() => {
+      setTimeout(() => {
+        try {
+          if (isForTraining === "Yes") {
+            router.replace(
+              `./time-over?correctWord=${getCorrectSpellCount()}&&wrongWord=${getWrongSpellCount()}&&repeatWord=${getRepeatSpellCount()}`
+            );
+          } else {
+            router.replace(
+              `./score-card?correctWord=${getCorrectSpellCount()}&&wrongWord=${getWrongSpellCount()}&&repeatWord=${getRepeatSpellCount()}&&alphabet=${alphabet}&&wordLength=${wordLength}&&duration=${duration}`
+            );
+          }
+        } catch (error) {
+          console.warn("Navigation error:", error);
+          try {
+            router.replace("/welcome");
+          } catch (fallbackError) {
+            if (router.canGoBack()) {
+              router.back();
+            }
+          }
+        }
+      }, 100);
+    });
   };
 
   const [timerCountdown, setTimerCountdown] = useState<number>(
@@ -150,7 +162,7 @@ function PlayGameScreen() {
   const intervalCompleted = useRef(false);
   const minDurationForHalfTime = 30;
 
-  const timerId = useRef(null);
+  const timerId = useRef<ReturnType<typeof setInterval> | null>(null);
   useEffect(() => {
     if (startTimerInterval) {
       timerId.current = setInterval(() => {
@@ -162,7 +174,22 @@ function PlayGameScreen() {
           //Half Time Interval
           intervalCompleted.current = true;
           stopTimer();
-          router.push(`./half-time?isForTraining=${isForTraining}`);
+          InteractionManager.runAfterInteractions(() => {
+            setTimeout(() => {
+              try {
+                router.push(`./half-time?isForTraining=${isForTraining}`);
+              } catch (error) {
+                console.warn("Navigation error:", error);
+                try {
+                  router.replace("/welcome");
+                } catch (fallbackError) {
+                  if (router.canGoBack()) {
+                    router.back();
+                  }
+                }
+              }
+            }, 100);
+          });
         } else {
           intervalCompleted.current = false;
           timerRef.current -= 1;
@@ -176,7 +203,7 @@ function PlayGameScreen() {
             toggleTimer();
             if (alphabet) {
               // //Show Interstitial Ad
-              // if (isLoaded && global?.showAds) {
+              // if (isLoaded && (global as any)?.showAds) {
               //   setShowAdsConfirmationPopup(true);
               //   setTimeout(() => {
               //     if (!isInterstitialShowed.current) {
@@ -196,7 +223,9 @@ function PlayGameScreen() {
       }, 1000);
     }
     return () => {
-      clearInterval(timerId.current);
+      if (timerId.current) {
+        clearInterval(timerId.current);
+      }
     };
   }, [startTimerInterval, intervalCompleted.current, timerRef.current]);
 
@@ -258,19 +287,20 @@ function PlayGameScreen() {
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
       toggleTimer();
-      inputRef.current.focus();
+      inputRef.current?.focus();
     });
 
     return unsubscribe;
   }, [navigation]);
 
   const keyExtractor = useCallback(
-    (item, index) => (item?.inputValue ?? "") + (index ?? 0),
+    (item: SpellInputs, index: number) =>
+      (item?.inputValue ?? "") + (index ?? 0),
     []
   );
 
-  const [currentWord, setCurrentWord] = useState();
-  const currentCategoryWord = (value) => {
+  const [currentWord, setCurrentWord] = useState<number | undefined>(undefined);
+  const currentCategoryWord = (value: number) => {
     setCurrentWord(value);
   };
 
@@ -291,10 +321,10 @@ function PlayGameScreen() {
     return <></>;
   }, []);
 
-  const check = (text: string) => {
+  const check = (text: string): string[] => {
     if (words.length === 0) {
       console.error("ERROR! Dictionaries are not loaded");
-      return;
+      return [];
     }
 
     const regex = `/\/[^0-9a-zA-Z-_]\/g/`;
@@ -303,7 +333,7 @@ function PlayGameScreen() {
       .split(" ")
       .filter((item) => item);
 
-    const outObj = {};
+    const outObj: Record<string, boolean> = {};
     for (let i = 0; i < textArr.length; i++) {
       const checked = checkWord(textArr[i]);
       const checkedList = Array.isArray(checked) ? checked : [checked];
@@ -318,7 +348,7 @@ function PlayGameScreen() {
     return Object.keys(outObj);
   };
 
-  const checkWord = (wordProp: string, recblock?: boolean) => {
+  const checkWord = (wordProp: string, recblock?: boolean): any => {
     // Just go away, if the word is not literal
     if (wordProp == null || wordProp === "" || !isNaN(Number(wordProp))) {
       return;
@@ -356,7 +386,7 @@ function PlayGameScreen() {
   };
 
   const clearAllInputs = () => {
-    inputRef.current.clear();
+    inputRef.current?.clear();
   };
 
   const getCorrectSpellCount = useCallback(() => {
@@ -375,7 +405,13 @@ function PlayGameScreen() {
   }, [spellItems]);
 
   const validateCategoriesInputs = (inputValues: string) => {
-    const inputSpell = inputValues;
+    const inputSpell = inputValues?.trim() ?? "";
+
+    // Validate that input is not empty or blank
+    if (!inputSpell || inputSpell.length === 0) {
+      return;
+    }
+
     const spellCorrectionResult = check(inputSpell);
     if (spellCorrectionResult.length === 0) {
       //Check for Duplication (If found duplication Yellow color)
@@ -510,7 +546,22 @@ function PlayGameScreen() {
                 onPress={() => {
                   intervalCompleted.current = true;
                   stopTimer();
-                  router.push("./help?isForTraining=Yes");
+                  InteractionManager.runAfterInteractions(() => {
+                    setTimeout(() => {
+                      try {
+                        router.push("./help?isForTraining=Yes");
+                      } catch (error) {
+                        console.warn("Navigation error:", error);
+                        try {
+                          router.replace("/welcome");
+                        } catch (fallbackError) {
+                          if (router.canGoBack()) {
+                            router.back();
+                          }
+                        }
+                      }
+                    }, 100);
+                  });
                 }}
               >
                 <YStack
@@ -570,13 +621,6 @@ function PlayGameScreen() {
       />
 
       <ResponsiveContent>
-        <YStack alignItems="center" justifyContent="center">
-          <AdsNotifyDialog
-            showDialog={showAdsConfirmationPopup}
-            content={`Ad is loading...`}
-          />
-        </YStack>
-
         <XStack justifyContent="center">
           {alphabet && (
             <XStack
@@ -736,7 +780,7 @@ function PlayGameScreen() {
         {category ? (
           <CategoryInput
             ref={inputRef}
-            numberOfDigits={parseInt(currentWord)}
+            numberOfDigits={currentWord ?? 0}
             focusColor="black"
             hideStick
             autoFocus

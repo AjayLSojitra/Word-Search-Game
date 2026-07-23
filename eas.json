@@ -56,11 +56,14 @@
     "production": {
       "env": {
         "APP_VARIANT": "production",
-        "ANDROID_SDK_ROOT": "/Users/drunkenducks/Library/Android/sdk"
+        "ANDROID_SDK_ROOT": "/Users/ajay/Library/Android/sdk"
       },
       "android": {
         "buildType": "app-bundle",
-        "gradleCommand": ":app:bundleRelease"
+        "gradleCommand": ":app:bundleRelease",
+        "env": {
+          "EXPO_USE_HERMES": "true"
+        }
       },
       "ios": {
         "resourceClass": "m-medium"

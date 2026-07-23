@@ -47,7 +47,8 @@ const CategoryInput = forwardRef<OtpInputRef, OtpInputProps>((props, ref) => {
     focus,
     setValue: setTextWithRef,
   }));
-  const selectedLanguage = global?.currentSelectedLanguage ?? "English";
+  const selectedLanguage =
+    (global as any)?.currentSelectedLanguage ?? "English";
   const isEnglish = selectedLanguage === "English"; // Check for the language
   const languageData = contents.CurrentLanguageCategoriesItem[selectedLanguage];
 

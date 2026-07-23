@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { useNavigation, useRouter } from "expo-router";
+import { InteractionManager } from "react-native";
 
 function useGoBack(): (fallbackLink?: string) => void {
   const navigation = useNavigation();
@@ -7,11 +8,26 @@ function useGoBack(): (fallbackLink?: string) => void {
   const defaultFallbackLink = useMemo(() => "/", []);
 
   return (fallbackLink?: string) => {
-    if (navigation.canGoBack()) {
-      navigation.goBack();
-    } else {
-      router.replace(fallbackLink ?? defaultFallbackLink);
-    }
+    InteractionManager.runAfterInteractions(() => {
+      setTimeout(() => {
+        try {
+          if (navigation.canGoBack()) {
+            navigation.goBack();
+          } else {
+            router.replace((fallbackLink ?? defaultFallbackLink) as any);
+          }
+        } catch (error) {
+          console.warn("Navigation error:", error);
+          try {
+            router.replace((fallbackLink ?? defaultFallbackLink) as any);
+          } catch (fallbackError) {
+            if (router.canGoBack()) {
+              router.back();
+            }
+          }
+        }
+      }, 100);
+    });
   };
 }
 

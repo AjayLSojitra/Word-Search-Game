@@ -1,11 +1,11 @@
 import { SizableText, XStack, YStack } from "tamagui";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import ScrollHeader from "@design-system/components/navigation/scroll-header";
-import { useFocusEffect, useGlobalSearchParams, useRouter } from "expo-router";
+import { useFocusEffect, useGlobalSearchParams } from "expo-router";
 import BasicButton from "@design-system/components/buttons/basic-button";
 import LottieWrapper from "@modules/shared/components/lottie-wrapper";
 import lotties from "@assets/lotties/lotties";
-import { Audio } from "expo-av";
+import { createAudioPlayer, AudioPlayer } from "expo-audio";
 import sounds from "@assets/sounds/sounds";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Image } from "react-native";
@@ -13,9 +13,9 @@ import images from "@assets/images/images";
 import LocalStorage from "@utils/local-storage";
 import useResponsiveWidth from "@modules/shared/hooks/useResponsiveWidth";
 import ResponsiveContent from "@modules/shared/responsive-content";
-import { TestIds, useInterstitialAd } from "react-native-google-mobile-ads";
-import { staticInterstitialAd } from "@modules/shared/components/helpers";
 import { deviceType, DeviceType } from "expo-device";
+import useGoBack from "@modules/shared/hooks/use-go-back";
+import { useInterstitialAd } from "@modules/app/interstitial-ad";
 
 function HalfTimeScreen() {
   const {
@@ -24,35 +24,65 @@ function HalfTimeScreen() {
     isForTraining?: string;
   } = useGlobalSearchParams();
   const insets = useSafeAreaInsets();
-  const router = useRouter();
+  const goBack = useGoBack();
   const isPhoneDevice = deviceType === DeviceType.PHONE;
-  const [sound, setSound] = useState<Audio.Sound>();
+  const [sound, setSound] = useState<AudioPlayer>();
   const isSoundEnabled = useRef(true);
   const responsiveWidth = useResponsiveWidth();
-  const { isLoaded, isClosed, load, show } = useInterstitialAd(
-    __DEV__
-      ? TestIds.INTERSTITIAL_VIDEO
-      : global?.interstitialAd ?? staticInterstitialAd
-  );
+  // Initialize interstitial ad
+  const { loadAd, showAd } = useInterstitialAd({
+    isForceShowAd: true,
+    onAdClosed: () => {
+      console.log("Interstitial ad was closed");
+      // Navigate after ad is closed
+      executePendingNavigation();
+    },
+    onAdFailedToLoad: (error) => {
+      console.log("Interstitial ad failed to load:", error);
+      // Navigate even if ad fails
+      executePendingNavigation();
+    },
+    onAdAttempt: (willShow, reason) => {
+      console.log(
+        `Ad attempt: ${willShow ? "Will show" : "Will not show"} - ${reason}`
+      );
+      if (!willShow) {
+        // Ad won't show, navigate immediately
+        executePendingNavigation();
+      }
+    },
+  });
 
-  useEffect(() => {
-    load();
-  }, [load]);
+  // Store pending navigation
+  const pendingNavigationRef = useRef<(() => void) | null>(null);
 
-  useEffect(() => {
-    if (isClosed) {
-      load();
-
-      // Action after the ad is closed
+  const executePendingNavigation = () => {
+    if (pendingNavigationRef.current) {
       setTimeout(() => {
-        redirectToNextScreenAfterAdmobInterstitial();
+        pendingNavigationRef.current?.();
+        pendingNavigationRef.current = null;
       }, 500);
     }
-  }, [isClosed]);
-
-  const redirectToNextScreenAfterAdmobInterstitial = () => {
-    router.back();
   };
+
+  const handleSectionPress = (value: "WELCOME") => {
+    // Store the navigation action
+    pendingNavigationRef.current = () => {
+      switch (value) {
+        case "WELCOME":
+          goBack("/welcome");
+          break;
+      }
+    };
+
+    // Show interstitial ad - navigation will happen in callbacks
+    showAd();
+  };
+
+  // Load interstitial ad when component mounts
+  useEffect(() => {
+    loadAd();
+  }, [loadAd]);
 
   useFocusEffect(
     useCallback(() => {
@@ -67,16 +97,16 @@ function HalfTimeScreen() {
 
   async function playHalfTimeIntervalSound() {
     if (isSoundEnabled.current) {
-      const { sound } = await Audio.Sound.createAsync(sounds.buzzer);
-      setSound(sound);
-      await sound.playAsync();
+      const player = createAudioPlayer(sounds.buzzer);
+      setSound(player);
+      player.play();
     }
   }
 
   useEffect(() => {
     return sound
       ? () => {
-          sound.unloadAsync();
+          sound.remove();
         }
       : undefined;
   }, [sound]);
@@ -92,8 +122,6 @@ function HalfTimeScreen() {
           color={"$secondPrimaryColor"}
           fontWeight={"700"}
           textAlign="center"
-          rotateX={"-30deg"}
-          rotateY={"30deg"}
           textShadowOffset={{ width: 0, height: 7 }}
           textShadowColor={"$primary"}
           textShadowRadius={8}
@@ -115,12 +143,7 @@ function HalfTimeScreen() {
             height={isPhoneDevice ? 46 : 69}
             linearGradientProps={{ colors: ["#ffffff", "#ffffff"] }}
             onPress={() => {
-              if (isLoaded && global?.showAds) {
-                show();
-              } else {
-                // No advert ready to show yet
-                redirectToNextScreenAfterAdmobInterstitial();
-              }
+              handleSectionPress("WELCOME");
             }}
           >
             <XStack alignItems="center">

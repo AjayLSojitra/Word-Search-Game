@@ -1,23 +1,34 @@
-import {
-  atom,
-  useRecoilState,
-  useRecoilValue,
-  useResetRecoilState,
-  useSetRecoilState,
-} from "recoil";
+import { create } from "zustand";
 
 export type ConfettiState = {
   value: boolean;
+  mode: "small" | "large";
 };
 
-const confettiState = atom<ConfettiState>({
-  key: "confettiState",
-  default: {
-    value: false,
-  },
-});
+interface ConfettiStore {
+  confettiState: ConfettiState;
+  setConfettiState: (state: ConfettiState) => void;
+  resetConfettiState: () => void;
+}
 
-export const useConfettiStateValue = () => useRecoilValue(confettiState);
-export const useConfettiState = () => useRecoilState(confettiState);
-export const useSetConfettiState = () => useSetRecoilState(confettiState);
-export const useResetConfettiState = () => useResetRecoilState(confettiState);
+const useConfettiStore = create<ConfettiStore>((set) => ({
+  confettiState: {
+    value: false,
+    mode: "large",
+  },
+  setConfettiState: (state) => set({ confettiState: state }),
+  resetConfettiState: () =>
+    set({ confettiState: { value: false, mode: "large" } }),
+}));
+
+export const useConfettiStateValue = () =>
+  useConfettiStore((state) => state.confettiState);
+export const useConfettiState = () => {
+  const confettiState = useConfettiStore((state) => state.confettiState);
+  const setConfettiState = useConfettiStore((state) => state.setConfettiState);
+  return [confettiState, setConfettiState] as const;
+};
+export const useSetConfettiState = () =>
+  useConfettiStore((state) => state.setConfettiState);
+export const useResetConfettiState = () =>
+  useConfettiStore((state) => state.resetConfettiState);

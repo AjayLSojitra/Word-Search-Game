@@ -3,6 +3,7 @@ import { Image, Platform } from "react-native";
 import images from "@assets/images/images";
 import { useEffect, useRef } from "react";
 import { useRouter } from "expo-router";
+import { InteractionManager } from "react-native";
 import ErrorBoundary from "@modules/shared/components/error-boundary";
 import {
   languages,
@@ -51,9 +52,9 @@ function SplashScreen() {
   const fetchCurrentLanguage = () => {
     LocalStorage.getItemDefault(LANGUAGE_KEY).then((val) => {
       if (val) {
-        global.currentSelectedLanguage = val;
+        (global as any).currentSelectedLanguage = val;
       } else {
-        global.currentSelectedLanguage = languages[0].name;
+        (global as any).currentSelectedLanguage = languages[0].name;
       }
     });
   };
@@ -117,17 +118,19 @@ function SplashScreen() {
         : staticPrivacyPolicy;
       const show_review_popup = releaseMode?.get("show_review_popup") ?? "";
 
-      global.appOpenAd = appOpenAd;
-      global.bannerAd = bannerAd;
-      global.interstitialAd = interstitialAd;
-      global.interstitialAdIntervalClicks = interstitialAdIntervalClicks;
-      global.interstitialAdIntervalSeconds = interstitialAdIntervalSeconds;
-      global.rewardInterstitialAd = rewardInterstitialAd;
-      global.serverConfigEnable = serverConfigEnable;
-      global.defaultLanguage = defaultLanguage;
-      global.showAdsFromFirebase = showAds; 
-      global.privacy_policy = privacy_policy;
-      global.show_review_popup = show_review_popup;
+      (global as any).appOpenAd = appOpenAd;
+      (global as any).bannerAd = bannerAd;
+      (global as any).interstitialAd = interstitialAd;
+      (global as any).interstitialAdIntervalClicks =
+        interstitialAdIntervalClicks;
+      (global as any).interstitialAdIntervalSeconds =
+        interstitialAdIntervalSeconds;
+      (global as any).rewardInterstitialAd = rewardInterstitialAd;
+      (global as any).serverConfigEnable = serverConfigEnable;
+      (global as any).defaultLanguage = defaultLanguage;
+      (global as any).showAdsFromFirebase = showAds;
+      (global as any).privacy_policy = privacy_policy;
+      (global as any).show_review_popup = show_review_popup;
 
       redirectToWelcomeScreen();
     });
@@ -146,7 +149,22 @@ function SplashScreen() {
   const redirectToWelcomeScreen = () => {
     if (!isRedirectedToNextScreen.current) {
       isRedirectedToNextScreen.current = true;
-      router.replace(`./welcome`);
+      InteractionManager.runAfterInteractions(() => {
+        setTimeout(() => {
+          try {
+            router.replace(`./welcome`);
+          } catch (error) {
+            console.warn("Navigation error:", error);
+            try {
+              router.replace("/");
+            } catch (fallbackError) {
+              if (router.canGoBack()) {
+                router.back();
+              }
+            }
+          }
+        }, 100);
+      });
     }
   };
 
@@ -178,7 +196,7 @@ function SplashScreen() {
           fontWeight={"700"}
           textAlign="center"
         >
-          {`Powered by ${global?.poweredBy ?? staticPoweredBy}`}
+          {`Powered by ${(global as any)?.poweredBy ?? staticPoweredBy}`}
         </SizableText>
       </YStack>
     </YStack>

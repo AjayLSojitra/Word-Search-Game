@@ -5,7 +5,9 @@ const path = require("path");
 // Find the project and workspace directories
 const projectRoot = __dirname;
 
-const config = getDefaultConfig(projectRoot);
+const config = getDefaultConfig(projectRoot, { isCSSEnabled: true });
+
+config.resolver.unstable_enablePackageExports = false;
 
 // 1. Watch all files within the monorepo
 config.watchFolders = [projectRoot];
@@ -22,6 +24,12 @@ config.resolver.resolverMainFields = [
   "browser",
   "main",
 ];
+
+// Resolve Node.js modules to polyfills
+config.resolver.extraNodeModules = {
+  ...config.resolver.extraNodeModules,
+  buffer: require.resolve("buffer"),
+};
 
 config.maxWorkers = 2;
 

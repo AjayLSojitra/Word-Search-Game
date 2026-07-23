@@ -1,12 +1,13 @@
 import { PrimaryButtonProps } from "@design-system/components/buttons/primary-button";
-import { atom, useRecoilState } from "recoil";
+import { create } from "zustand";
+import { ReactElement } from "react";
 
 type Button = PrimaryButtonProps & { buttonType: "Primary" | "Secondary" };
 
 export type ConfirmationDialogProps = {
   title: string;
   titleFontSize?: "$hsm";
-  icon?: JSX.Element;
+  icon?: ReactElement;
   description?: string;
   descriptionFontSize?: "$sm";
   shortDescription?: string;
@@ -17,9 +18,13 @@ export type ConfirmationDialogProps = {
   checkbox?: boolean;
 };
 
-const confirmationDialogState = atom<ConfirmationDialogProps>({
-  key: "confirmationDialogState",
-  default: {
+interface ConfirmationDialogStore {
+  confirmationDialogState: ConfirmationDialogProps;
+  setConfirmationDialogState: (state: ConfirmationDialogProps) => void;
+}
+
+const useConfirmationDialogStore = create<ConfirmationDialogStore>((set) => ({
+  confirmationDialogState: {
     icon: undefined,
     title: "",
     titleFontSize: "$hsm",
@@ -32,14 +37,13 @@ const confirmationDialogState = atom<ConfirmationDialogProps>({
     close: false,
     checkbox: false,
   },
-});
-
-const useConfirmationDialogState = () =>
-  useRecoilState(confirmationDialogState);
+  setConfirmationDialogState: (state) =>
+    set({ confirmationDialogState: state }),
+}));
 
 export const useConfirmationDialog = () => {
-  const [confirmationDialogState, setConfirmationDialogState] =
-    useConfirmationDialogState();
+  const { confirmationDialogState, setConfirmationDialogState } =
+    useConfirmationDialogStore();
 
   return {
     confirmationDialogState,
@@ -51,10 +55,10 @@ export const useConfirmationDialog = () => {
       });
     },
     close: () => {
-      setConfirmationDialogState((prevValues) => ({
-        ...prevValues,
+      setConfirmationDialogState({
+        ...confirmationDialogState,
         visible: false,
-      }));
+      });
     },
   };
 };
