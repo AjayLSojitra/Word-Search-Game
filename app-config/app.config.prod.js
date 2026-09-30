@@ -1,5 +1,5 @@
 module.exports = {
-  name: "LexiNexa: Word Challenge",
+  name: "Word Games & Challenges",
   scheme: "wordsearchgame",
   icon: "./assets/icon.png",
   web: { favicon: "./assets/favicon.png" },

@@ -1,6 +1,6 @@
 {
   "name": "word-search-game",
-  "version": "8.0.0",
+  "version": "9.0.0",
   "main": "index.js",
   "scripts": {
     "start": "TAMAGUI_TARGET=native expo start --clear --dev-client",
@@ -71,8 +71,8 @@
     "react-native-google-mobile-ads": "^14.11.0",
     "react-native-in-app-review": "^4.3.3",
     "react-native-modal": "^13.0.1",
-    "react-native-purchases": "^8.12.0",
-    "react-native-purchases-ui": "^8.12.0",
+    "react-native-purchases": "^10.10.2",
+    "react-native-purchases-ui": "^10.10.2",
     "react-native-reanimated": "~3.17.4",
     "react-native-reanimated-carousel": "^4.0.3",
     "react-native-safe-area-context": "5.4.0",

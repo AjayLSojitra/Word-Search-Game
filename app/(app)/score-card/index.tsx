@@ -67,7 +67,7 @@ function ScoreCardScreen() {
         quality: 0.7,
       });
       if (await Sharing.isAvailableAsync()) {
-        Sharing.shareAsync(uri, { dialogTitle: "LexiNexa: Word Challenge" });
+        Sharing.shareAsync(uri, { dialogTitle: "Word Games & Challenges" });
       }
     } catch (e) {
       console.log(e);
