@@ -441,7 +441,9 @@ function PlayGameScreen() {
         { inputValue: inputSpell, status: "WRONG" },
         ...spellItems,
       ]);
-      clearAllInputs();
+      setTimeout(() => {
+        clearAllInputs();
+      }, 100);
       return;
     }
   };

@@ -14,8 +14,8 @@
     "name": "Word Games & Challenges",
     "slug": "word-search-game-app",
     "owner": "ajay_sarvadhidigital",
-    "version": "9.0.0",
-    "orientation": "portrait",
+    "version": "11.0.0",
+    "orientation": "default",
     "jsEngine": "hermes",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -46,13 +46,14 @@
         "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#ffffff"
       },
-      "versionCode": 9
+      "versionCode": 11
     },
     "web": {
       "favicon": "./assets/favicon.png",
       "bundler": "metro"
     },
     "plugins": [
+      "expo-asset",
       "expo-router",
       "@react-native-firebase/app",
       "@react-native-firebase/crashlytics",
