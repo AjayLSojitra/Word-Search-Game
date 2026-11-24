@@ -2,7 +2,7 @@ import { SizableText, XStack, YStack } from "tamagui";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import ScrollHeader from "@design-system/components/navigation/scroll-header";
 import { useFocusEffect, useGlobalSearchParams, useRouter } from "expo-router";
-import { Image } from "react-native";
+import { Image, ScrollView, useWindowDimensions } from "react-native";
 import images from "@assets/images/images";
 import useResponsiveWidth from "@modules/shared/hooks/useResponsiveWidth";
 import { createAudioPlayer, AudioPlayer } from "expo-audio";
@@ -45,6 +45,8 @@ function ScoreCardScreen() {
   const router = useRouter();
   const goBack = useGoBack();
   const isPhoneDevice = deviceType === DeviceType.PHONE;
+  const { width: screenWidth, height: screenHeight } = useWindowDimensions();
+  const isLandscape = screenWidth > screenHeight;
   const responsiveWidth = useResponsiveWidth();
   const [sound, setSound] = useState<AudioPlayer>();
   const ref = useRef<ViewShot>(null);
@@ -99,6 +101,16 @@ function ScoreCardScreen() {
       <ScrollHeader title="" backgroundColor={"$primary"} back={false} />
 
       <ResponsiveContent flex={1}>
+        <ScrollView
+          style={{ flex: 1 }}
+          contentContainerStyle={{
+            flexGrow: 1,
+            paddingVertical: isLandscape ? 8 : 0,
+          }}
+          showsVerticalScrollIndicator={true}
+          nestedScrollEnabled
+          bounces
+        >
         <ViewShot ref={ref}>
           <YStack bg={"$primary"} pb={isPhoneDevice ? "$5" : "$7"}>
             <SizableText
@@ -488,6 +500,7 @@ function ScoreCardScreen() {
             </XStack>
           </YStack>
         </YStack>
+        </ScrollView>
       </ResponsiveContent>
       <BannerAdComponent />
       <YStack h={insets.bottom} />

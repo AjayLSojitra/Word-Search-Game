@@ -1,7 +1,7 @@
 import { SizableText, XStack, YStack } from "tamagui";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import BasicButton from "@design-system/components/buttons/basic-button";
-import { Image } from "react-native";
+import { Image, ScrollView, useWindowDimensions } from "react-native";
 import images from "@assets/images/images";
 import AdsConfirmationDialog from "@modules/shared/components/confirmation-dialog/ads-confirmation-dialog";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -29,6 +29,8 @@ import { AdLoader } from "@modules/app/ad-loader";
 
 function WelcomeScreen() {
   const isPhoneDevice = deviceType === DeviceType.PHONE;
+  const { width: screenWidth, height: screenHeight } = useWindowDimensions();
+  const isLandscape = screenWidth > screenHeight;
   const iconSize = isPhoneDevice ? 24 : 36;
   const { premium, refresh } = useSubscriptionData();
   const insets = useSafeAreaInsets();
@@ -443,6 +445,14 @@ function WelcomeScreen() {
       />
 
       <ResponsiveContent flex={1} backgroundColor={"$primary"}>
+        <ScrollView
+          style={{ flex: 1 }}
+          contentContainerStyle={{
+            flexGrow: 1,
+            paddingVertical: isLandscape ? 8 : 0,
+          }}
+          showsVerticalScrollIndicator={false}
+        >
         <YStack alignItems="center" justifyContent="center">
           <AdsConfirmationDialog
             onPositivePress={() => {
@@ -628,6 +638,7 @@ function WelcomeScreen() {
             </YStack>
           </BasicButton>
         </YStack>
+        </ScrollView>
       </ResponsiveContent>
       <YStack h={insets.bottom} />
 

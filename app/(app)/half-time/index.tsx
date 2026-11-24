@@ -8,7 +8,7 @@ import lotties from "@assets/lotties/lotties";
 import { createAudioPlayer, AudioPlayer } from "expo-audio";
 import sounds from "@assets/sounds/sounds";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Image } from "react-native";
+import { Image, ScrollView, useWindowDimensions } from "react-native";
 import images from "@assets/images/images";
 import LocalStorage from "@utils/local-storage";
 import useResponsiveWidth from "@modules/shared/hooks/useResponsiveWidth";
@@ -26,6 +26,8 @@ function HalfTimeScreen() {
   const insets = useSafeAreaInsets();
   const goBack = useGoBack();
   const isPhoneDevice = deviceType === DeviceType.PHONE;
+  const { width: screenWidth, height: screenHeight } = useWindowDimensions();
+  const isLandscape = screenWidth > screenHeight;
   const [sound, setSound] = useState<AudioPlayer>();
   const isSoundEnabled = useRef(true);
   const responsiveWidth = useResponsiveWidth();
@@ -116,6 +118,12 @@ function HalfTimeScreen() {
       <ScrollHeader title="" backgroundColor={"$primary"} back={false} />
 
       <ResponsiveContent flex={1}>
+        <ScrollView
+          style={{ flex: 1 }}
+          contentContainerStyle={{ flexGrow: 1, paddingVertical: isLandscape ? 8 : 0 }}
+          showsVerticalScrollIndicator={true}
+          bounces
+        >
         <SizableText
           fontSize={isPhoneDevice ? "$6xl" : "$8xl"}
           lineHeight={isPhoneDevice ? 80 : 110}
@@ -179,6 +187,7 @@ function HalfTimeScreen() {
             </XStack>
           </BasicButton>
         </YStack>
+        </ScrollView>
       </ResponsiveContent>
       <YStack h={insets.bottom} />
     </YStack>

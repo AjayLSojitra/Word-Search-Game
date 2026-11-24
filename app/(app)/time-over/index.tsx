@@ -3,7 +3,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import ScrollHeader from "@design-system/components/navigation/scroll-header";
 import { useGlobalSearchParams } from "expo-router";
 import BasicButton from "@design-system/components/buttons/basic-button";
-import { Image } from "react-native";
+import { Image, ScrollView, useWindowDimensions } from "react-native";
 import images from "@assets/images/images";
 import ResponsiveContent from "@modules/shared/responsive-content";
 import contents from "@assets/contents/contents";
@@ -27,6 +27,8 @@ function TimeOverScreen() {
   const insets = useSafeAreaInsets();
   const goBack = useGoBack();
   const isPhoneDevice = deviceType === DeviceType.PHONE;
+  const { width: screenWidth, height: screenHeight } = useWindowDimensions();
+  const isLandscape = screenWidth > screenHeight;
 
   const formattedValue = (value: number) => {
     return value > 9 ? value : `0` + value;
@@ -37,6 +39,12 @@ function TimeOverScreen() {
       <ScrollHeader title="" backgroundColor={"$primary"} back={false} />
 
       <ResponsiveContent flex={1}>
+        <ScrollView
+          style={{ flex: 1 }}
+          contentContainerStyle={{ flexGrow: 1, paddingVertical: isLandscape ? 8 : 0 }}
+          showsVerticalScrollIndicator={true}
+          bounces
+        >
         <SizableText
           fontSize={isPhoneDevice ? "$6xl" : "$8xl"}
           lineHeight={isPhoneDevice ? 80 : 110}
@@ -166,6 +174,7 @@ function TimeOverScreen() {
             </XStack>
           </BasicButton>
         </YStack>
+        </ScrollView>
       </ResponsiveContent>
       <YStack h={insets.bottom} />
     </YStack>

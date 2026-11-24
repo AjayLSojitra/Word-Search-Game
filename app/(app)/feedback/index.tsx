@@ -20,7 +20,7 @@ import { getFirestore, addDoc, collection } from "firebase/firestore";
 import { AppManifest } from "../../../app-manifest";
 import useResponsiveWidth from "@modules/shared/hooks/useResponsiveWidth";
 import { HIT_SLOP } from "@utils/theme";
-import { Image, ImageProps, Platform } from "react-native";
+import { Image, ImageProps, Platform, ScrollView, useWindowDimensions } from "react-native";
 import images from "@assets/images/images";
 import TouchableScale from "@design-system/components/shared/touchable-scale";
 import InputAccessoryViewiOS from "@modules/shared/components/input-accessory-view-details";
@@ -39,6 +39,8 @@ function AddContentsScreen() {
   const uniqueDeviceId = DeviceInfo.getUniqueIdSync();
   const responsiveWidth = useResponsiveWidth();
   const isPhoneDevice = deviceType === DeviceType.PHONE;
+  const { width: screenWidth, height: screenHeight } = useWindowDimensions();
+  const isLandscape = screenWidth > screenHeight;
 
   const languageData =
     contents.feedbackScreenSelectedLanguage?.[
@@ -71,6 +73,13 @@ function AddContentsScreen() {
         backgroundColor={"$primary"}
       />
       <ResponsiveContent flex={1}>
+        <ScrollView
+          style={{ flex: 1 }}
+          contentContainerStyle={{ flexGrow: 1, paddingVertical: isLandscape ? 8 : 0 }}
+          keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={true}
+          bounces
+        >
         <YStack h={isPhoneDevice ? "$4" : "$6"} />
         <SizableText
           px={"$4"}
@@ -266,6 +275,7 @@ function AddContentsScreen() {
             </SizableText>
           </BasicButton>
         </YStack>
+        </ScrollView>
       </ResponsiveContent>
       <YStack h={insets.bottom} />
       {Platform.OS === "ios" && <InputAccessoryViewiOS title={"Done"} />}

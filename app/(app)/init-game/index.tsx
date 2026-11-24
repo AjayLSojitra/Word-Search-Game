@@ -57,7 +57,8 @@ function InitGameScreen() {
   const [selectedWordLengthIndex, setSelectedWordLengthIndex] =
     useState<number>(0);
   const isPhoneDevice = deviceType === DeviceType.PHONE;
-  const { width: responsiveWidth } = useWindowDimensions();
+  const { width: responsiveWidth, height: screenHeight } = useWindowDimensions();
+  const isLandscape = responsiveWidth > screenHeight;
   const PAGE_WIDTH = Math.round(responsiveWidth / (isPhoneDevice ? 5 : 9));
   const baseOptions = {
     vertical: false,
@@ -241,9 +242,18 @@ function InitGameScreen() {
       />
 
       <YStack flex={1}>
-        <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+        <ScrollView
+          style={{ flex: 1 }}
+          contentContainerStyle={{
+            flexGrow: 1,
+            paddingVertical: isLandscape ? 4 : 0,
+          }}
+          showsVerticalScrollIndicator={true}
+          nestedScrollEnabled
+          bounces
+        >
           <YStack alignItems="center">
-            <YStack h={isPhoneDevice ? "$6" : "$9"} />
+            <YStack h={isLandscape ? "$2" : (isPhoneDevice ? "$6" : "$9")} />
             <SizableText
               fontSize={isPhoneDevice ? "$xl" : "$hlg"}
               lineHeight={isPhoneDevice ? 30 : 40}
@@ -261,7 +271,7 @@ function InitGameScreen() {
               pagingEnabled={false}
               style={{
                 width: responsiveWidth,
-                height: isPhoneDevice ? 140 : 210,
+                height: isLandscape ? 92 : (isPhoneDevice ? 140 : 210),
                 marginTop: -25,
                 justifyContent: "center",
                 alignItems: "center",
@@ -349,7 +359,7 @@ function InitGameScreen() {
               defaultIndex={0}
               style={{
                 width: responsiveWidth,
-                height: isPhoneDevice ? 140 : 210,
+                height: isLandscape ? 92 : (isPhoneDevice ? 140 : 210),
                 marginTop: -25,
                 justifyContent: "center",
                 alignItems: "center",
@@ -418,7 +428,9 @@ function InitGameScreen() {
               {...baseOptions}
               loop
               style={{
-                height: Math.round(responsiveWidth / (isPhoneDevice ? 2.5 : 4)),
+                height: isLandscape
+                  ? 92
+                  : Math.round(responsiveWidth / (isPhoneDevice ? 2.5 : 4)),
                 width: responsiveWidth,
                 justifyContent: "center",
                 alignItems: "center",

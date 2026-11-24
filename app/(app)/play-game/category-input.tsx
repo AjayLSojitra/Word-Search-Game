@@ -12,6 +12,7 @@ import VerticalStick from "./vertical-stick";
 import { DeviceType, deviceType } from "expo-device";
 import ResponsiveContent from "@modules/shared/responsive-content";
 import useResponsiveWidth from "@modules/shared/hooks/useResponsiveWidth";
+import { useOrientation } from "@modules/shared/hooks/useOrientation";
 
 const CategoryInput = forwardRef<OtpInputRef, OtpInputProps>((props, ref) => {
   const {
@@ -42,6 +43,7 @@ const CategoryInput = forwardRef<OtpInputRef, OtpInputProps>((props, ref) => {
   } = theme;
   const responsiveWidth = useResponsiveWidth();
   const isPhoneDevice = deviceType === DeviceType.PHONE;
+  const { isLandscape } = useOrientation();
   useImperativeHandle(ref, () => ({
     clear,
     focus,
@@ -103,7 +105,7 @@ const CategoryInput = forwardRef<OtpInputRef, OtpInputProps>((props, ref) => {
         borderWidth: 0,
         borderRadius: 8,
         backgroundColor: "#1c2e4a",
-        height: isPhoneDevice ? 60 : 90,
+        height: isLandscape ? (isPhoneDevice ? 48 : 72) : (isPhoneDevice ? 60 : 90),
         width: widthStyle,
         justifyContent: "center",
         alignItems: "center",

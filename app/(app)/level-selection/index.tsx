@@ -4,7 +4,7 @@ import ScrollHeader from "@design-system/components/navigation/scroll-header";
 import { useRouter } from "expo-router";
 import BasicButton from "@design-system/components/buttons/basic-button";
 import images from "@assets/images/images";
-import { Image } from "react-native";
+import { Image, ScrollView, useWindowDimensions } from "react-native";
 import ResponsiveContent from "@modules/shared/responsive-content";
 import { useEffect, useRef } from "react";
 import contents from "@assets/contents/contents";
@@ -21,6 +21,8 @@ function LevelSelectionScreen() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const isPhoneDevice = deviceType === DeviceType.PHONE;
+  const { width: screenWidth, height: screenHeight } = useWindowDimensions();
+  const isLandscape = screenWidth > screenHeight;
   // Initialize interstitial ad
   const { isPreparingToShow, loadAd, showAd } = useInterstitialAd({
     onAdClosed: () => {
@@ -98,6 +100,12 @@ function LevelSelectionScreen() {
         backgroundColor={"$primary"}
       />
       <ResponsiveContent flex={1}>
+        <ScrollView
+          style={{ flex: 1 }}
+          contentContainerStyle={{ flexGrow: 1, paddingVertical: isLandscape ? 8 : 0 }}
+          showsVerticalScrollIndicator={true}
+          bounces
+        >
         <YStack flex={1} mx={isPhoneDevice ? "$6" : 0} justifyContent="center">
           <BasicButton
             height={isPhoneDevice ? 56 : 84}
@@ -157,6 +165,7 @@ function LevelSelectionScreen() {
             </XStack>
           </BasicButton>
         </YStack>
+        </ScrollView>
       </ResponsiveContent>
       <YStack h={insets.bottom} />
 

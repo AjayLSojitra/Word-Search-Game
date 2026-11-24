@@ -2,7 +2,7 @@ import { YStack } from "tamagui";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import ScrollHeader from "@design-system/components/navigation/scroll-header";
 import { useRouter } from "expo-router";
-import { FlatList } from "react-native";
+import { FlatList, useWindowDimensions } from "react-native";
 import ResponsiveContent from "@modules/shared/responsive-content";
 import { catrgoriesIcons } from "@modules/shared/components/helpers";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -19,6 +19,10 @@ function CategoriesScreen() {
       (global as any)?.currentSelectedLanguage ?? "English"
     ];
   const isPhoneDevice = deviceType === DeviceType.PHONE;
+  const { width: screenWidth, height: screenHeight } = useWindowDimensions();
+  const categoryColumns = screenWidth > screenHeight
+    ? (isPhoneDevice ? 3 : 5)
+    : (isPhoneDevice ? 2 : 3);
 
   const insets = useSafeAreaInsets();
   const router = useRouter();
@@ -142,7 +146,7 @@ function CategoriesScreen() {
             keyExtractor={keyExtractor}
             ListFooterComponent={renderFooter}
             horizontal={false}
-            numColumns={isPhoneDevice ? 2 : 3}
+            numColumns={categoryColumns}
           />
         </YStack>
       </ResponsiveContent>

@@ -14,7 +14,7 @@ import { SHADOW } from "@design-system/utils/constants";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createAudioPlayer, AudioPlayer } from "expo-audio";
 import sounds from "@assets/sounds/sounds";
-import { InteractionManager } from "react-native";
+import { InteractionManager, useWindowDimensions } from "react-native";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -58,6 +58,8 @@ function PlayGameScreen() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const isPhoneDevice = deviceType === DeviceType.PHONE;
+  const { width: screenWidth, height: screenHeight } = useWindowDimensions();
+  const isLandscape = screenWidth > screenHeight;
   const scrollViewRef = useRef<any>(null);
   const currentLanguage = ((global as any)?.currentSelectedLanguage ??
     "English") as keyof typeof wordfiles;
@@ -758,7 +760,7 @@ function PlayGameScreen() {
           </>
         )}
         <YStack
-          height={isPhoneDevice ? 150 : 234}
+          height={isLandscape ? Math.max(72, Math.round(screenHeight * 0.22)) : (isPhoneDevice ? 150 : 234)}
           marginTop={isPhoneDevice ? "$4" : "$6"}
         >
           <FlatList

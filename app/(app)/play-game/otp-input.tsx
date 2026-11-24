@@ -11,6 +11,7 @@ import useOtpInput from "./use-otp-input";
 import VerticalStick from "./vertical-stick";
 import ResponsiveContent from "@modules/shared/responsive-content";
 import { DeviceType, deviceType } from "expo-device";
+import { useOrientation } from "@modules/shared/hooks/useOrientation";
 
 const OtpInput = forwardRef<OtpInputRef, OtpInputProps>((props, ref) => {
   const {
@@ -39,6 +40,7 @@ const OtpInput = forwardRef<OtpInputRef, OtpInputProps>((props, ref) => {
   } = theme;
   const responsiveWidth = useResponsiveWidth();
   const isPhoneDevice = deviceType === DeviceType.PHONE;
+  const { isLandscape } = useOrientation();
   useImperativeHandle(ref, () => ({ clear, focus, setValue: setTextWithRef }));
   const selectedLanguage =
     (global as any)?.currentSelectedLanguage ?? "English";
@@ -55,7 +57,7 @@ const OtpInput = forwardRef<OtpInputRef, OtpInputProps>((props, ref) => {
         borderWidth: 0,
         borderRadius: 8,
         backgroundColor: "#1c2e4a",
-        height: isPhoneDevice ? 60 : 90,
+        height: isLandscape ? (isPhoneDevice ? 48 : 72) : (isPhoneDevice ? 60 : 90),
         width: widthStyle,
         justifyContent: "center",
         alignItems: "center",

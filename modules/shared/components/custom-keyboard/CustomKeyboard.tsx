@@ -118,14 +118,24 @@ const CustomKeyboard: React.FC<CustomKeyboardProps> = ({ onKeyPress }) => {
     }
   };
 
-  const { width: screenWidth } = useWindowDimensions();
-  const keyWidth = (screenWidth - 58) / 10;
+  const { width: screenWidth, height: screenHeight } = useWindowDimensions();
+  const isLandscape = screenWidth > screenHeight;
+  const keyboardWidth = Math.min(screenWidth, isLandscape ? 820 : 480);
+  const keyWidth = (keyboardWidth - (isPhoneDevice ? 58 : 88)) / 10;
+  const keyHeight = isLandscape
+    ? Math.min(isPhoneDevice ? 36 : 54, Math.max(32, screenHeight / 10))
+    : isPhoneDevice
+      ? 45
+      : 69;
   return (
     <View
       style={{
-        padding: isPhoneDevice ? 10 : 15,
+        width: "100%",
+        maxWidth: keyboardWidth,
+        alignSelf: "center",
+        padding: isLandscape ? (isPhoneDevice ? 4 : 8) : (isPhoneDevice ? 10 : 15),
         backgroundColor: "#d5d6e0", // Light background for the keyboard
-        marginTop: isPhoneDevice ? 20 : 30,
+        marginTop: isLandscape ? (isPhoneDevice ? 6 : 10) : (isPhoneDevice ? 20 : 30),
       }}
     >
       {keyboardLayout.map((row, rowIndex) => (
@@ -143,7 +153,7 @@ const CustomKeyboard: React.FC<CustomKeyboardProps> = ({ onKeyPress }) => {
               onPress={() => handleKeyPress(key)}
               style={[
                 {
-                  height: isPhoneDevice ? 45 : 69, // Height of each key
+                  height: keyHeight, // Height of each key
                   backgroundColor: "#ffffff", // White background for keys
                   justifyContent: "center",
                   alignItems: "center",
